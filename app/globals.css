@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Define primary semantic values for Serif design style */
+  --color-ivory: #FAFAF8;
+  --color-rich-black: #1A1A1A;
+  --color-warm-gray-100: #F5F3F0; /* muted */
+  --color-warm-gray-500: #6B6B6B; /* muted-foreground */
+  --color-gold: #B8860B; /* accent */
+  --color-gold-hover: #D4A84B; /* accent-secondary */
+  --color-serif-border: #E8E4DF; /* border */
+
+  /* Maintain/map existing colors to ensure existing layout logic does not break */
+  --color-cream-50: #FAFAF8; /* ivory background */
+  --color-cream-100: #F5F3F0; /* muted background */
+  --color-cream-200: #E8E4DF; /* border color */
+  
+  --color-forest-50: #F5F3F0;
+  --color-forest-100: #E8E4DF;
+  --color-forest-200: #D4A84B; /* gold lighter */
+  --color-forest-400: #D4A84B; /* gold lighter */
+  --color-forest-600: #B8860B; /* primary accent gold */
+  --color-forest-800: #1A1A1A; /* text color / primary black */
+
+  --color-gold-400: #D4A84B;
+  --color-gold-600: #B8860B;
+
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Source Sans 3", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+body {
+  background-color: var(--color-ivory);
+  color: var(--color-rich-black);
+  font-family: var(--font-sans);
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+}
+
+.font-serif { 
+  font-family: var(--font-serif); 
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.btn-primary {
+  @apply bg-forest-600 text-white px-5 py-2.5 rounded-md font-sans font-medium text-sm tracking-wide shadow-sm hover:bg-gold-hover hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] touch-manipulation flex items-center justify-center gap-2;
+}
+
+.btn-secondary {
+  @apply border border-forest-800 text-forest-800 px-5 py-2.5 rounded-md font-sans font-medium text-sm hover:bg-cream-100 hover:text-forest-600 hover:border-forest-600 transition-all duration-200 cursor-pointer min-h-[44px] touch-manipulation flex items-center justify-center gap-2;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white px-5 py-2.5 rounded-md font-sans font-medium text-sm hover:bg-red-700 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer min-h-[44px] touch-manipulation flex items-center justify-center gap-2;
+}
+
+.input-field {
+  @apply w-full border border-cream-200 rounded-md px-3.5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-forest-600 focus:ring-offset-2 focus:border-forest-600 bg-transparent text-forest-800 placeholder:text-gray-400/60 transition-all duration-150 h-12;
+}
+
+.card {
+  @apply bg-white rounded-lg border border-cream-200 shadow-sm p-8 transition-all duration-200;
+}
+
+.card-hoverable {
+  @apply hover:shadow-md hover:border-forest-600 hover:bg-cream-50/30;
+}
+
+.label {
+  @apply block text-xs font-mono font-medium uppercase tracking-[0.1em] text-gray-500 mb-1.5;
+}
+
+.error-msg {
+  @apply text-red-600 text-xs mt-1;
+}
+
+.badge-paid {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-100;
+}
+
+.badge-unpaid {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-50 text-rose-800 border border-rose-100;
+}
+
+.badge-admin {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200/50 font-mono uppercase tracking-wider;
+}
+
+.badge-member {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-stone-100 text-stone-700 border border-stone-200/50 font-mono uppercase tracking-wider;
+}
+
+/* Paper Noise Texture Overlay */
+.paper-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: "";
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Ambient atmospheric glow */
+.ambient-glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(184, 134, 11, 0.03) 0%, rgba(184, 134, 11, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.small-caps {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
