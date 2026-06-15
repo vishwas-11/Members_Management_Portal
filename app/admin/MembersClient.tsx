@@ -93,14 +93,34 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
                   </td>
                 </tr>
               )}
-              {filtered.map(member => (
-                <tr key={member.id} className="hover:bg-cream-100/30 transition-colors">
-                  <td className="px-5 py-4.5">
-                    <p className="font-medium text-forest-800">{member.full_name}</p>
-                    <p className="text-[10px] font-mono text-gray-400 mt-1">
-                      {member.aadhaar_number.replace(/(\d{4})(\d{4})(\d{4})/, '$1 $2 $3')}
-                    </p>
-                  </td>
+              {filtered.map(member => {
+                const initials = member.full_name
+                  .split(' ')
+                  .map(n => n[0])
+                  .slice(0, 2)
+                  .join('')
+                  .toUpperCase();
+
+                return (
+                  <tr key={member.id} className="hover:bg-cream-100/30 transition-colors">
+                    <td className="px-5 py-4.5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full overflow-hidden bg-gradient-to-br from-forest-600 to-forest-800 flex items-center justify-center text-white border border-cream-200 shadow-sm flex-shrink-0">
+                          {member.avatar_url ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={member.avatar_url} alt={member.full_name} className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="font-serif text-xs font-light tracking-wide">{initials}</span>
+                          )}
+                        </div>
+                        <div>
+                          <p className="font-medium text-forest-800">{member.full_name}</p>
+                          <p className="text-[10px] font-mono text-gray-400 mt-0.5">
+                            {member.aadhaar_number.replace(/(\d{4})(\d{4})(\d{4})/, '$1 $2 $3')}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
                   <td className="px-5 py-4.5 text-gray-600 hidden sm:table-cell font-sans">{member.phone}</td>
                   <td className="px-5 py-4.5 text-gray-600 hidden md:table-cell font-sans">
                     {(member.family_members?.length ?? 0) + 1} person{(member.family_members?.length ?? 0) + 1 !== 1 ? 's' : ''}
@@ -128,7 +148,7 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
                     </div>
                   </td>
                 </tr>
-              ))}
+              )})}
             </tbody>
           </table>
         </div>

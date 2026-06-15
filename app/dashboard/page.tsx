@@ -33,11 +33,28 @@ export default async function DashboardPage() {
       <Navbar role="member" userName={member.full_name} />
 
       <div className="max-w-4xl mx-auto px-6 py-12 space-y-10 relative z-10">
-        <div className="border-b border-cream-200 pb-6">
-          <h1 className="font-serif text-4xl font-normal text-forest-800 tracking-tight">
-            Welcome, {member.full_name.split(' ')[0]}
-          </h1>
-          <p className="text-sm text-gray-400 mt-2 font-sans">Your membership details, family connection, and contribution dues statement.</p>
+        <div className="border-b border-cream-200 pb-6 flex flex-col sm:flex-row sm:items-center gap-5">
+          <div className="w-16 h-16 rounded-full overflow-hidden bg-gradient-to-br from-forest-600 to-forest-800 flex items-center justify-center text-white border-2 border-cream-200 shadow-md flex-shrink-0">
+            {member.avatar_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={member.avatar_url} alt="Profile Picture" className="w-full h-full object-cover" />
+            ) : (
+              <span className="font-serif text-xl font-light tracking-wide">
+                {member.full_name
+                  .split(' ')
+                  .map(n => n[0])
+                  .slice(0, 2)
+                  .join('')
+                  .toUpperCase()}
+              </span>
+            )}
+          </div>
+          <div>
+            <h1 className="font-serif text-3xl sm:text-4xl font-normal text-forest-800 tracking-tight">
+              Welcome, {member.full_name.split(' ')[0]}
+            </h1>
+            <p className="text-sm text-gray-400 mt-1 font-sans">Your membership details, family connection, and contribution dues statement.</p>
+          </div>
         </div>
 
         {/* Summary cards */}

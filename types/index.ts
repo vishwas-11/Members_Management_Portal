@@ -19,6 +19,7 @@ export interface Member {
   family_members: FamilyMember[]
   declaration_signed: boolean
   declaration_signed_at?: string
+  avatar_url?: string
   created_at: string
   updated_at: string
 }

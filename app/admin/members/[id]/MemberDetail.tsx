@@ -34,6 +34,13 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
   const [newDue, setNewDue] = useState({ title: '', amount: '', due_date: '' })
   const [addingDue, setAddingDue] = useState(false)
 
+  const initials = member.full_name
+    .split(' ')
+    .map(n => n[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+
   const { register, control, handleSubmit, formState: { errors } } = useForm<MemberForm>({
     resolver: zodResolver(memberSchema) as any,
     defaultValues: {
@@ -89,12 +96,22 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
   return (
     <div className="max-w-3xl mx-auto px-6 py-12 space-y-10 relative z-10">
       <div className="flex items-center gap-4 border-b border-cream-200 pb-6 mb-2">
-        <Link href="/admin" className="w-10 h-10 border border-cream-200 hover:border-forest-600 hover:text-forest-600 text-gray-400 rounded-md flex items-center justify-center bg-white shadow-sm transition-all cursor-pointer">
+        <Link href="/admin" className="w-10 h-10 border border-cream-200 hover:border-forest-600 hover:text-forest-600 text-gray-400 rounded-md flex items-center justify-center bg-white shadow-sm transition-all cursor-pointer flex-shrink-0">
           <ArrowLeft className="w-5 h-5" />
         </Link>
-        <div>
-          <h1 className="font-serif text-3xl font-normal text-forest-800 tracking-tight">{member.full_name}</h1>
-          <p className="text-xs text-gray-400 mt-1 font-mono uppercase tracking-wider">Member since {new Date(member.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 rounded-full overflow-hidden bg-gradient-to-br from-forest-600 to-forest-800 flex items-center justify-center text-white border-2 border-cream-200 shadow-md flex-shrink-0">
+            {member.avatar_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={member.avatar_url} alt={member.full_name} className="w-full h-full object-cover" />
+            ) : (
+              <span className="font-serif text-xl font-light tracking-wide">{initials}</span>
+            )}
+          </div>
+          <div>
+            <h1 className="font-serif text-3xl font-normal text-forest-800 tracking-tight">{member.full_name}</h1>
+            <p className="text-xs text-gray-400 mt-1 font-mono uppercase tracking-wider font-sans">Member since {new Date(member.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+          </div>
         </div>
       </div>
 
