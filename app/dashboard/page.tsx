@@ -42,15 +42,15 @@ export default async function DashboardPage() {
 
         {/* Summary cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="card border-t-2 border-t-forest-600 text-center flex flex-col justify-between p-6">
+          <div className="card card-gradient-forest text-center flex flex-col justify-between p-6">
             <span className="font-serif text-5xl font-light text-forest-600">{(member.family_members ?? []).length + 1}</span>
             <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 mt-2">Family Members</span>
           </div>
-          <div className="card border-t-2 border-t-red-600 text-center flex flex-col justify-between p-6">
+          <div className="card card-gradient-red text-center flex flex-col justify-between p-6">
             <span className="font-serif text-5xl font-light text-red-600">₹{totalPending.toLocaleString('en-IN')}</span>
             <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 mt-2">Dues Pending</span>
           </div>
-          <div className="card border-t-2 border-t-gray-500 text-center flex flex-col justify-between p-6">
+          <div className="card border-t-2 border-t-gray-400 text-center flex flex-col justify-between p-6">
             <span className="font-serif text-5xl font-light text-gray-700">{paidDues.length}</span>
             <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 mt-2">Payments Made</span>
           </div>

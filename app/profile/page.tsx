@@ -89,7 +89,7 @@ export default function ProfilePage() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit as any)} className="space-y-6">
-          <div className="card border-t-2 border-t-forest-600 space-y-5">
+          <div className="card card-gradient-forest space-y-5">
             <h2 className="font-serif text-xl font-normal text-forest-800 border-b border-cream-100 pb-3">Personal Details</h2>
             
             <div>
@@ -124,7 +124,7 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <div className="card border-t-2 border-t-forest-600 space-y-5">
+          <div className="card card-gradient-forest space-y-5">
             <h2 className="font-serif text-xl font-normal text-forest-800 border-b border-cream-100 pb-3">Family Connections</h2>
             
             <div className="space-y-4">

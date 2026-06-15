@@ -107,7 +107,7 @@ export default function RegisterDetailsPage() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit as any)}>
-          <div className="card border-t-2 border-t-forest-600 space-y-6">
+          <div className="card card-gradient-forest space-y-6">
             {/* Step 0: Personal Details */}
             {step === 0 && (
               <>

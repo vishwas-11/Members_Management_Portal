@@ -110,7 +110,7 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        <div className="card border-t-2 border-t-forest-600">
+        <div className="card card-gradient-forest">
           <div className="space-y-6">
             <form onSubmit={handleRegister} className="space-y-5">
               <div>

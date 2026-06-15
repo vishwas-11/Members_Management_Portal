@@ -39,16 +39,17 @@ export default async function LandingPage() {
       <div className="ambient-glow top-2/3 -right-20" />
 
       {/* Landing Navbar */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-cream-200 sticky top-0 z-50 transition-all duration-200">
+      <header className="bg-white/80 backdrop-blur-md border-b border-cream-200 sticky top-0 z-50 transition-all duration-200 relative">
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-forest-400 via-forest-600 to-forest-400" />
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 border border-forest-600 rounded-md flex items-center justify-center">
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="w-8 h-8 border border-forest-600 rounded-md flex items-center justify-center group-hover:bg-cream-100 transition-colors">
               <ChurchIcon className="w-4 h-4 text-forest-600" />
             </div>
-            <span className="font-serif font-semibold text-lg tracking-wide">
+            <span className="font-serif font-semibold text-lg text-forest-800 tracking-wide group-hover:text-forest-600 transition-colors">
               Church Registry
             </span>
-          </div>
+          </Link>
 
           <nav className="flex items-center gap-6">
             {isLoggedIn ? (
@@ -84,7 +85,7 @@ export default async function LandingPage() {
           <span className="h-px flex-1 bg-cream-200" />
         </div>
 
-        <h1 className="font-serif text-5xl md:text-7xl font-normal leading-[1.1] tracking-tight mb-8 max-w-4xl mx-auto text-forest-800">
+        <h1 className="font-serif text-5xl md:text-7xl font-normal leading-[1.15] tracking-tight mb-8 max-w-4xl mx-auto text-transparent bg-clip-text bg-gradient-to-br from-forest-800 via-forest-700 to-emerald-700">
           Gracefully managing our congregation.
         </h1>
         
@@ -140,7 +141,7 @@ export default async function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Feature 1 */}
-            <div className="card card-hoverable border-t-2 border-t-forest-600 p-8 flex flex-col gap-4">
+            <div className="card card-hoverable card-gradient-forest p-8 flex flex-col gap-4">
               <div className="w-10 h-10 border border-cream-200 bg-cream-50 rounded-md flex items-center justify-center">
                 <BookOpen className="w-5 h-5 text-forest-600" />
               </div>
@@ -151,7 +152,7 @@ export default async function LandingPage() {
             </div>
 
             {/* Feature 2 */}
-            <div className="card card-hoverable border-t-2 border-t-forest-600 p-8 flex flex-col gap-4">
+            <div className="card card-hoverable card-gradient-forest p-8 flex flex-col gap-4">
               <div className="w-10 h-10 border border-cream-200 bg-cream-50 rounded-md flex items-center justify-center">
                 <Heart className="w-5 h-5 text-forest-600" />
               </div>
@@ -162,7 +163,7 @@ export default async function LandingPage() {
             </div>
 
             {/* Feature 3 */}
-            <div className="card card-hoverable border-t-2 border-t-forest-600 p-8 flex flex-col gap-4">
+            <div className="card card-hoverable card-gradient-forest p-8 flex flex-col gap-4">
               <div className="w-10 h-10 border border-cream-200 bg-cream-50 rounded-md flex items-center justify-center">
                 <ShieldCheck className="w-5 h-5 text-forest-600" />
               </div>
@@ -194,7 +195,7 @@ export default async function LandingPage() {
 
           <div className="md:col-span-5">
             {/* Visual representation card */}
-            <div className="card shadow-md relative overflow-hidden border-t-2 border-t-forest-600">
+            <div className="card card-gradient-forest shadow-md relative overflow-hidden">
               <div className="flex justify-between items-center mb-6">
                 <span className="text-xs font-mono font-medium text-forest-600 tracking-wider">MEMBER STATEMENT</span>
                 <span className="badge-paid">Paid</span>

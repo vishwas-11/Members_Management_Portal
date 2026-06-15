@@ -2,29 +2,32 @@
 @import "tailwindcss";
 
 @theme {
-  /* Define primary semantic values for Serif design style */
-  --color-ivory: #FAFAF8;
-  --color-rich-black: #1A1A1A;
-  --color-warm-gray-100: #F5F3F0; /* muted */
-  --color-warm-gray-500: #6B6B6B; /* muted-foreground */
-  --color-gold: #B8860B; /* accent */
-  --color-gold-hover: #D4A84B; /* accent-secondary */
-  --color-serif-border: #E8E4DF; /* border */
+  /* Define primary semantic values for elegant forest-emerald green theme */
+  --color-ivory: #FAFDFB; /* Soft mint off-white background */
+  --color-rich-black: #0D2119; /* Deep dark forest green-black for high contrast text */
+  --color-warm-gray-100: #EAF4EE; /* Soft muted green-gray */
+  --color-warm-gray-500: #5A6E61; /* Muted slate-green for helper texts */
+  --color-serif-border: #D8E7DD; /* Elegant sage-green border */
 
   /* Maintain/map existing colors to ensure existing layout logic does not break */
-  --color-cream-50: #FAFAF8; /* ivory background */
-  --color-cream-100: #F5F3F0; /* muted background */
-  --color-cream-200: #E8E4DF; /* border color */
+  --color-cream-50: #FAFDFB; 
+  --color-cream-100: #EAF4EE; 
+  --color-cream-200: #D8E7DD; 
   
-  --color-forest-50: #F5F3F0;
-  --color-forest-100: #E8E4DF;
-  --color-forest-200: #D4A84B; /* gold lighter */
-  --color-forest-400: #D4A84B; /* gold lighter */
-  --color-forest-600: #B8860B; /* primary accent gold */
-  --color-forest-800: #1A1A1A; /* text color / primary black */
+  --color-forest-50: #F4FBF7; /* Very soft mint tint */
+  --color-forest-100: #E6F3EC;
+  --color-forest-200: #C2DEC9; /* Muted sage-mint accent */
+  --color-forest-400: #40916c; /* Mid-green accent */
+  --color-forest-500: #2d6a4f; /* Emerald green hover */
+  --color-forest-600: #1b4332; /* Primary accent forest green */
+  --color-forest-700: #143225; /* Dark forest green for gradient anchors */
+  --color-forest-800: #0D2119; /* Heading color / primary black */
 
-  --color-gold-400: #D4A84B;
-  --color-gold-600: #B8860B;
+  /* Re-map gold styles to green variants to keep all references looking amazing */
+  --color-gold: #1b4332; 
+  --color-gold-hover: #2d6a4f;
+  --color-gold-400: #40916c;
+  --color-gold-600: #1b4332;
 
   --font-serif: "Playfair Display", Georgia, serif;
   --font-sans: "Source Sans 3", system-ui, sans-serif;
@@ -32,7 +35,8 @@
 }
 
 body {
-  background-color: var(--color-ivory);
+  background: linear-gradient(135deg, var(--color-cream-50) 0%, #E8F4EC 100%);
+  background-attachment: fixed;
   color: var(--color-rich-black);
   font-family: var(--font-sans);
   line-height: 1.75;
@@ -48,11 +52,11 @@ body {
 }
 
 .btn-primary {
-  @apply bg-forest-600 text-white px-5 py-2.5 rounded-md font-sans font-medium text-sm tracking-wide shadow-sm hover:bg-gold-hover hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] touch-manipulation flex items-center justify-center gap-2;
+  @apply bg-gradient-to-r from-forest-700 to-forest-600 text-white px-5 py-2.5 rounded-md font-sans font-medium text-sm tracking-wide shadow-md shadow-forest-600/10 hover:from-forest-600 hover:to-forest-500 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-forest-600/20 active:translate-y-0 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] touch-manipulation flex items-center justify-center gap-2;
 }
 
 .btn-secondary {
-  @apply border border-forest-800 text-forest-800 px-5 py-2.5 rounded-md font-sans font-medium text-sm hover:bg-cream-100 hover:text-forest-600 hover:border-forest-600 transition-all duration-200 cursor-pointer min-h-[44px] touch-manipulation flex items-center justify-center gap-2;
+  @apply border border-forest-600 text-forest-600 px-5 py-2.5 rounded-md font-sans font-medium text-sm hover:bg-forest-50 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300 cursor-pointer min-h-[44px] touch-manipulation flex items-center justify-center gap-2;
 }
 
 .btn-danger {
@@ -60,15 +64,15 @@ body {
 }
 
 .input-field {
-  @apply w-full border border-cream-200 rounded-md px-3.5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-forest-600 focus:ring-offset-2 focus:border-forest-600 bg-transparent text-forest-800 placeholder:text-gray-400/60 transition-all duration-150 h-12;
+  @apply w-full border border-cream-200 rounded-md px-3.5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-forest-600 focus:ring-offset-2 focus:border-forest-600 bg-white/60 text-forest-800 placeholder:text-gray-400/60 transition-all duration-200 h-12 shadow-sm shadow-black/[0.01];
 }
 
 .card {
-  @apply bg-white rounded-lg border border-cream-200 shadow-sm p-8 transition-all duration-200;
+  @apply bg-white rounded-lg border border-cream-200 shadow-sm p-8 transition-all duration-300 relative overflow-hidden;
 }
 
 .card-hoverable {
-  @apply hover:shadow-md hover:border-forest-600 hover:bg-cream-50/30;
+  @apply hover:shadow-lg hover:border-forest-400 hover:bg-forest-50/15 hover:-translate-y-1 transition-all duration-300;
 }
 
 .label {
@@ -88,7 +92,7 @@ body {
 }
 
 .badge-admin {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200/50 font-mono uppercase tracking-wider;
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200/50 font-mono uppercase tracking-wider;
 }
 
 .badge-member {
@@ -109,14 +113,60 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
+/* Card Gradient top borders */
+.card-gradient-forest::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #40916c 0%, #1b4332 50%, #2d6a4f 100%);
+  z-index: 10;
+}
+
+.card-gradient-red::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ef4444 0%, #b91c1c 50%, #dc2626 100%);
+  z-index: 10;
+}
+
+.card-gradient-purple::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #a855f7 0%, #6b21a8 50%, #7e22ce 100%);
+  z-index: 10;
+}
+
+.card-gradient-amber::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #f59e0b 0%, #b45309 50%, #d97706 100%);
+  z-index: 10;
+}
+
 /* Ambient atmospheric glow */
 .ambient-glow {
   position: absolute;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(184, 134, 11, 0.03) 0%, rgba(184, 134, 11, 0) 70%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(45, 106, 79, 0.05) 0%, rgba(45, 106, 79, 0) 70%);
   pointer-events: none;
   z-index: 0;
+  filter: blur(50px);
 }
 
 .small-caps {

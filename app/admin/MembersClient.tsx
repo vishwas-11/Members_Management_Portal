@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Search, Eye, Trash2, Users, UserCheck, IndianRupee } from 'lucide-react'
+import { Search, Eye, Trash2, Users, UserCheck, Shield } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import type { Member } from '@/types'
@@ -37,23 +37,23 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
     <div className="space-y-8">
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="card border-t-2 border-t-forest-600 text-center flex flex-col justify-between p-6">
+        <div className="card card-gradient-forest text-center flex flex-col justify-between p-6">
           <div className="flex items-center justify-center gap-1.5 mb-1 text-forest-600">
             <Users className="w-4 h-4" />
             <span className="font-serif text-5xl font-light">{members.length}</span>
           </div>
           <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 mt-2">Family Heads</span>
         </div>
-        <div className="card border-t-2 border-t-purple-600 text-center flex flex-col justify-between p-6">
+        <div className="card card-gradient-purple text-center flex flex-col justify-between p-6">
           <div className="flex items-center justify-center gap-1.5 mb-1 text-purple-600">
             <UserCheck className="w-4 h-4" />
             <span className="font-serif text-5xl font-light">{totalMembers}</span>
           </div>
           <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 mt-2">Total Individuals</span>
         </div>
-        <div className="card border-t-2 border-t-amber-600 text-center flex flex-col justify-between p-6">
+        <div className="card card-gradient-amber text-center flex flex-col justify-between p-6">
           <div className="flex items-center justify-center gap-1.5 mb-1 text-amber-600">
-            <IndianRupee className="w-4 h-4" />
+            <Shield className="w-4 h-4" />
             <span className="font-serif text-5xl font-light">{adminCount}</span>
           </div>
           <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 mt-2">Admin Accounts</span>
