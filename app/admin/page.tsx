@@ -18,16 +18,16 @@ export default async function AdminPage() {
     .order('full_name', { ascending: true }) as { data: Member[] | null }
 
   return (
-    <div className="min-h-screen bg-cream-50 relative overflow-hidden pb-12">
-      <div className="ambient-glow top-0 right-10" />
+    <div className="min-h-screen bg-linen-cream relative overflow-hidden pb-12 select-none">
+      <div className="paper-overlay" />
       <Navbar role="admin" userName={me.full_name} />
       <div className="max-w-6xl mx-auto px-6 py-12 relative z-10">
-        <div className="border-b border-cream-200 pb-6 mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div className="border-b border-[#dfd8cb] pb-6 mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
-            <h1 className="font-serif text-4xl font-normal text-forest-800 tracking-tight">Members Directory</h1>
-            <p className="text-sm text-gray-400 mt-2 font-sans">View and manage all registered congregation members and household records.</p>
+            <h1 className="text-skeu-heading text-4xl font-normal tracking-tight">Members Directory</h1>
+            <p className="text-sm text-[#3b2f23]/60 mt-2 font-sans font-medium">View and manage all registered congregation members and household records.</p>
           </div>
-          <div className="text-xs font-mono uppercase tracking-widest text-gray-400 bg-white border border-cream-200 px-3 py-1.5 rounded-md shadow-sm w-fit">
+          <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#3b2f23]/60 bg-[#fcfbf9] border border-[#e8e2d5] px-3 py-1.5 rounded-md shadow-sm w-fit">
             {members?.length ?? 0} registered heads of household
           </div>
         </div>

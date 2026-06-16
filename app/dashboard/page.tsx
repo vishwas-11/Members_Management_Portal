@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import Navbar from '@/components/ui/Navbar'
 import { User, MapPin, Phone, Hash, Users, IndianRupee, CalendarDays, FileText } from 'lucide-react'
 import type { Member, Due } from '@/types'
+import MemberDuesClient from './MemberDuesClient'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -172,28 +173,7 @@ export default async function DashboardPage() {
             </span>
             <span className="skeu-line flex-1" />
           </div>
-          <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-8 relative overflow-hidden">
-            {!dues || dues.length === 0 ? (
-              <p className="text-sm text-[#3b2f23]/50 text-center py-8 font-medium">No contribution history found.</p>
-            ) : (
-              <div className="divide-y divide-[#dfd8cb] space-y-3">
-                {dues.map((due, i) => (
-                  <div key={due.id} className={`flex items-center justify-between ${i > 0 ? 'pt-4' : ''}`}>
-                    <div>
-                      <p className="text-sm font-bold text-[#3b2f23]">{due.title}</p>
-                      <p className="text-[10px] font-mono font-medium tracking-wider text-[#3b2f23]/50 mt-0.5 uppercase">Due: {new Date(due.due_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm font-bold text-[#3b2f23]">₹{due.amount.toLocaleString('en-IN')}</span>
-                      <span className={due.is_paid ? 'badge-paid' : 'badge-unpaid'}>
-                        {due.is_paid ? 'Paid' : 'Pending'}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <MemberDuesClient initialDues={dues || []} userId={user.id} />
         </div>
       </div>
     </div>

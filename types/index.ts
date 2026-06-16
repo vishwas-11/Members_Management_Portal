@@ -42,4 +42,7 @@ export interface Due {
   due_date: string
   paid_at?: string
   created_at: string
+  payment_note?: string
+  payment_proof_url?: string
+  status: 'pending' | 'submitted' | 'paid'
 }

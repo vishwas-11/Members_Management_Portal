@@ -19,8 +19,8 @@ export default async function MemberDetailPage({ params }: { params: Promise<{ i
   const { data: dues } = await supabase.from('dues').select('*').eq('member_id', id).order('due_date', { ascending: false }) as { data: Due[] | null }
 
   return (
-    <div className="min-h-screen bg-cream-50 relative overflow-hidden pb-12">
-      <div className="ambient-glow top-0 right-10" />
+    <div className="min-h-screen bg-linen-cream relative overflow-hidden pb-12 select-none">
+      <div className="paper-overlay" />
       <Navbar role="admin" userName={me.full_name} />
       <AdminMemberDetail member={member} dues={dues ?? []} />
     </div>

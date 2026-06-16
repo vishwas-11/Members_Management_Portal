@@ -37,58 +37,61 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
     <div className="space-y-8">
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="card card-gradient-forest text-center flex flex-col justify-between p-6">
-          <div className="flex items-center justify-center gap-1.5 mb-1 text-forest-600">
-            <Users className="w-4 h-4" />
+        <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-6 relative overflow-hidden text-center flex flex-col justify-between">
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
+          <div className="flex items-center justify-center gap-1.5 mb-1 text-[#3b2f23]">
+            <Users className="w-5 h-5" />
             <span className="font-serif text-5xl font-light">{members.length}</span>
           </div>
-          <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 mt-2">Family Heads</span>
+          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/50 mt-2">Family Heads</span>
         </div>
-        <div className="card card-gradient-purple text-center flex flex-col justify-between p-6">
-          <div className="flex items-center justify-center gap-1.5 mb-1 text-purple-600">
-            <UserCheck className="w-4 h-4" />
+        <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-6 relative overflow-hidden text-center flex flex-col justify-between">
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
+          <div className="flex items-center justify-center gap-1.5 mb-1 text-[#3b2f23]">
+            <UserCheck className="w-5 h-5" />
             <span className="font-serif text-5xl font-light">{totalMembers}</span>
           </div>
-          <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 mt-2">Total Individuals</span>
+          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/50 mt-2">Total Individuals</span>
         </div>
-        <div className="card card-gradient-amber text-center flex flex-col justify-between p-6">
-          <div className="flex items-center justify-center gap-1.5 mb-1 text-amber-600">
-            <Shield className="w-4 h-4" />
+        <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-6 relative overflow-hidden text-center flex flex-col justify-between">
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
+          <div className="flex items-center justify-center gap-1.5 mb-1 text-[#3b2f23]">
+            <Shield className="w-5 h-5" />
             <span className="font-serif text-5xl font-light">{adminCount}</span>
           </div>
-          <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 mt-2">Admin Accounts</span>
+          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/50 mt-2">Admin Accounts</span>
         </div>
       </div>
 
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#3b2f23]/40" />
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder="Search by name, phone or Aadhaar..."
-          className="input-field pl-10"
+          className="input-field pl-10 !border-[#dfd8cb] !bg-white/75 focus:!ring-[#3b2f23]/25 focus:!border-[#3b2f23]/50 text-[#3b2f23]"
         />
       </div>
 
       {/* Table */}
-      <div className="card p-0 overflow-hidden">
+      <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-0 relative overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-forest-800">
+          <table className="w-full text-sm text-[#3b2f23]">
             <thead>
-              <tr className="bg-cream-100 border-b border-cream-200">
-                <th className="text-left px-5 py-4 font-mono text-[10px] uppercase tracking-wider text-gray-400">Name</th>
-                <th className="text-left px-5 py-4 font-mono text-[10px] uppercase tracking-wider text-gray-400 hidden sm:table-cell">Phone</th>
-                <th className="text-left px-5 py-4 font-mono text-[10px] uppercase tracking-wider text-gray-400 hidden md:table-cell">Family</th>
-                <th className="text-left px-5 py-4 font-mono text-[10px] uppercase tracking-wider text-gray-400">Role</th>
-                <th className="text-left px-5 py-4 font-mono text-[10px] uppercase tracking-wider text-gray-400">Joined</th>
-                <th className="text-right px-5 py-4 font-mono text-[10px] uppercase tracking-wider text-gray-400">Actions</th>
+              <tr className="bg-[#e8e2d5]/50 border-b border-[#dfd8cb]">
+                <th className="text-left px-5 py-4 font-mono text-[10px] font-bold uppercase tracking-wider text-[#3b2f23]/60">Name</th>
+                <th className="text-left px-5 py-4 font-mono text-[10px] font-bold uppercase tracking-wider text-[#3b2f23]/60 hidden sm:table-cell">Phone</th>
+                <th className="text-left px-5 py-4 font-mono text-[10px] font-bold uppercase tracking-wider text-[#3b2f23]/60 hidden md:table-cell">Family</th>
+                <th className="text-left px-5 py-4 font-mono text-[10px] font-bold uppercase tracking-wider text-[#3b2f23]/60">Role</th>
+                <th className="text-left px-5 py-4 font-mono text-[10px] font-bold uppercase tracking-wider text-[#3b2f23]/60">Joined</th>
+                <th className="text-right px-5 py-4 font-mono text-[10px] font-bold uppercase tracking-wider text-[#3b2f23]/60">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-cream-100 bg-white">
+            <tbody className="divide-y divide-[#dfd8cb] bg-[#fcfbf9]">
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="text-center py-16 text-gray-400 font-sans">
+                  <td colSpan={6} className="text-center py-16 text-[#3b2f23]/50 font-sans font-medium">
                     No congregation members match the criteria.
                   </td>
                 </tr>
@@ -102,27 +105,27 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
                   .toUpperCase();
 
                 return (
-                  <tr key={member.id} className="hover:bg-cream-100/30 transition-colors">
+                  <tr key={member.id} className="hover:bg-[#f5f3ee] transition-colors">
                     <td className="px-5 py-4.5">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full overflow-hidden bg-gradient-to-br from-forest-600 to-forest-800 flex items-center justify-center text-white border border-cream-200 shadow-sm flex-shrink-0">
+                        <div className="w-9 h-9 rounded-full overflow-hidden bg-[#e5e0d5] flex items-center justify-center text-[#3b2f23] border border-[#dfd8cb] shadow-inner flex-shrink-0 font-serif font-bold">
                           {member.avatar_url ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src={member.avatar_url} alt={member.full_name} className="w-full h-full object-cover" />
                           ) : (
-                            <span className="font-serif text-xs font-light tracking-wide">{initials}</span>
+                            <span className="text-xs">{initials}</span>
                           )}
                         </div>
                         <div>
-                          <p className="font-medium text-forest-800">{member.full_name}</p>
-                          <p className="text-[10px] font-mono text-gray-400 mt-0.5">
+                          <p className="font-bold text-[#3b2f23]">{member.full_name}</p>
+                          <p className="text-[10px] font-mono text-[#3b2f23]/50 mt-0.5 font-bold">
                             {member.aadhaar_number.replace(/(\d{4})(\d{4})(\d{4})/, '$1 $2 $3')}
                           </p>
                         </div>
                       </div>
                     </td>
-                  <td className="px-5 py-4.5 text-gray-600 hidden sm:table-cell font-sans">{member.phone}</td>
-                  <td className="px-5 py-4.5 text-gray-600 hidden md:table-cell font-sans">
+                  <td className="px-5 py-4.5 text-[#3b2f23]/80 hidden sm:table-cell font-sans font-medium">{member.phone}</td>
+                  <td className="px-5 py-4.5 text-[#3b2f23]/80 hidden md:table-cell font-sans font-medium">
                     {(member.family_members?.length ?? 0) + 1} person{(member.family_members?.length ?? 0) + 1 !== 1 ? 's' : ''}
                   </td>
                   <td className="px-5 py-4.5">
@@ -130,19 +133,19 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
                       {member.role}
                     </span>
                   </td>
-                  <td className="px-5 py-4.5 text-gray-400 text-xs font-mono">
+                  <td className="px-5 py-4.5 text-[#3b2f23]/60 text-xs font-mono font-medium">
                     {new Date(member.created_at).toLocaleDateString('en-IN')}
                   </td>
                   <td className="px-5 py-4.5">
                     <div className="flex items-center justify-end gap-2.5">
                       <Link href={`/admin/members/${member.id}`}
-                        className="p-2 border border-cream-200 hover:border-forest-600 hover:text-forest-600 rounded-md transition-all text-gray-400 bg-white hover:bg-cream-50" title="View / Edit Statement">
+                        className="p-2 border border-[#dfd8cb] hover:border-[#4a3820] hover:text-[#3b2f23] rounded-md transition-all text-[#3b2f23]/50 bg-white hover:bg-[#e8e2d5]/50 shadow-sm" title="View / Edit Statement">
                         <Eye className="w-4 h-4" />
                       </Link>
                       <button
                         onClick={() => handleDelete(member.id, member.full_name)}
                         disabled={deleting === member.id}
-                        className="p-2 border border-cream-200 hover:border-red-600 hover:text-red-600 rounded-md transition-all text-gray-400 bg-white hover:bg-red-50 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed" title="Delete Account">
+                        className="p-2 border border-[#dfd8cb] hover:border-red-600 hover:text-red-600 rounded-md transition-all text-[#3b2f23]/50 bg-white hover:bg-red-50 shadow-sm cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed" title="Delete Account">
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
