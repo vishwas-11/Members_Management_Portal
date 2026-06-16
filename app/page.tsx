@@ -405,10 +405,15 @@ export default async function LandingPage() {
             {/* Location & Pastor Column */}
             <div className="space-y-3 font-sans">
               <h4 className="font-serif text-sm font-bold uppercase tracking-wider text-[#3b2f23]/80">Church Location</h4>
-              <div className="text-xs text-[#3b2f23]/70 space-y-1 leading-relaxed">
-                <p className="font-semibold text-[#3b2f23]">METHODIST CHRIST CHURCH, RAMPUR</p>
-                <p>15, Civil Lines, Rampur (U.P)-244901</p>
-              </div>
+              <a 
+                href="https://maps.app.goo.gl/z49qEU4JMPh6nztf6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-xs text-[#3b2f23]/70 space-y-1 leading-relaxed group"
+              >
+                <p className="font-semibold text-[#3b2f23] group-hover:text-[#4a3820] group-hover:underline underline-offset-4 transition-colors">METHODIST CHRIST CHURCH, RAMPUR</p>
+                <p className="group-hover:text-[#4a3820] group-hover:underline underline-offset-4 transition-colors">15, Civil Lines, Rampur (U.P)-244901</p>
+              </a>
               <div className="text-xs text-[#3b2f23]/70 pt-2 border-t border-[#dfd8cb]/50">
                 <p className="font-mono text-[10px] uppercase tracking-wider text-[#3b2f23]/50">Pastor incharge</p>
                 <p className="font-serif text-sm font-semibold text-[#3b2f23] mt-0.5">Rev. Nitin Masih</p>
@@ -425,7 +430,7 @@ export default async function LandingPage() {
                     href="mailto:vishwascharan11@gmail.com" 
                     className="text-xs font-medium text-[#3b2f23] hover:text-[#4a3820] hover:underline underline-offset-4 transition-colors"
                   >
-                    vishwascharan11@gmail.com
+                    vcharan1126@gmail.com
                   </a>
                 </div>
                 <div>
@@ -434,7 +439,7 @@ export default async function LandingPage() {
                     href="tel:7906024886" 
                     className="text-xs font-medium text-[#3b2f23] hover:text-[#4a3820] hover:underline underline-offset-4 transition-colors"
                   >
-                    +91 79060 24886
+                    +91 94126 45482
                   </a>
                 </div>
               </div>

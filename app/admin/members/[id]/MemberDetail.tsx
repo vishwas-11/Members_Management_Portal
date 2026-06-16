@@ -134,7 +134,7 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
         ...d, 
         status: newStatus, 
         is_paid: newStatus === 'paid',
-        rejection_reason: newStatus === 'rejected' ? reason : null
+        rejection_reason: newStatus === 'rejected' ? reason : undefined
       } : d))
     }
   }
