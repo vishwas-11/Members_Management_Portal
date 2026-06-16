@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { ArrowUpRight, ArrowRight, ShieldCheck, Users, BarChart3, Lock, CheckCircle2 } from 'lucide-react'
+import { ArrowUpRight, ArrowRight, ShieldCheck, CheckCircle2, ChevronRight, UserPlus, FileText, Database, Sparkles, LogIn, BookOpen, Users, BarChart3, Lock } from 'lucide-react'
 import { ScrollReveal } from '@/components/ui/ScrollReveal'
 
 // Custom SVGs for decorative elements to ensure exact match with design
@@ -76,9 +76,9 @@ const RightOliveBranch = () => (
 
 const LetterpressCross = ({ className = "w-6 h-10" }: { className?: string }) => (
   <svg viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${className} filter drop-shadow-[0_1px_0.5px_rgba(255,255,255,0.45)]`}>
-    <path 
-      d="M 10,0.5 L 14,1.8 L 14,34.2 L 10,35.5 Z M 1,11 L 23,12.2 L 23,15.2 L 1,14 Z" 
-      fill="currentColor" 
+    <path
+      d="M 10,0.5 L 14,1.8 L 14,34.2 L 10,35.5 Z M 1,11 L 23,12.2 L 23,15.2 L 1,14 Z"
+      fill="currentColor"
     />
   </svg>
 )
@@ -113,6 +113,22 @@ export default async function LandingPage() {
   let isLoggedIn = false
   let buttonText = 'Access Member Portal'
   let userName = ''
+
+  // Fetch daily verse
+  let verseText = "I am the vine; you are the branches. If you remain in me and I in you, you will bear much fruit; apart from me you can do nothing."
+  let verseRef = "John 15:5"
+  try {
+    const res = await fetch('https://labs.bible.org/api/?passage=votd&type=json', { next: { revalidate: 3600 } })
+    if (res.ok) {
+      const data = await res.json()
+      if (data && data[0]) {
+        verseText = data[0].text.replace(/<[^>]+>/g, '') // strip html if any
+        verseRef = `${data[0].bookname} ${data[0].chapter}:${data[0].verse}`
+      }
+    }
+  } catch (e) {
+    console.error('Failed to fetch daily verse', e)
+  }
 
   if (user) {
     isLoggedIn = true
@@ -161,13 +177,13 @@ export default async function LandingPage() {
             <MethodistLogo className="h-6 w-auto" />
             <span className="text-xs font-serif font-bold tracking-wide">Methodist Registry</span>
           </Link>
-          
+
           <nav className="hidden md:flex items-center gap-8 px-6 text-[#3b2f23] font-sans text-xs uppercase tracking-[0.15em] font-semibold">
             <Link href="#features" className="hover:opacity-60 transition-opacity">Features</Link>
             <Link href="#about" className="hover:opacity-60 transition-opacity">About</Link>
             <Link href="#contact" className="hover:opacity-60 transition-opacity">Contact</Link>
           </nav>
-          
+
           <div className="flex items-center gap-3">
             {isLoggedIn ? (
               <Link href={portalUrl} className="btn-premium-solid py-2 px-4 md:px-5">
@@ -191,7 +207,7 @@ export default async function LandingPage() {
         {/* Editorial Split Hero Section */}
         <section className="min-h-[100dvh] flex items-center w-full">
           <div className="max-w-7xl mx-auto px-6 w-full flex flex-col md:flex-row items-center justify-between gap-16 md:gap-8">
-            
+
             {/* Left Side: Massive Typography */}
             <ScrollReveal className="w-full md:w-[55%] flex flex-col items-start text-left z-20">
               <div className="mb-8 flex items-center gap-4">
@@ -222,40 +238,29 @@ export default async function LandingPage() {
             {/* Right Side: Z-Axis Cascade Interactive Cards */}
             <ScrollReveal className="w-full md:w-[45%] relative h-[500px] md:h-[600px] flex items-center justify-center pointer-events-none" delay={200}>
               <div className="relative w-full max-w-md h-full">
-                 {/* Card 1 */}
-                 <div className="absolute top-[10%] right-[10%] w-[85%] doppelrand-outer transform rotate-3 z-10 shadow-xl transition-fluid group hover:rotate-0 hover:z-30 pointer-events-auto">
-                   <div className="doppelrand-inner p-6 flex flex-col gap-4 bg-white/90 backdrop-blur-md">
-                     <div className="flex items-center justify-between">
-                       <span className="eyebrow-tag bg-emerald-50 text-emerald-800 border-emerald-200">Verified</span>
-                       <ShieldCheck className="w-5 h-5 text-emerald-600" strokeWidth={1.5} />
-                     </div>
-                     <div>
-                       <p className="text-[10px] uppercase font-mono tracking-widest text-[#3b2f23]/40">Family Profile</p>
-                       <p className="font-serif text-lg text-[#3b2f23] font-semibold mt-1">The Alva Family</p>
-                       <p className="text-sm text-[#3b2f23]/60 mt-1">4 Active Members</p>
-                     </div>
-                   </div>
-                 </div>
-
-                 {/* Card 2 */}
-                 <div className="absolute top-[40%] left-[5%] w-[80%] doppelrand-outer transform -rotate-2 z-20 shadow-2xl transition-fluid group hover:rotate-0 hover:z-30 pointer-events-auto">
-                   <div className="doppelrand-inner p-6 flex flex-col gap-4 bg-white/95 backdrop-blur-md">
-                     <div className="flex items-center justify-between">
-                       <span className="eyebrow-tag">Contribution</span>
-                       <CheckCircle2 className="w-5 h-5 text-[#3b2f23]/40" strokeWidth={1.5} />
-                     </div>
-                     <div>
-                       <p className="text-[10px] uppercase font-mono tracking-widest text-[#3b2f23]/40">Reconciled</p>
-                       <p className="font-serif text-lg text-[#3b2f23] font-semibold mt-1">Annual Dues Cleared</p>
-                       <div className="mt-3 h-1 w-full bg-emerald-100 rounded-full overflow-hidden">
-                         <div className="h-full bg-emerald-500 w-full"></div>
-                       </div>
-                     </div>
-                   </div>
-                 </div>
+                {/* Daily Bible Verse Card */}
+                <div className="absolute top-[20%] left-[5%] right-[5%] doppelrand-outer z-20 shadow-2xl transition-fluid group pointer-events-auto">
+                  <div className="doppelrand-inner p-8 flex flex-col gap-6 bg-white/95 backdrop-blur-md">
+                    <div className="flex items-center justify-between">
+                      <span className="eyebrow-tag bg-[#f5f3ee] text-[#3b2f23] border-[#dfd8cb] flex items-center gap-1.5">
+                        <BookOpen className="w-3.5 h-3.5 text-[#76592a]" /> Verse of the Day
+                      </span>
+                    </div>
+                    <div>
+                      <blockquote className="font-serif text-xl md:text-2xl text-[#3b2f23] leading-relaxed italic relative">
+                        <span className="absolute -top-4 -left-3 text-5xl text-[#dfd8cb] opacity-50 font-serif">"</span>
+                        {verseText}
+                        <span className="absolute -bottom-4 text-5xl text-[#dfd8cb] opacity-50 font-serif ml-1">"</span>
+                      </blockquote>
+                      <p className="text-sm font-bold uppercase tracking-widest text-[#76592a] mt-6 flex justify-end text-right">
+                        — {verseRef}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </ScrollReveal>
-            
+
           </div>
         </section>
 
@@ -365,7 +370,7 @@ export default async function LandingPage() {
           <div className="bg-[#0d2119] relative overflow-hidden text-[#faf9f6] py-24">
             {/* Dark wood texture overlay */}
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url('/textures/dark-wood.png')", backgroundSize: 'cover' }} />
-            
+
             {/* Olive branches */}
             <div className="absolute right-[-100px] bottom-[-50px] w-[400px] opacity-10 pointer-events-none transform -rotate-45">
               <RightOliveBranch />
@@ -377,22 +382,22 @@ export default async function LandingPage() {
             <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 relative z-10">
               {/* Branding Column */}
               <div className="space-y-6 flex flex-col items-center md:items-start text-center md:text-left">
-                <Link href="/" className="logo-badge-skeu group !bg-[#153225] !border-[#2a4d3a] !px-5 !py-3">
-                  <MethodistLogo className="h-8 w-auto opacity-100" />
-                  <span className="text-lg font-serif font-bold tracking-wide text-[#faf9f6] drop-shadow-sm">Methodist Registry</span>
+                <Link href="/" className="logo-badge-skeu group !bg-[#153225] !border-[#2a4d3a] !px-5 !py-3 text-[#ebd2a3]">
+                  <MethodistLogo className="h-10 w-auto opacity-100 drop-shadow-md" />
+                  <span className="text-xl font-serif font-bold tracking-wide text-[#faf9f6] drop-shadow-sm">Methodist Registry</span>
                 </Link>
                 <p className="text-base text-[#faf9f6]/80 max-w-xs leading-relaxed font-serif italic">
                   A digital member registry designed with classical restraint for Methodist Christ Church administration.
                 </p>
                 <p className="text-xs text-[#faf9f6]/40 font-sans pt-4 uppercase tracking-widest font-bold">
-                  &copy; {new Date().getFullYear()} Methodist Registry.<br/>All rights reserved.
+                  &copy; {new Date().getFullYear()} Methodist Registry.<br />All rights reserved.
                 </p>
               </div>
 
               {/* Location Column */}
               <div className="space-y-6 text-center md:text-left">
                 <h4 className="font-mono text-[11px] uppercase tracking-widest text-[#ebd2a3] font-bold">Church Location</h4>
-                <a 
+                <a
                   href="https://maps.app.goo.gl/z49qEU4JMPh6nztf6"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -413,8 +418,8 @@ export default async function LandingPage() {
                 <div className="text-[#faf9f6]/80 space-y-6">
                   <div>
                     <p className="text-[10px] uppercase font-mono tracking-widest text-[#faf9f6]/50 mb-2 font-bold">Email Address</p>
-                    <a 
-                      href="mailto:vcharan1126@gmail.com" 
+                    <a
+                      href="mailto:vcharan1126@gmail.com"
                       className="font-serif text-lg italic text-[#faf9f6] hover:text-[#ebd2a3] transition-colors drop-shadow-sm"
                     >
                       vcharan1126@gmail.com
@@ -422,8 +427,8 @@ export default async function LandingPage() {
                   </div>
                   <div>
                     <p className="text-[10px] uppercase font-mono tracking-widest text-[#faf9f6]/50 mb-2 font-bold">Phone Number</p>
-                    <a 
-                      href="tel:9412645482" 
+                    <a
+                      href="tel:9412645482"
                       className="font-serif text-lg italic text-[#faf9f6] hover:text-[#ebd2a3] transition-colors drop-shadow-sm"
                     >
                       +91 94126 45482
