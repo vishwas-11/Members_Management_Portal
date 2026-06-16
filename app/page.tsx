@@ -329,21 +329,58 @@ export default async function LandingPage() {
 
       {/* Wrapping the rest in bg-linen-cream to switch background color below hero/features */}
       <div className="bg-linen-cream relative z-20 border-t border-[#dfd8cb] w-full">
-        {/* Stats Section */}
-        <section className="py-24 max-w-5xl mx-auto px-6 w-full border-t border-[#3b2f23]/10">
+        {/* Portal Steps Section */}
+        <section className="py-32 max-w-6xl mx-auto px-6 w-full border-t border-[#3b2f23]/10 relative z-20">
           <ScrollReveal>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-[#3b2f23]/10">
-              <div className="text-center md:pb-0 pb-12">
-                <span className="font-serif text-6xl md:text-7xl font-normal text-[#3b2f23] block mb-4">1,250+</span>
-                <span className="eyebrow-tag">Active Members</span>
+            <div className="text-center mb-20">
+              <span className="font-mono text-[10px] tracking-[0.2em] uppercase font-bold text-[#3b2f23]/60">Member Guide</span>
+              <h2 className="font-serif text-4xl md:text-5xl text-[#3b2f23] mt-4">How to use the portal</h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 relative">
+              {/* Connecting line for desktop */}
+              <div className="hidden md:block absolute top-[13%] left-[15%] right-[15%] h-[1px] bg-[#3b2f23]/10 z-0" />
+              
+              {/* Step 01 */}
+              <div className="relative group text-center md:text-left z-10">
+                <div className="mb-8 flex flex-col items-center md:items-start">
+                  <div className="bg-linen-cream px-2">
+                    <span className="font-serif text-[5.5rem] leading-none text-[#76592a] block mb-6 drop-shadow-sm group-hover:-translate-y-1 transition-transform duration-500">01</span>
+                  </div>
+                  <span className="eyebrow-tag border-[#3b2f23]/20 text-[#3b2f23]">Submit Details</span>
+                </div>
+                <h3 className="font-serif text-2xl font-medium text-[#3b2f23] mb-4">Create Family Profile</h3>
+                <p className="font-sans text-base text-[#3b2f23]/70 leading-relaxed max-w-[280px] mx-auto md:mx-0">
+                  Submit your family details securely to register your household.
+                </p>
               </div>
-              <div className="text-center md:py-0 py-12">
-                <span className="font-serif text-6xl md:text-7xl font-normal text-[#3b2f23] block mb-4">1894</span>
-                <span className="eyebrow-tag">Year Founded</span>
+
+              {/* Step 02 */}
+              <div className="relative group text-center md:text-left z-10">
+                <div className="mb-8 flex flex-col items-center md:items-start">
+                  <div className="bg-linen-cream px-2">
+                    <span className="font-serif text-[5.5rem] leading-none text-[#76592a] block mb-6 drop-shadow-sm group-hover:-translate-y-1 transition-transform duration-500">02</span>
+                  </div>
+                  <span className="eyebrow-tag border-[#3b2f23]/20 text-[#3b2f23]">Church Review</span>
+                </div>
+                <h3 className="font-serif text-2xl font-medium text-[#3b2f23] mb-4">Verification Process</h3>
+                <p className="font-sans text-base text-[#3b2f23]/70 leading-relaxed max-w-[280px] mx-auto md:mx-0">
+                  Church administration reviews your details to officially verify your membership.
+                </p>
               </div>
-              <div className="text-center md:pt-0 pt-12">
-                <span className="font-serif text-6xl md:text-7xl font-normal text-[#3b2f23] block mb-4">100%</span>
-                <span className="eyebrow-tag">Secure Records</span>
+
+              {/* Step 03 */}
+              <div className="relative group text-center md:text-left z-10">
+                <div className="mb-8 flex flex-col items-center md:items-start">
+                  <div className="bg-linen-cream px-2">
+                    <span className="font-serif text-[5.5rem] leading-none text-[#76592a] block mb-6 drop-shadow-sm group-hover:-translate-y-1 transition-transform duration-500">03</span>
+                  </div>
+                  <span className="eyebrow-tag border-[#3b2f23]/20 text-[#3b2f23]">Access Dashboard</span>
+                </div>
+                <h3 className="font-serif text-2xl font-medium text-[#3b2f23] mb-4">Manage Dues & Receipts</h3>
+                <p className="font-sans text-base text-[#3b2f23]/70 leading-relaxed max-w-[280px] mx-auto md:mx-0">
+                  Log in to track dues, submit payment proofs, and manage your standing seamlessly.
+                </p>
               </div>
             </div>
           </ScrollReveal>
