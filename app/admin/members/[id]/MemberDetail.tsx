@@ -8,6 +8,7 @@ import { z } from 'zod'
 import { ArrowLeft, PlusCircle, Trash2, Loader2, CheckCircle2, IndianRupee, Upload, FileText, Camera } from 'lucide-react'
 import Link from 'next/link'
 import type { Member, Due } from '@/types'
+import { ScrollReveal } from '@/components/ui/ScrollReveal'
 
 const memberSchema = z.object({
   full_name: z.string().min(2),
@@ -176,9 +177,9 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
   const labelClasses = "font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/60 mb-1.5 block"
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 space-y-10 relative z-10">
-      <div className="flex items-center gap-4 border-b border-[#dfd8cb] pb-6 mb-2">
-        <Link href="/admin" className="w-10 h-10 border border-[#dfd8cb] hover:border-[#4a3820] hover:text-[#3b2f23] text-[#3b2f23]/50 rounded-md flex items-center justify-center bg-[#fcfbf9] shadow-sm transition-all cursor-pointer flex-shrink-0">
+    <ScrollReveal className="max-w-4xl mx-auto px-6 py-12 space-y-10 relative z-10 pt-32">
+      <div className="flex items-center gap-4 border-b border-[#faf9f6]/20 pb-6 mb-2">
+        <Link href="/admin" className="btn-premium-outline px-3 py-2 flex items-center justify-center cursor-pointer flex-shrink-0">
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div className="flex items-center gap-4">
@@ -191,15 +192,16 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
             )}
           </div>
           <div>
-            <h1 className="text-skeu-heading text-3xl font-normal tracking-tight">{member.full_name}</h1>
-            <p className="text-xs text-[#3b2f23]/60 mt-1 font-mono uppercase tracking-wider font-bold">Member since {new Date(member.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+            <h1 className="text-4xl sm:text-5xl font-serif font-medium tracking-tight bg-gradient-to-br from-[#fcfbf9] via-[#e8d5b5] to-[#c5b799] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(13,33,25,0.8)]">{member.full_name}</h1>
+            <p className="text-xs text-[#faf9f6]/70 mt-1 font-mono uppercase tracking-wider font-bold drop-shadow-sm">Member since {new Date(member.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
           </div>
         </div>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit as any)} className="space-y-8">
-        <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-8 relative overflow-hidden space-y-6">
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
+        <div className="doppelrand-outer shadow-2xl relative z-20">
+          <div className="doppelrand-inner p-8 space-y-6">
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
           <h2 className="font-serif text-xl font-bold text-[#3b2f23] border-b border-[#dfd8cb] pb-3">Personal Details</h2>
           
           <div>
@@ -321,10 +323,12 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
               <option value="admin">Admin</option>
             </select>
           </div>
+          </div>
         </div>
 
-        <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-8 relative overflow-hidden space-y-6">
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
+        <div className="doppelrand-outer shadow-2xl relative z-20">
+          <div className="doppelrand-inner p-8 space-y-6">
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
           <h2 className="font-serif text-xl font-bold text-[#3b2f23] border-b border-[#dfd8cb] pb-3">Family Connections</h2>
           
           <div className="space-y-5">
@@ -449,6 +453,7 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
             className="w-full flex items-center justify-center gap-2 py-3 border border-dashed border-[#dfd8cb] bg-[#f5f3ee]/50 text-[#3b2f23]/70 hover:text-[#3b2f23] rounded-lg text-sm font-bold hover:bg-[#f5f3ee] transition-all duration-200 cursor-pointer">
             <PlusCircle className="w-4 h-4" /> Add Family Member
           </button>
+          </div>
         </div>
 
         {saveError && <p className="error-msg text-center font-bold text-red-600 bg-red-50 py-2 rounded-md border border-red-100">{saveError}</p>}
@@ -457,15 +462,18 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
             <CheckCircle2 className="w-4 h-4 animate-bounce" /> Profile information updated successfully
           </div>
         )}
-        <button type="submit" disabled={saving} className="btn-skeu-wood w-full flex items-center justify-center gap-2 py-3.5 text-base shadow-lg cursor-pointer disabled:opacity-50">
-          {saving && <Loader2 className="w-5 h-5 animate-spin" />}
-          {saving ? 'Saving changes...' : 'Save Changes'}
+        <button type="submit" disabled={saving} className="btn-premium-solid group w-full mt-4">
+          <div className="flex items-center gap-2">
+            {saving && <Loader2 className="w-5 h-5 animate-spin" />}
+            <span>{saving ? 'Saving changes...' : 'Save Changes'}</span>
+          </div>
         </button>
       </form>
 
       {/* Dues section */}
-      <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-8 relative overflow-hidden space-y-6">
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
+      <div className="doppelrand-outer shadow-2xl relative z-20">
+        <div className="doppelrand-inner p-8 space-y-6">
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
         <h2 className="font-serif text-xl font-bold text-[#3b2f23] border-b border-[#dfd8cb] pb-3 flex items-center gap-2">
           <IndianRupee className="w-5 h-5 text-[#3b2f23]" /> Dues & Collections Statement
         </h2>
@@ -588,7 +596,8 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
             ))}
           </div>
         )}
+        </div>
       </div>
-    </div>
+    </ScrollReveal>
   )
 }

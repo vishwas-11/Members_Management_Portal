@@ -4,6 +4,8 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Navbar from '@/components/ui/Navbar'
+import { LeftOliveBranch, RightOliveBranch } from '@/components/ui/OliveBranches'
+import { ScrollReveal } from '@/components/ui/ScrollReveal'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import { useForm, useFieldArray, type SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -218,7 +220,7 @@ export default function ProfilePage() {
   }
 
   if (loading) return (
-    <div className="min-h-screen bg-linen-cream">
+    <div className="min-h-screen bg-linen-green">
       <Navbar role={member?.role} />
       <LoadingSpinner />
     </div>
@@ -230,13 +232,28 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-linen-green relative overflow-hidden pb-24 select-none text-[#faf9f6]">
       <div className="paper-overlay" />
+
+      {/* Decorative absolute background elements */}
+      <div className="botanical-flank absolute left-[-150px] md:left-[-100px] top-[5%] w-[450px] md:w-[550px] pointer-events-none select-none z-10 opacity-85 drop-shadow-2xl">
+        <LeftOliveBranch />
+      </div>
+      <div className="botanical-flank absolute right-[-150px] md:right-[-100px] top-[15%] w-[480px] md:w-[580px] pointer-events-none select-none z-10 opacity-85 drop-shadow-2xl">
+        <RightOliveBranch />
+      </div>
+      <div className="botanical-flank absolute right-[-150px] md:right-[-100px] top-[55%] w-[450px] md:w-[550px] pointer-events-none select-none z-0 opacity-85 drop-shadow-2xl transform -scale-y-100">
+        <RightOliveBranch />
+      </div>
+      <div className="botanical-flank absolute left-[-150px] md:left-[-100px] top-[65%] w-[480px] md:w-[580px] pointer-events-none select-none z-0 opacity-85 drop-shadow-2xl transform -scale-y-100">
+        <LeftOliveBranch />
+      </div>
+
       <Navbar role={member?.role} userName={member?.full_name} />
       
-      <div className="max-w-3xl mx-auto px-6 pt-32 pb-12 relative z-10">
+      <ScrollReveal className="max-w-3xl mx-auto px-6 pt-32 pb-12 relative z-10">
         <div className="flex flex-col sm:flex-row justify-between sm:items-end border-b border-[#faf9f6]/20 pb-5 mb-8 gap-4">
           <div>
-            <h1 className="text-4xl sm:text-5xl font-serif font-medium tracking-tight text-[#faf9f6] drop-shadow-md">Edit Profile</h1>
-            <p className="text-sm text-[#faf9f6]/70 mt-2 font-sans font-medium">Update your household registration information and family connections.</p>
+            <h1 className="text-4xl sm:text-5xl font-serif font-medium tracking-tight bg-gradient-to-br from-[#fcfbf9] via-[#e8d5b5] to-[#c5b799] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(13,33,25,0.8)]">Edit Profile</h1>
+            <p className="text-sm text-[#faf9f6]/70 mt-2 font-sans font-medium drop-shadow-sm">Update your household registration information and family connections.</p>
           </div>
           <Link href="/dashboard" className="btn-premium-outline px-4 py-2 text-xs sm:text-sm flex items-center gap-2 shrink-0">
             <ArrowLeft className="w-4 h-4" /> Dashboard
@@ -525,7 +542,7 @@ export default function ProfilePage() {
             {saving ? 'Saving changes...' : 'Save Changes'}
           </button>
         </form>
-      </div>
+      </ScrollReveal>
       {cropImageSrc && (
         <ImageCropModal
           src={cropImageSrc}

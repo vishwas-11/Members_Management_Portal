@@ -4,6 +4,7 @@ import Navbar from '@/components/ui/Navbar'
 import AdminMembersClient from './MembersClient'
 import type { Member } from '@/types'
 import { LeftOliveBranch, RightOliveBranch } from '@/components/ui/OliveBranches'
+import { ScrollReveal } from '@/components/ui/ScrollReveal'
 
 export default async function AdminPage() {
   const supabase = await createClient()
@@ -31,7 +32,7 @@ export default async function AdminPage() {
       </div>
 
       <Navbar role="admin" userName={me.full_name} />
-      <div className="max-w-6xl mx-auto px-6 pt-32 pb-12 relative z-10">
+      <ScrollReveal className="max-w-6xl mx-auto px-6 pt-32 pb-12 relative z-10">
         <div className="border-b border-[#faf9f6]/20 pb-6 mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
             <h1 className="text-4xl sm:text-5xl font-serif font-medium tracking-tight bg-gradient-to-br from-[#fcfbf9] via-[#e8d5b5] to-[#c5b799] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(13,33,25,0.8)]">Members Directory</h1>
@@ -42,7 +43,7 @@ export default async function AdminPage() {
           </div>
         </div>
         <AdminMembersClient members={members ?? []} />
-      </div>
+      </ScrollReveal>
     </div>
   )
 }

@@ -5,6 +5,7 @@ import { User, MapPin, Phone, Hash, Users, IndianRupee, CalendarDays, FileText }
 import type { Member, Due } from '@/types'
 import MemberDuesClient from './MemberDuesClient'
 import { LeftOliveBranch, RightOliveBranch } from '@/components/ui/OliveBranches'
+import { ScrollReveal } from '@/components/ui/ScrollReveal'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -43,7 +44,7 @@ export default async function DashboardPage() {
 
       <Navbar role="member" userName={member.full_name} />
 
-      <div className="max-w-4xl mx-auto px-6 pt-32 pb-12 space-y-10 relative z-10">
+      <ScrollReveal className="max-w-4xl mx-auto px-6 pt-32 pb-12 space-y-10 relative z-10">
         <div className="border-b border-[#faf9f6]/20 pb-6 flex flex-col sm:flex-row sm:items-center gap-5">
           <div className="w-16 h-16 rounded-full overflow-hidden bg-gradient-to-br from-[#ebd2a3] to-[#be9d62] flex items-center justify-center text-[#3b2f23] border-2 border-[#fcfbf9] shadow-md flex-shrink-0">
             {member.avatar_url ? (
@@ -183,7 +184,6 @@ export default async function DashboardPage() {
               </div>
             </div>
           </div>
-        </div>
         )}
 
         {/* Dues */}
@@ -197,7 +197,7 @@ export default async function DashboardPage() {
           </div>
           <MemberDuesClient initialDues={dues || []} userId={user.id} />
         </div>
-      </div>
+      </ScrollReveal>
     </div>
   )
 }
