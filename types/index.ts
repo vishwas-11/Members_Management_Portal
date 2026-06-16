@@ -44,5 +44,6 @@ export interface Due {
   created_at: string
   payment_note?: string
   payment_proof_url?: string
-  status: 'pending' | 'submitted' | 'paid'
+  status: 'pending' | 'submitted' | 'paid' | 'rejected'
+  rejection_reason?: string
 }

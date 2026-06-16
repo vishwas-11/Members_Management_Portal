@@ -42,6 +42,8 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
   const [dues, setDues] = useState<Due[]>(initialDues)
   const [newDue, setNewDue] = useState({ title: '', amount: '', due_date: '' })
   const [addingDue, setAddingDue] = useState(false)
+  const [rejectingDueId, setRejectingDueId] = useState<string | null>(null)
+  const [rejectionReason, setRejectionReason] = useState('')
 
   const initials = member.full_name
     .split(' ')
@@ -118,13 +120,33 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
     setTimeout(() => setSaved(false), 3000)
   }
 
-  const updateDueStatus = async (due: Due, newStatus: 'pending' | 'paid') => {
-    const { error } = await supabase.from('dues').update({
-      status: newStatus
-    }).eq('id', due.id)
-    if (!error) {
-      setDues(prev => prev.map(d => d.id === due.id ? { ...d, status: newStatus, is_paid: newStatus === 'paid' } : d))
+  const updateDueStatus = async (due: Due, newStatus: 'pending' | 'paid' | 'rejected', reason?: string) => {
+    const updateData: any = { status: newStatus }
+    if (newStatus === 'rejected' && reason !== undefined) {
+      updateData.rejection_reason = reason
+    } else if (newStatus === 'paid' || newStatus === 'pending') {
+      updateData.rejection_reason = null // Clear reason on other states
     }
+
+    const { error } = await supabase.from('dues').update(updateData).eq('id', due.id)
+    if (!error) {
+      setDues(prev => prev.map(d => d.id === due.id ? { 
+        ...d, 
+        status: newStatus, 
+        is_paid: newStatus === 'paid',
+        rejection_reason: newStatus === 'rejected' ? reason : null
+      } : d))
+    }
+  }
+
+  const handleRejectDue = (due: Due) => {
+    setRejectingDueId(due.id)
+    setRejectionReason('')
+  }
+
+  const submitRejection = async (due: Due) => {
+    await updateDueStatus(due, 'rejected', rejectionReason)
+    setRejectingDueId(null)
   }
 
   const addDue = async () => {
@@ -494,6 +516,17 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
                       )}
                     </div>
                   )}
+                  {due.status === 'rejected' && (
+                    <div className="mt-3 bg-red-50/50 p-3 rounded-lg border border-red-100 inline-block w-full sm:w-auto">
+                      <p className="text-[10px] font-mono uppercase tracking-widest text-red-600 mb-1 font-bold">Proof Rejected</p>
+                      {due.rejection_reason && <p className="text-xs text-red-800 italic mb-2">Reason: {due.rejection_reason}</p>}
+                      {due.payment_proof_url && (
+                        <a href={due.payment_proof_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[11px] font-bold text-red-700 hover:text-red-900 hover:underline underline-offset-4 transition-colors w-fit">
+                          <FileText className="w-3.5 h-3.5" /> View Rejected Proof
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <div className="flex flex-col items-end gap-2">
                   <div className="flex items-center gap-4">
@@ -511,26 +544,43 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
                   </div>
                   
                   {/* Actions based on status */}
-                  <div className="flex items-center gap-2 mt-1">
-                    {due.status === 'submitted' && (
-                      <>
-                        <button onClick={() => updateDueStatus(due, 'paid')} className="btn-skeu-clay !bg-emerald-50 hover:!bg-emerald-100 !text-emerald-800 !border-emerald-200 text-[10px] px-3 py-1 flex items-center gap-1 cursor-pointer">
-                          <CheckCircle2 className="w-3 h-3" /> Approve Payment
+                  <div className="flex flex-col items-end gap-2 mt-1 w-full sm:w-auto">
+                    <div className="flex items-center gap-2">
+                      {due.status === 'submitted' && rejectingDueId !== due.id && (
+                        <>
+                          <button onClick={() => updateDueStatus(due, 'paid')} className="btn-skeu-clay !bg-emerald-50 hover:!bg-emerald-100 !text-emerald-800 !border-emerald-200 text-[10px] px-3 py-1 flex items-center gap-1 cursor-pointer">
+                            <CheckCircle2 className="w-3 h-3" /> Approve Payment
+                          </button>
+                          <button onClick={() => handleRejectDue(due)} className="btn-skeu-clay !bg-rose-50 hover:!bg-rose-100 !text-rose-800 !border-rose-200 text-[10px] px-3 py-1 flex items-center gap-1 cursor-pointer">
+                            Reject
+                          </button>
+                        </>
+                      )}
+                      {(due.status === 'pending' || due.status === 'rejected') && (
+                        <button onClick={() => updateDueStatus(due, 'paid')} className="btn-skeu-clay text-[10px] px-3 py-1 flex items-center gap-1 cursor-pointer">
+                          Mark as Paid
                         </button>
+                      )}
+                      {due.status === 'paid' && (
                         <button onClick={() => updateDueStatus(due, 'pending')} className="btn-skeu-clay !bg-rose-50 hover:!bg-rose-100 !text-rose-800 !border-rose-200 text-[10px] px-3 py-1 flex items-center gap-1 cursor-pointer">
-                          Reject
+                          Mark as Pending
                         </button>
-                      </>
-                    )}
-                    {due.status === 'pending' && (
-                      <button onClick={() => updateDueStatus(due, 'paid')} className="btn-skeu-clay text-[10px] px-3 py-1 flex items-center gap-1 cursor-pointer">
-                        Mark as Paid
-                      </button>
-                    )}
-                    {due.status === 'paid' && (
-                      <button onClick={() => updateDueStatus(due, 'pending')} className="btn-skeu-clay !bg-rose-50 hover:!bg-rose-100 !text-rose-800 !border-rose-200 text-[10px] px-3 py-1 flex items-center gap-1 cursor-pointer">
-                        Mark as Pending
-                      </button>
+                      )}
+                    </div>
+                    {rejectingDueId === due.id && (
+                      <div className="mt-2 flex flex-col gap-2 w-full min-w-[200px] bg-red-50 p-3 rounded-lg border border-red-100 shadow-sm">
+                        <input 
+                          type="text" 
+                          placeholder="Reason for rejection (optional)..." 
+                          value={rejectionReason} 
+                          onChange={e => setRejectionReason(e.target.value)}
+                          className="text-xs px-2.5 py-1.5 rounded bg-white border border-red-200 w-full focus:outline-none focus:border-red-400 text-red-900 placeholder:text-red-300"
+                        />
+                        <div className="flex gap-3 justify-end items-center mt-1">
+                          <button onClick={() => setRejectingDueId(null)} className="text-[10px] text-red-600 font-bold hover:underline cursor-pointer">Cancel</button>
+                          <button onClick={() => submitRejection(due)} className="btn-skeu-clay !bg-red-600 hover:!bg-red-700 !text-white !border-red-800 text-[10px] px-3 py-1.5 cursor-pointer shadow-sm font-bold">Confirm Reject</button>
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>

@@ -115,6 +115,13 @@ export default function MemberDuesClient({ initialDues, userId }: { initialDues:
                     )}
                   </div>
                 )}
+                {due.status === 'rejected' && (
+                  <div className="mt-3 bg-red-50/50 p-3 rounded-lg border border-red-100 inline-block w-full sm:w-auto">
+                    <p className="text-[10px] font-mono uppercase tracking-widest text-red-600 mb-1 font-bold">Proof Rejected</p>
+                    {due.rejection_reason && <p className="text-xs text-red-800 italic mb-2">Reason: {due.rejection_reason}</p>}
+                    <p className="text-[11px] text-red-700 font-medium">Please re-upload a valid proof document below.</p>
+                  </div>
+                )}
               </div>
               
               <div className="flex flex-col items-end gap-3 min-w-[200px]">
@@ -129,7 +136,7 @@ export default function MemberDuesClient({ initialDues, userId }: { initialDues:
                   </span>
                 </div>
                 
-                {due.status === 'pending' && (
+                {(due.status === 'pending' || due.status === 'rejected') && (
                   <div className="w-full flex flex-col gap-2 mt-2 bg-white/50 p-3 rounded-lg border border-[#dfd8cb] shadow-sm">
                     <input 
                       type="text" 
