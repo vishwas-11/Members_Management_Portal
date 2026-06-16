@@ -427,7 +427,7 @@ export default async function LandingPage() {
                 <div>
                   <p className="font-mono text-[10px] uppercase tracking-wider text-[#3b2f23]/50 mb-1">Email Address</p>
                   <a 
-                    href="mailto:vishwascharan11@gmail.com" 
+                    href="mailto:vcharan1126@gmail.com" 
                     className="text-xs font-medium text-[#3b2f23] hover:text-[#4a3820] hover:underline underline-offset-4 transition-colors"
                   >
                     vcharan1126@gmail.com
@@ -436,7 +436,7 @@ export default async function LandingPage() {
                 <div>
                   <p className="font-mono text-[10px] uppercase tracking-wider text-[#3b2f23]/50 mb-1">Phone Number</p>
                   <a 
-                    href="tel:7906024886" 
+                    href="tel:9412645482" 
                     className="text-xs font-medium text-[#3b2f23] hover:text-[#4a3820] hover:underline underline-offset-4 transition-colors"
                   >
                     +91 94126 45482
