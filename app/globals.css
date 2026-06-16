@@ -3,28 +3,26 @@
 
 @theme {
   /* Define primary semantic values for elegant forest-emerald green theme */
-  --color-ivory: #FAFDFB; /* Soft mint off-white background */
-  --color-rich-black: #0D2119; /* Deep dark forest green-black for high contrast text */
-  --color-warm-gray-100: #EAF4EE; /* Soft muted green-gray */
-  --color-warm-gray-500: #5A6E61; /* Muted slate-green for helper texts */
-  --color-serif-border: #D8E7DD; /* Elegant sage-green border */
+  --color-ivory: #FAFDFB;
+  --color-rich-black: #0D2119;
+  --color-warm-gray-100: #EAF4EE;
+  --color-warm-gray-500: #5A6E61;
+  --color-serif-border: #D8E7DD;
 
-  /* Maintain/map existing colors to ensure existing layout logic does not break */
-  --color-cream-50: #FAFDFB; 
-  --color-cream-100: #EAF4EE; 
-  --color-cream-200: #D8E7DD; 
-  
-  --color-forest-50: #F4FBF7; /* Very soft mint tint */
+  --color-cream-50: #FAFDFB;
+  --color-cream-100: #EAF4EE;
+  --color-cream-200: #D8E7DD;
+
+  --color-forest-50: #F4FBF7;
   --color-forest-100: #E6F3EC;
-  --color-forest-200: #C2DEC9; /* Muted sage-mint accent */
-  --color-forest-400: #40916c; /* Mid-green accent */
-  --color-forest-500: #2d6a4f; /* Emerald green hover */
-  --color-forest-600: #1b4332; /* Primary accent forest green */
-  --color-forest-700: #143225; /* Dark forest green for gradient anchors */
-  --color-forest-800: #0D2119; /* Heading color / primary black */
+  --color-forest-200: #C2DEC9;
+  --color-forest-400: #40916c;
+  --color-forest-500: #2d6a4f;
+  --color-forest-600: #1b4332;
+  --color-forest-700: #143225;
+  --color-forest-800: #0D2119;
 
-  /* Re-map gold styles to green variants to keep all references looking amazing */
-  --color-gold: #1b4332; 
+  --color-gold: #1b4332;
   --color-gold-hover: #2d6a4f;
   --color-gold-400: #40916c;
   --color-gold-600: #1b4332;
@@ -43,13 +41,8 @@ body {
   letter-spacing: 0.01em;
 }
 
-.font-serif { 
-  font-family: var(--font-serif); 
-}
-
-.font-mono {
-  font-family: var(--font-mono);
-}
+.font-serif { font-family: var(--font-serif); }
+.font-mono { font-family: var(--font-mono); }
 
 .btn-primary {
   @apply bg-gradient-to-r from-forest-700 to-forest-600 text-white px-5 py-2.5 rounded-md font-sans font-medium text-sm tracking-wide shadow-md shadow-forest-600/10 hover:from-forest-600 hover:to-forest-500 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-forest-600/20 active:translate-y-0 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] touch-manipulation flex items-center justify-center gap-2;
@@ -79,9 +72,7 @@ body {
   @apply block text-xs font-mono font-medium uppercase tracking-[0.1em] text-gray-500 mb-1.5;
 }
 
-.error-msg {
-  @apply text-red-600 text-xs mt-1;
-}
+.error-msg { @apply text-red-600 text-xs mt-1; }
 
 .badge-paid {
   @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-100;
@@ -113,13 +104,10 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* Card Gradient top borders */
 .card-gradient-forest::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 3px;
   background: linear-gradient(90deg, #40916c 0%, #1b4332 50%, #2d6a4f 100%);
   z-index: 10;
@@ -128,9 +116,7 @@ body {
 .card-gradient-red::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 3px;
   background: linear-gradient(90deg, #ef4444 0%, #b91c1c 50%, #dc2626 100%);
   z-index: 10;
@@ -139,9 +125,7 @@ body {
 .card-gradient-purple::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 3px;
   background: linear-gradient(90deg, #a855f7 0%, #6b21a8 50%, #7e22ce 100%);
   z-index: 10;
@@ -150,15 +134,12 @@ body {
 .card-gradient-amber::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 3px;
   background: linear-gradient(90deg, #f59e0b 0%, #b45309 50%, #d97706 100%);
   z-index: 10;
 }
 
-/* Ambient atmospheric glow */
 .ambient-glow {
   position: absolute;
   width: 600px;
@@ -175,4 +156,223 @@ body {
   font-weight: 500;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+}
+
+/* ===== Custom Skeumorphic & Tactile Styles ===== */
+
+/* Linen Background for Hero - Soft Sage Green #A3B899 with fine repeat green-linen texture */
+.bg-linen-green {
+  background-color: #a2b69a;
+  background-image:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.15) 0%, rgba(44, 62, 43, 0.25) 100%),
+    url('/textures/green-linen.png');
+  background-blend-mode: multiply;
+  background-repeat: repeat;
+  background-size: 240px;
+  position: relative;
+}
+
+/* Light linen under the features overview - Soft, Warm Off-White Linen */
+.bg-linen-cream {
+  background-color: #f7f6f0;
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.85) 0%, rgba(44, 62, 43, 0.05) 100%),
+    url('/textures/green-linen.png');
+  background-blend-mode: color-burn;
+  background-repeat: repeat;
+  background-size: 240px;
+}
+
+/* Gilded Letterpress Serif Text - Deep Walnut Brown #3b2f23 */
+.text-skeu-heading {
+  font-family: var(--font-serif);
+  color: #3b2f23;
+  text-shadow:
+    0px 1px 1px rgba(255, 255, 255, 0.35),
+    0px -1px 1px rgba(13, 20, 13, 0.75);
+}
+
+.skeu-line {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(59, 47, 35, 0) 0%, rgba(59, 47, 35, 0.4) 50%, rgba(59, 47, 35, 0) 100%);
+  width: 60px;
+}
+
+/* 3D Dark Wood Button — Polished Dark Walnut Wood Block texture with 6px shadow */
+.btn-skeu-wood {
+  position: relative;
+  background-image:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.15) 100%),
+    url('/textures/dark-wood.png');
+  background-size: cover;
+  background-position: center;
+  color: #faf7ee;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  text-shadow: 0 -1.5px 1px rgba(0,0,0,0.9), 0 1px 0 rgba(255,255,255,0.15);
+  border: 1px solid #1a130a;
+  border-top-color: #433120;
+  border-left-color: #433120;
+  border-radius: 6px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.2),
+    0 6px 0 #120c06,
+    0 10px 14px rgba(13, 20, 13, 0.35);
+  transition: all 0.1s ease-out;
+  transform: translateY(0);
+}
+
+.btn-skeu-wood:hover {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    0 5px 0 #120c06,
+    0 8px 10px rgba(13, 20, 13, 0.3);
+}
+
+.btn-skeu-wood:active {
+  transform: translateY(6px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 0px 0 #120c06,
+    0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* 3D Cream Claymorphic Button */
+.btn-skeu-clay {
+  position: relative;
+  background-color: #faf9f6;
+  color: #3b2f23;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  border: 1px solid #d5cebf;
+  border-radius: 6px;
+  box-shadow:
+    inset 0 1.5px 2px #ffffff,
+    inset 0 -1.5px 2px rgba(0, 0, 0, 0.05),
+    0 6px 0 #beb4a0,
+    0 10px 14px rgba(44, 62, 43, 0.15);
+  transition: all 0.1s ease-out;
+  transform: translateY(0);
+}
+
+.btn-skeu-clay:hover {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1.5px 2px #ffffff,
+    inset 0 -1.5px 2px rgba(0, 0, 0, 0.05),
+    0 5px 0 #beb4a0,
+    0 8px 10px rgba(44, 62, 43, 0.12);
+}
+
+.btn-skeu-clay:active {
+  transform: translateY(6px);
+  box-shadow:
+    inset 0 1px 1px rgba(0,0,0,0.05),
+    0 0px 0 #beb4a0,
+    0 2px 4px rgba(44, 62, 43, 0.08);
+}
+
+/* 3D White/Cream Register Button in navbar */
+.btn-skeu-register {
+  position: relative;
+  background-color: #faf9f6;
+  color: #3b2f23;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  border: 1px solid #dcd5c5;
+  border-radius: 6px;
+  box-shadow:
+    inset 0 1.5px 1px #ffffff,
+    0 4px 0 #c2b9aa,
+    0 6px 10px rgba(44, 62, 43, 0.15);
+  transition: all 0.1s ease-out;
+  transform: translateY(0);
+}
+
+.btn-skeu-register:hover {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1.5px 1px #ffffff,
+    0 3px 0 #c2b9aa,
+    0 5px 8px rgba(44, 62, 43, 0.12);
+}
+
+.btn-skeu-register:active {
+  transform: translateY(4px);
+  box-shadow:
+    inset 0 1px 1px rgba(0,0,0,0.05),
+    0 0px 0 #c2b9aa,
+    0 2px 4px rgba(44, 62, 43, 0.08);
+}
+
+/* Ivory/Gold Navbar Plaque logo container */
+.logo-badge-skeu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #fdfcf9;
+  border: 1.5px solid #ebdcb9;
+  border-top-color: #f7eecf;
+  border-left-color: #f7eecf;
+  border-radius: 6px;
+  box-shadow:
+    inset 0 1px 1px #ffffff,
+    0 4px 6px rgba(44, 62, 43, 0.12);
+  font-family: var(--font-serif);
+  font-weight: 600;
+  color: #3b2f23;
+}
+
+/* 3D Light Wood Feature Cards — Light Birch/Maple Wood Grain texture */
+.card-skeu-wood {
+  position: relative;
+  background-image:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.05) 100%),
+    url('/textures/light-wood.png');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid #dfd8cb;
+  border-radius: 12px;
+  box-shadow:
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.85),
+    0 8px 0 #c9bfab,
+    0 14px 20px rgba(44, 62, 43, 0.15);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(0);
+}
+
+.card-skeu-wood:hover {
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.85),
+    0 6px 0 #c9bfab,
+    0 10px 14px rgba(44, 62, 43, 0.12);
+}
+
+/* 3D Metallic Bronze/Gold coin-style badge containing the respective feature icon */
+.coin-badge-skeu {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 35% 35%, #ebd19b 0%, #be9d62 60%, #76592a 100%);
+  border: 1.5px solid #ebd2a3;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.7),
+    inset 0 -1.5px 2px rgba(0, 0, 0, 0.5),
+    0 4px 6px rgba(44, 62, 43, 0.25),
+    0 2px 2px rgba(44, 62, 43, 0.15);
+  color: #4a3820;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive botanical branches styling */
+@media (max-width: 1024px) {
+  .botanical-flank {
+    display: none !important;
+  }
 }
