@@ -360,61 +360,75 @@ export default async function LandingPage() {
         </section>
 
         {/* Footer */}
-        <footer id="about" className="py-24 relative text-[#3b2f23]">
-          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12">
-            {/* Branding Column */}
-            <div className="space-y-6 flex flex-col items-center md:items-start text-center md:text-left">
-              <Link href="/" className="logo-badge-skeu group">
-                <MethodistLogo className="h-6 w-auto" />
-                <span className="text-xs font-serif font-bold tracking-wide">Methodist Registry</span>
-              </Link>
-              <p className="text-sm text-[#3b2f23]/60 max-w-xs leading-relaxed font-sans">
-                A digital member registry designed with classical restraint for Methodist Christ Church administration.
-              </p>
-              <p className="text-xs text-[#3b2f23]/40 font-sans pt-4">
-                &copy; {new Date().getFullYear()} Methodist Registry.<br/>All rights reserved.
-              </p>
+        <footer id="about" className="relative mt-24">
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-20" />
+          <div className="bg-[#0d2119] relative overflow-hidden text-[#faf9f6] py-24">
+            {/* Dark wood texture overlay */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url('/textures/dark-wood.png')", backgroundSize: 'cover' }} />
+            
+            {/* Olive branches */}
+            <div className="absolute right-[-100px] bottom-[-50px] w-[400px] opacity-10 pointer-events-none transform -rotate-45">
+              <RightOliveBranch />
+            </div>
+            <div className="absolute left-[-100px] top-[-50px] w-[300px] opacity-10 pointer-events-none transform rotate-180">
+              <LeftOliveBranch />
             </div>
 
-            {/* Location Column */}
-            <div className="space-y-6 text-center md:text-left">
-              <h4 className="eyebrow-tag border-none bg-transparent px-0">Church Location</h4>
-              <a 
-                href="https://maps.app.goo.gl/z49qEU4JMPh6nztf6"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-sm text-[#3b2f23]/70 space-y-2 leading-relaxed group"
-              >
-                <p className="font-semibold text-[#3b2f23] group-hover:text-[#3b2f23] transition-colors">METHODIST CHRIST CHURCH, RAMPUR</p>
-                <p className="group-hover:text-[#3b2f23] transition-colors">15, Civil Lines, Rampur (U.P)-244901</p>
-              </a>
-              <div className="pt-6">
-                <p className="text-[10px] uppercase font-mono tracking-widest text-[#3b2f23]/40 mb-2">Pastor incharge</p>
-                <p className="font-serif text-lg text-[#3b2f23]">Rev. Nitin Masih</p>
+            <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 relative z-10">
+              {/* Branding Column */}
+              <div className="space-y-6 flex flex-col items-center md:items-start text-center md:text-left">
+                <Link href="/" className="logo-badge-skeu group !bg-[#153225] !border-[#2a4d3a] !px-5 !py-3">
+                  <MethodistLogo className="h-8 w-auto opacity-100" />
+                  <span className="text-lg font-serif font-bold tracking-wide text-[#faf9f6] drop-shadow-sm">Methodist Registry</span>
+                </Link>
+                <p className="text-base text-[#faf9f6]/80 max-w-xs leading-relaxed font-serif italic">
+                  A digital member registry designed with classical restraint for Methodist Christ Church administration.
+                </p>
+                <p className="text-xs text-[#faf9f6]/40 font-sans pt-4 uppercase tracking-widest font-bold">
+                  &copy; {new Date().getFullYear()} Methodist Registry.<br/>All rights reserved.
+                </p>
               </div>
-            </div>
 
-            {/* Contact Column */}
-            <div id="contact" className="space-y-6 text-center md:text-left">
-              <h4 className="eyebrow-tag border-none bg-transparent px-0">Contact Details</h4>
-              <div className="text-sm text-[#3b2f23]/70 space-y-6">
-                <div>
-                  <p className="text-[10px] uppercase font-mono tracking-widest text-[#3b2f23]/40 mb-2">Email Address</p>
-                  <a 
-                    href="mailto:vcharan1126@gmail.com" 
-                    className="font-medium text-[#3b2f23] hover:opacity-70 transition-opacity"
-                  >
-                    vcharan1126@gmail.com
-                  </a>
+              {/* Location Column */}
+              <div className="space-y-6 text-center md:text-left">
+                <h4 className="font-mono text-[11px] uppercase tracking-widest text-[#ebd2a3] font-bold">Church Location</h4>
+                <a 
+                  href="https://maps.app.goo.gl/z49qEU4JMPh6nztf6"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-[#faf9f6]/80 space-y-2 leading-relaxed group"
+                >
+                  <p className="font-serif text-lg font-bold text-[#faf9f6] group-hover:text-[#ebd2a3] transition-colors drop-shadow-sm">Methodist Christ Church, Rampur</p>
+                  <p className="font-serif italic group-hover:text-[#ebd2a3] transition-colors text-[15px]">15, Civil Lines, Rampur (U.P) - 244901</p>
+                </a>
+                <div className="pt-6">
+                  <p className="text-[10px] uppercase font-mono tracking-widest text-[#faf9f6]/50 mb-2 font-bold">Pastor Incharge</p>
+                  <p className="font-serif text-2xl font-medium text-[#ebd2a3] drop-shadow-sm">Rev. Nitin Masih</p>
                 </div>
-                <div>
-                  <p className="text-[10px] uppercase font-mono tracking-widest text-[#3b2f23]/40 mb-2">Phone Number</p>
-                  <a 
-                    href="tel:9412645482" 
-                    className="font-medium text-[#3b2f23] hover:opacity-70 transition-opacity"
-                  >
-                    +91 94126 45482
-                  </a>
+              </div>
+
+              {/* Contact Column */}
+              <div id="contact" className="space-y-6 text-center md:text-left">
+                <h4 className="font-mono text-[11px] uppercase tracking-widest text-[#ebd2a3] font-bold">Contact Details</h4>
+                <div className="text-[#faf9f6]/80 space-y-6">
+                  <div>
+                    <p className="text-[10px] uppercase font-mono tracking-widest text-[#faf9f6]/50 mb-2 font-bold">Email Address</p>
+                    <a 
+                      href="mailto:vcharan1126@gmail.com" 
+                      className="font-serif text-lg italic text-[#faf9f6] hover:text-[#ebd2a3] transition-colors drop-shadow-sm"
+                    >
+                      vcharan1126@gmail.com
+                    </a>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase font-mono tracking-widest text-[#faf9f6]/50 mb-2 font-bold">Phone Number</p>
+                    <a 
+                      href="tel:9412645482" 
+                      className="font-serif text-lg italic text-[#faf9f6] hover:text-[#ebd2a3] transition-colors drop-shadow-sm"
+                    >
+                      +91 94126 45482
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
