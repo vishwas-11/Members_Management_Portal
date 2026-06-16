@@ -70,27 +70,31 @@ export default function MemberDuesClient({ initialDues, userId }: { initialDues:
   }
 
   return (
-    <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-8 relative overflow-hidden">
-      {message && (
+    <div className="doppelrand-outer shadow-2xl relative z-20">
+      <div className="doppelrand-inner p-8 relative">
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
+        {message && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-          <div className="bg-[#fcfbf9] rounded-xl border border-[#dfd8cb] shadow-2xl w-full max-w-sm p-8 relative overflow-hidden flex flex-col items-center text-center animate-in fade-in zoom-in duration-200">
-            <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 ${message.type === 'success' ? 'bg-emerald-100' : 'bg-red-100'}`}>
-              {message.type === 'success' ? (
-                <CheckCircle2 className="w-8 h-8 text-emerald-600" />
-              ) : (
-                <div className="text-red-600 text-3xl font-bold">!</div>
-              )}
+          <div className="doppelrand-outer shadow-2xl w-full max-w-sm">
+            <div className="doppelrand-inner p-8 relative overflow-hidden flex flex-col items-center text-center animate-in fade-in zoom-in duration-200">
+              <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 ${message.type === 'success' ? 'bg-emerald-100' : 'bg-red-100'}`}>
+                {message.type === 'success' ? (
+                  <CheckCircle2 className="w-8 h-8 text-emerald-600" />
+                ) : (
+                  <div className="text-red-600 text-3xl font-bold">!</div>
+                )}
+              </div>
+              <h3 className="font-serif text-xl font-bold text-[#3b2f23] mb-2">
+                {message.type === 'success' ? 'Proof Uploaded' : 'Upload Failed'}
+              </h3>
+              <p className="text-sm text-[#3b2f23]/70 mb-6 font-medium">{message.text}</p>
+              <button
+                onClick={() => setMessage(null)}
+                className="btn-premium-solid group w-full justify-center"
+              >
+                Close
+              </button>
             </div>
-            <h3 className="font-serif text-xl font-bold text-[#3b2f23] mb-2">
-              {message.type === 'success' ? 'Proof Uploaded' : 'Upload Failed'}
-            </h3>
-            <p className="text-sm text-[#3b2f23]/70 mb-6 font-medium">{message.text}</p>
-            <button
-              onClick={() => setMessage(null)}
-              className="btn-skeu-wood w-full py-2.5 text-sm cursor-pointer"
-            >
-              Close
-            </button>
           </div>
         </div>
       )}
@@ -160,7 +164,7 @@ export default function MemberDuesClient({ initialDues, userId }: { initialDues:
                         className={`text-[10px] px-3 py-1.5 flex items-center justify-center gap-1.5 rounded-md border font-bold transition-all shadow-sm ${
                           uploadingFor === due.id 
                             ? 'bg-[#dfd8cb] text-[#3b2f23]/50 border-[#dfd8cb] cursor-not-allowed'
-                            : 'btn-skeu-clay cursor-pointer'
+                            : 'btn-premium-outline cursor-pointer'
                         }`}
                       >
                         {uploadingFor === due.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3 h-3" />}
@@ -184,6 +188,7 @@ export default function MemberDuesClient({ initialDues, userId }: { initialDues:
           ))}
         </div>
       )}
+      </div>
     </div>
   )
 }

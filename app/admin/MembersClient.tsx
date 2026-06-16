@@ -37,29 +37,35 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
     <div className="space-y-8">
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-6 relative overflow-hidden text-center flex flex-col justify-between">
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
-          <div className="flex items-center justify-center gap-1.5 mb-1 text-[#3b2f23]">
-            <Users className="w-5 h-5" />
-            <span className="font-serif text-5xl font-light">{members.length}</span>
+        <div className="doppelrand-outer shadow-lg text-center flex flex-col justify-between">
+          <div className="doppelrand-inner p-6 relative">
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
+            <div className="flex items-center justify-center gap-1.5 mb-1 text-[#3b2f23]">
+              <Users className="w-5 h-5" />
+              <span className="font-serif text-5xl font-light">{members.length}</span>
+            </div>
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/50 mt-2">Family Heads</span>
           </div>
-          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/50 mt-2">Family Heads</span>
         </div>
-        <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-6 relative overflow-hidden text-center flex flex-col justify-between">
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
-          <div className="flex items-center justify-center gap-1.5 mb-1 text-[#3b2f23]">
-            <UserCheck className="w-5 h-5" />
-            <span className="font-serif text-5xl font-light">{totalMembers}</span>
+        <div className="doppelrand-outer shadow-lg text-center flex flex-col justify-between">
+          <div className="doppelrand-inner p-6 relative">
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
+            <div className="flex items-center justify-center gap-1.5 mb-1 text-[#3b2f23]">
+              <UserCheck className="w-5 h-5" />
+              <span className="font-serif text-5xl font-light">{totalMembers}</span>
+            </div>
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/50 mt-2">Total Individuals</span>
           </div>
-          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/50 mt-2">Total Individuals</span>
         </div>
-        <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-6 relative overflow-hidden text-center flex flex-col justify-between">
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
-          <div className="flex items-center justify-center gap-1.5 mb-1 text-[#3b2f23]">
-            <Shield className="w-5 h-5" />
-            <span className="font-serif text-5xl font-light">{adminCount}</span>
+        <div className="doppelrand-outer shadow-lg text-center flex flex-col justify-between">
+          <div className="doppelrand-inner p-6 relative">
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
+            <div className="flex items-center justify-center gap-1.5 mb-1 text-[#3b2f23]">
+              <Shield className="w-5 h-5" />
+              <span className="font-serif text-5xl font-light">{adminCount}</span>
+            </div>
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/50 mt-2">Admin Accounts</span>
           </div>
-          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/50 mt-2">Admin Accounts</span>
         </div>
       </div>
 
@@ -75,8 +81,10 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
       </div>
 
       {/* Table */}
-      <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-0 relative overflow-hidden">
-        <div className="overflow-x-auto">
+      <div className="doppelrand-outer shadow-2xl relative z-20">
+        <div className="doppelrand-inner p-0 overflow-hidden relative">
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
+          <div className="overflow-x-auto pt-1.5">
           <table className="w-full text-sm text-[#3b2f23]">
             <thead>
               <tr className="bg-[#e8e2d5]/50 border-b border-[#dfd8cb]">
@@ -153,7 +161,8 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
                 </tr>
               )})}
             </tbody>
-          </table>
+            </table>
+          </div>
         </div>
       </div>
     </div>

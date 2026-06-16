@@ -239,11 +239,17 @@ export default function RegisterDetailsPage() {
       <div className="paper-overlay" />
 
       {/* Decorative absolute background elements */}
-      <div className="botanical-flank absolute left-[-80px] md:left-[-30px] top-[10%] w-[260px] md:w-[380px] pointer-events-none select-none z-10 opacity-90">
+      <div className="botanical-flank absolute left-[-150px] md:left-[-100px] top-[5%] w-[450px] md:w-[550px] pointer-events-none select-none z-10 opacity-85 drop-shadow-2xl">
         <LeftOliveBranch />
       </div>
-      <div className="botanical-flank absolute right-[-80px] md:right-[-30px] top-[8%] w-[280px] md:w-[400px] pointer-events-none select-none z-10 opacity-90">
+      <div className="botanical-flank absolute right-[-150px] md:right-[-100px] top-[15%] w-[480px] md:w-[580px] pointer-events-none select-none z-10 opacity-85 drop-shadow-2xl">
         <RightOliveBranch />
+      </div>
+      <div className="botanical-flank absolute right-[-150px] md:right-[-100px] top-[55%] w-[450px] md:w-[550px] pointer-events-none select-none z-0 opacity-85 drop-shadow-2xl transform -scale-y-100">
+        <RightOliveBranch />
+      </div>
+      <div className="botanical-flank absolute left-[-150px] md:left-[-100px] top-[65%] w-[480px] md:w-[580px] pointer-events-none select-none z-0 opacity-85 drop-shadow-2xl transform -scale-y-100">
+        <LeftOliveBranch />
       </div>
 
       {/* Scattered sparkles */}
@@ -262,25 +268,25 @@ export default function RegisterDetailsPage() {
 
       <div className="w-full max-w-xl relative z-20">
         {/* Header Badge Plaque */}
-        <div className="flex flex-col items-center mb-8">
+        <div className="flex flex-col items-center mb-8 relative z-20">
           <div className="mb-4 flex justify-center">
-            <LetterpressCross className="w-6 h-9" />
+            <LetterpressCross className="w-6 h-9 text-[#faf9f6]" />
           </div>
 
           <div className="mb-4 flex items-center justify-center gap-3">
-            <span className="skeu-line w-10" />
-            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.18em] text-[#3b2f23]/85">
+            <span className="w-10 h-px bg-[#faf9f6]/30" />
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.18em] text-[#faf9f6]/85 drop-shadow-sm">
               Registration Wizard
             </span>
-            <span className="skeu-line w-10" />
+            <span className="w-10 h-px bg-[#faf9f6]/30" />
           </div>
 
-          <h1 className="text-skeu-heading text-4xl font-normal tracking-tight text-center mb-1">
+          <h1 className="text-4xl font-serif font-medium tracking-tight text-center mb-1 bg-gradient-to-br from-[#fcfbf9] via-[#e8d5b5] to-[#c5b799] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(13,33,25,0.8)]">
             Member Registration
           </h1>
           
-          <p className="font-sans text-[10.5px] uppercase tracking-widest text-[#3b2f23]/60 text-center mt-2 font-semibold">
-            Complete your profile details
+          <p className="font-sans text-[10.5px] uppercase tracking-widest text-[#faf9f6]/70 text-center mt-2 font-semibold drop-shadow-sm">
+            Step {step + 1} of 3
           </p>
         </div>
 
@@ -309,9 +315,10 @@ export default function RegisterDetailsPage() {
 
         {/* Premium Plaque Form Card */}
         <form onSubmit={handleSubmit(onSubmit as any)}>
-          <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-xl p-8 relative overflow-hidden">
-            {/* Top Gold Ribbon Accent */}
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
+          <div className="doppelrand-outer w-full shadow-2xl relative z-20">
+            <div className="doppelrand-inner p-8">
+              {/* Top Gold Ribbon Accent */}
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
 
             <div className="space-y-6">
               {/* Step 0: Personal Details */}
@@ -441,7 +448,7 @@ export default function RegisterDetailsPage() {
                           />
                           <label
                             htmlFor="head-photo-upload"
-                            className="btn-skeu-clay py-1 px-2.5 text-[10px] font-bold tracking-wider uppercase cursor-pointer flex items-center justify-center gap-1 min-h-[30px] w-fit shadow-sm"
+                            className="btn-premium-outline py-1 px-2.5 text-[10px] font-bold tracking-wider uppercase cursor-pointer flex items-center justify-center gap-1 min-h-[30px] w-fit shadow-sm"
                           >
                             {uploadingField === 'avatar_url' ? <Loader2 className="w-3 h-3 animate-spin text-[#3b2f23]" /> : <Upload className="w-3 h-3" />}
                             {watch('avatar_url') ? 'Change' : 'Upload'}
@@ -467,7 +474,7 @@ export default function RegisterDetailsPage() {
                         <div className="flex items-center gap-2">
                           <label
                             htmlFor="head-certificate-upload"
-                            className="btn-skeu-clay py-1 px-2.5 text-[10px] font-bold tracking-wider uppercase cursor-pointer flex items-center justify-center gap-1 min-h-[30px] w-fit shadow-sm"
+                            className="btn-premium-outline py-1 px-2.5 text-[10px] font-bold tracking-wider uppercase cursor-pointer flex items-center justify-center gap-1 min-h-[30px] w-fit shadow-sm"
                           >
                             {uploadingField === 'certificate_url' ? <Loader2 className="w-3 h-3 animate-spin text-[#3b2f23]" /> : <Upload className="w-3 h-3" />}
                             {watch('certificate_url') ? 'Change' : 'Upload'}
@@ -649,7 +656,7 @@ export default function RegisterDetailsPage() {
                                 />
                                 <label
                                   htmlFor={`family-photo-${index}`}
-                                  className="btn-skeu-clay py-1 px-2.5 text-[10px] font-bold tracking-wider uppercase cursor-pointer flex items-center justify-center gap-1 min-h-[30px] w-fit shadow-sm"
+                                  className="btn-premium-outline py-1 px-2.5 text-[10px] font-bold tracking-wider uppercase cursor-pointer flex items-center justify-center gap-1 min-h-[30px] w-fit shadow-sm"
                                 >
                                   {uploadingField === `family_members.${index}.avatar_url` ? <Loader2 className="w-3 h-3 animate-spin text-[#3b2f23]" /> : <Upload className="w-3 h-3" />}
                                   {watch(`family_members.${index}.avatar_url`) ? 'Change' : 'Upload'}
@@ -674,7 +681,7 @@ export default function RegisterDetailsPage() {
                               <div className="flex items-center gap-2">
                                 <label
                                   htmlFor={`family-certificate-${index}`}
-                                  className="btn-skeu-clay py-1 px-2.5 text-[10px] font-bold tracking-wider uppercase cursor-pointer flex items-center justify-center gap-1 min-h-[30px] w-fit shadow-sm"
+                                  className="btn-premium-outline py-1 px-2.5 text-[10px] font-bold tracking-wider uppercase cursor-pointer flex items-center justify-center gap-1 min-h-[30px] w-fit shadow-sm"
                                 >
                                   {uploadingField === `family_members.${index}.certificate_url` ? <Loader2 className="w-3 h-3 animate-spin text-[#3b2f23]" /> : <Upload className="w-3 h-3" />}
                                   {watch(`family_members.${index}.certificate_url`) ? 'Change' : 'Upload'}
@@ -788,6 +795,7 @@ export default function RegisterDetailsPage() {
               )}
             </div>
           </div>
+        </div>
 
           {/* Navigation buttons - Styled in Plaque Theme */}
           <div className="flex justify-between mt-6">
@@ -795,7 +803,7 @@ export default function RegisterDetailsPage() {
               <button 
                 type="button" 
                 onClick={() => setStep(s => s - 1)} 
-                className="btn-skeu-clay min-h-[44px] flex items-center justify-center gap-1.5 px-6 font-semibold select-none cursor-pointer"
+                className="btn-premium-outline min-h-[44px] flex items-center justify-center gap-1.5 px-6 font-semibold select-none cursor-pointer"
               >
                 <ChevronLeft className="w-4 h-4" /> Back
               </button>
@@ -805,18 +813,23 @@ export default function RegisterDetailsPage() {
               <button 
                 type="button" 
                 onClick={nextStep} 
-                className="btn-skeu-wood min-h-[44px] flex items-center justify-center gap-1.5 px-6 font-semibold select-none cursor-pointer ml-auto"
+                className="btn-premium-solid group min-h-[44px] flex items-center justify-center px-6 ml-auto"
               >
-                Continue <ChevronRight className="w-4 h-4 text-[#ebd096]" />
+                <span className="mr-2">Continue</span>
+                <div className="btn-premium-icon-wrapper !w-6 !h-6 !ml-0">
+                  <ChevronRight className="w-4 h-4 text-[#faf9f6]" strokeWidth={2} />
+                </div>
               </button>
             ) : (
               <button 
                 type="submit" 
                 disabled={submitting} 
-                className="btn-skeu-wood min-h-[44px] flex items-center justify-center gap-2 px-6 font-semibold select-none cursor-pointer ml-auto"
+                className="btn-premium-solid group min-h-[44px] flex items-center justify-center px-6 ml-auto"
               >
-                {submitting && <Loader2 className="w-4 h-4 animate-spin text-[#ebd096]" />}
-                <span>{submitting ? 'Submitting...' : 'Submit Registration'}</span>
+                <div className="flex items-center gap-2">
+                  {submitting && <Loader2 className="w-4 h-4 animate-spin text-[#ebd096]" />}
+                  <span>{submitting ? 'Submitting...' : 'Submit Registration'}</span>
+                </div>
               </button>
             )}
           </div>

@@ -228,25 +228,26 @@ export default function ProfilePage() {
   const labelClasses = "font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/60 mb-1.5 block"
 
   return (
-    <div className="min-h-screen bg-linen-cream relative overflow-hidden pb-12 select-none">
+    <div className="min-h-screen bg-linen-green relative overflow-hidden pb-24 select-none text-[#faf9f6]">
       <div className="paper-overlay" />
       <Navbar role={member?.role} userName={member?.full_name} />
       
-      <div className="max-w-3xl mx-auto px-6 py-12 relative z-10">
-        <div className="flex flex-col sm:flex-row justify-between sm:items-end border-b border-[#dfd8cb] pb-5 mb-8 gap-4">
+      <div className="max-w-3xl mx-auto px-6 pt-32 pb-12 relative z-10">
+        <div className="flex flex-col sm:flex-row justify-between sm:items-end border-b border-[#faf9f6]/20 pb-5 mb-8 gap-4">
           <div>
-            <h1 className="text-skeu-heading text-3xl sm:text-4xl font-normal tracking-tight">Edit Profile</h1>
-            <p className="text-sm text-[#3b2f23]/60 mt-1.5 font-sans font-medium">Update your household registration information and family connections.</p>
+            <h1 className="text-4xl sm:text-5xl font-serif font-medium tracking-tight text-[#faf9f6] drop-shadow-md">Edit Profile</h1>
+            <p className="text-sm text-[#faf9f6]/70 mt-2 font-sans font-medium">Update your household registration information and family connections.</p>
           </div>
-          <Link href="/dashboard" className="btn-skeu-clay px-4 py-2 text-xs sm:text-sm flex items-center gap-2 shrink-0">
+          <Link href="/dashboard" className="btn-premium-outline px-4 py-2 text-xs sm:text-sm flex items-center gap-2 shrink-0">
             <ArrowLeft className="w-4 h-4" /> Dashboard
           </Link>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit as any)} className="space-y-8">
-          <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-8 relative overflow-hidden space-y-6">
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
-            <h2 className="font-serif text-xl font-bold text-[#3b2f23] border-b border-[#dfd8cb] pb-3">Personal Details</h2>
+          <div className="doppelrand-outer shadow-2xl relative z-20">
+            <div className="doppelrand-inner p-8 space-y-6">
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
+              <h2 className="font-serif text-xl font-bold text-[#3b2f23] border-b border-[#dfd8cb] pb-3">Personal Details</h2>
             
             {/* Avatar Upload Section */}
             <div className="flex flex-col sm:flex-row items-center gap-5 pb-5 border-b border-[#dfd8cb]/60">
@@ -275,7 +276,7 @@ export default function ProfilePage() {
               </div>
 
               <div className="flex flex-col items-center sm:items-start gap-1">
-                <label htmlFor="avatar-upload" className="btn-skeu-clay text-xs px-3.5 py-1.5 flex items-center gap-1.5 cursor-pointer min-h-[36px] w-fit">
+                <label htmlFor="avatar-upload" className="btn-premium-outline text-xs px-3.5 py-1.5 flex items-center gap-1.5 cursor-pointer min-h-[36px] w-fit">
                   <Camera className="w-3.5 h-3.5" />
                   {avatarUrl ? 'Change Photo' : 'Upload Photo'}
                 </label>
@@ -357,7 +358,7 @@ export default function ProfilePage() {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                   <label
                     htmlFor="head-certificate-upload"
-                    className="btn-skeu-clay text-xs px-3.5 py-1.5 flex items-center justify-center gap-1.5 cursor-pointer min-h-[36px] w-fit"
+                    className="btn-premium-outline text-xs px-3.5 py-1.5 flex items-center justify-center gap-1.5 cursor-pointer min-h-[36px] w-fit"
                   >
                     {uploadingField === 'certificate_url' ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
                     {watch('certificate_url') ? 'Change Document' : 'Upload Document'}
@@ -379,11 +380,13 @@ export default function ProfilePage() {
                 </p>
               </div>
             </div>
+            </div>
           </div>
 
-          <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-8 relative overflow-hidden space-y-6">
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
-            <h2 className="font-serif text-xl font-bold text-[#3b2f23] border-b border-[#dfd8cb] pb-3">Family Connections</h2>
+          <div className="doppelrand-outer shadow-2xl relative z-20">
+            <div className="doppelrand-inner p-8 space-y-6">
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
+              <h2 className="font-serif text-xl font-bold text-[#3b2f23] border-b border-[#dfd8cb] pb-3">Family Connections</h2>
             
             <div className="space-y-5">
               {fields.map((field, index) => (
@@ -457,7 +460,7 @@ export default function ProfilePage() {
                           />
                           <label
                             htmlFor={`family-photo-${index}`}
-                            className="btn-skeu-clay text-[10px] px-3 py-1.5 flex items-center justify-center gap-1.5 cursor-pointer min-h-[32px] w-fit"
+                            className="btn-premium-outline text-[10px] px-3 py-1.5 flex items-center justify-center gap-1.5 cursor-pointer min-h-[32px] w-fit"
                           >
                             {uploadingField === `family_members.${index}.avatar_url` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
                             {watch(`family_members.${index}.avatar_url`) ? 'Change' : 'Upload'}
@@ -479,7 +482,7 @@ export default function ProfilePage() {
                         <div className="flex items-center gap-3">
                           <label
                             htmlFor={`family-certificate-${index}`}
-                            className="btn-skeu-clay text-[10px] px-3 py-1.5 flex items-center justify-center gap-1.5 cursor-pointer min-h-[32px] w-fit"
+                            className="btn-premium-outline text-[10px] px-3 py-1.5 flex items-center justify-center gap-1.5 cursor-pointer min-h-[32px] w-fit"
                           >
                             {uploadingField === `family_members.${index}.certificate_url` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
                             {watch(`family_members.${index}.certificate_url`) ? 'Change' : 'Upload'}
@@ -507,6 +510,7 @@ export default function ProfilePage() {
               className="w-full flex items-center justify-center gap-2 py-3 border border-dashed border-[#dfd8cb] bg-[#f5f3ee]/50 text-[#3b2f23]/70 hover:text-[#3b2f23] rounded-lg text-sm font-bold hover:bg-[#f5f3ee] transition-all duration-200 cursor-pointer">
               <PlusCircle className="w-4 h-4" /> Add Family Member
             </button>
+            </div>
           </div>
 
           {error && <p className="error-msg text-center font-bold text-red-600 bg-red-50 py-2 rounded-md border border-red-100">{error}</p>}
@@ -516,7 +520,7 @@ export default function ProfilePage() {
             </div>
           )}
           
-          <button type="submit" disabled={saving} className="btn-skeu-wood w-full flex items-center justify-center gap-2 py-3.5 text-base shadow-lg cursor-pointer disabled:opacity-50">
+          <button type="submit" disabled={saving} className="btn-premium-solid w-full justify-center group disabled:opacity-50">
             {saving && <Loader2 className="w-5 h-5 animate-spin" />}
             {saving ? 'Saving changes...' : 'Save Changes'}
           </button>
@@ -690,11 +694,12 @@ function ImageCropModal({ src, onCrop, onClose }: ImageCropModalProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-55 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-      <div className="bg-[#fcfbf9] rounded-xl border border-[#dfd8cb] shadow-2xl w-full max-w-sm p-6 relative overflow-hidden flex flex-col items-center animate-in fade-in zoom-in duration-200">
-        <h3 className="font-serif text-lg font-bold text-[#3b2f23] border-b border-[#dfd8cb] pb-2.5 w-full text-center mb-5">
-          Adjust Profile Picture
-        </h3>
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+      <div className="doppelrand-outer shadow-2xl w-full max-w-sm">
+        <div className="doppelrand-inner p-6 relative overflow-hidden flex flex-col items-center animate-in fade-in zoom-in duration-200">
+          <h3 className="font-serif text-lg font-bold text-[#3b2f23] border-b border-[#dfd8cb] pb-2.5 w-full text-center mb-5">
+            Adjust Profile Picture
+          </h3>
         
         {/* Cropper Viewport */}
         <div 
@@ -751,17 +756,18 @@ function ImageCropModal({ src, onCrop, onClose }: ImageCropModalProps) {
         <div className="flex gap-3 w-full mt-7">
           <button
             onClick={onClose}
-            className="flex-1 btn-skeu-clay text-xs px-4 py-2 min-h-[36px]"
+            className="flex-1 btn-premium-outline text-xs px-4 py-2 min-h-[36px]"
           >
             Cancel
           </button>
           <button
             onClick={handleCrop}
-            className="flex-1 btn-skeu-wood text-xs px-4 py-2 flex items-center justify-center gap-1.5 min-h-[36px]"
+            className="flex-1 btn-premium-solid group text-xs px-4 py-2 min-h-[36px] flex justify-center"
           >
             Crop & Save
           </button>
         </div>
+      </div>
       </div>
     </div>
   )

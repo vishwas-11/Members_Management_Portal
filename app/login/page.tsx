@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { Mail, Lock, Loader2, Eye, EyeOff } from 'lucide-react'
+import { Mail, Lock, Loader2, Eye, EyeOff, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 // Custom SVGs for decorative elements to ensure exact match with design
@@ -176,11 +176,17 @@ export default function LoginPage() {
       <div className="paper-overlay" />
 
       {/* Decorative absolute background elements */}
-      <div className="botanical-flank absolute left-[-80px] md:left-[-30px] top-[10%] w-[260px] md:w-[380px] pointer-events-none select-none z-10 opacity-90">
+      <div className="botanical-flank absolute left-[-150px] md:left-[-100px] top-[5%] w-[450px] md:w-[550px] pointer-events-none select-none z-10 opacity-85 drop-shadow-2xl">
         <LeftOliveBranch />
       </div>
-      <div className="botanical-flank absolute right-[-80px] md:right-[-30px] top-[8%] w-[280px] md:w-[400px] pointer-events-none select-none z-10 opacity-90">
+      <div className="botanical-flank absolute right-[-150px] md:right-[-100px] top-[15%] w-[480px] md:w-[580px] pointer-events-none select-none z-10 opacity-85 drop-shadow-2xl">
         <RightOliveBranch />
+      </div>
+      <div className="botanical-flank absolute right-[-150px] md:right-[-100px] top-[55%] w-[450px] md:w-[550px] pointer-events-none select-none z-0 opacity-85 drop-shadow-2xl transform -scale-y-100">
+        <RightOliveBranch />
+      </div>
+      <div className="botanical-flank absolute left-[-150px] md:left-[-100px] top-[65%] w-[480px] md:w-[580px] pointer-events-none select-none z-0 opacity-85 drop-shadow-2xl transform -scale-y-100">
+        <LeftOliveBranch />
       </div>
 
       {/* Scattered sparkles */}
@@ -199,32 +205,33 @@ export default function LoginPage() {
 
       <div className="w-full max-w-md relative z-20">
         {/* Header Plaque Area */}
-        <div className="flex flex-col items-center mb-8">
+        <div className="flex flex-col items-center mb-8 relative z-20">
           <div className="mb-4 flex justify-center">
-            <LetterpressCross className="w-6 h-9" />
+            <LetterpressCross className="w-6 h-9 text-[#faf9f6]" />
           </div>
           
           <div className="mb-4 flex items-center justify-center gap-3">
-            <span className="skeu-line w-10" />
-            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.18em] text-[#3b2f23]/85">
+            <span className="w-10 h-px bg-[#faf9f6]/30" />
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.18em] text-[#faf9f6]/85 drop-shadow-sm">
               Congregation Access
             </span>
-            <span className="skeu-line w-10" />
+            <span className="w-10 h-px bg-[#faf9f6]/30" />
           </div>
 
-          <h1 className="text-skeu-heading text-4xl font-normal tracking-tight text-center mb-1">
+          <h1 className="text-4xl font-serif font-medium tracking-tight text-center mb-1 bg-gradient-to-br from-[#fcfbf9] via-[#e8d5b5] to-[#c5b799] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(13,33,25,0.8)]">
             Methodist Registry
           </h1>
           
-          <p className="font-sans text-[10.5px] uppercase tracking-widest text-[#3b2f23]/60 text-center mt-2 font-semibold">
+          <p className="font-sans text-[10.5px] uppercase tracking-widest text-[#faf9f6]/70 text-center mt-2 font-semibold drop-shadow-sm">
             Sign in to manage details
           </p>
         </div>
 
         {/* Premium Plaque Form Card */}
-        <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-xl p-8 relative overflow-hidden">
-          {/* Top Gold Ribbon Accent */}
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
+        <div className="doppelrand-outer w-full shadow-2xl relative z-20">
+          <div className="doppelrand-inner p-8">
+            {/* Top Gold Ribbon Accent */}
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
 
           <div className="space-y-6">
             <form onSubmit={handleLogin} className="space-y-5">
@@ -274,10 +281,15 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading || googleLoading}
-                className="btn-skeu-wood w-full py-3 flex items-center justify-center gap-2 mt-4 text-sm font-semibold select-none cursor-pointer disabled:opacity-50"
+                className="btn-premium-solid group w-full mt-4"
               >
-                {loading && <Loader2 className="w-4 h-4 animate-spin text-[#ebd096]" />}
-                <span>{loading ? 'Signing in...' : 'Sign In'}</span>
+                <div className="flex items-center gap-2">
+                  {loading && <Loader2 className="w-4 h-4 animate-spin text-[#ebd096]" />}
+                  <span>{loading ? 'Signing in...' : 'Sign In'}</span>
+                </div>
+                <div className="btn-premium-icon-wrapper">
+                  <ArrowRight className="w-4 h-4 text-[#faf9f6]" strokeWidth={2} />
+                </div>
               </button>
             </form>
 
@@ -288,12 +300,12 @@ export default function LoginPage() {
               </span>
             </div>
 
-            {/* Google OAuth button styled as tactile claymorphic cream button */}
+            {/* Google OAuth button */}
             <button
               type="button"
               onClick={handleGoogleSignIn}
               disabled={loading || googleLoading}
-              className="btn-skeu-clay w-full py-3 flex items-center justify-center gap-2 text-sm font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-premium-outline w-full py-3 flex items-center justify-center gap-2 text-sm font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {googleLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
@@ -320,11 +332,12 @@ export default function LoginPage() {
               <span>{googleLoading ? 'Redirecting...' : 'Google'}</span>
             </button>
           </div>
+          </div>
         </div>
 
-        <p className="text-xs text-[#3b2f23]/60 text-center mt-8 font-sans font-medium">
+        <p className="text-xs text-[#faf9f6]/70 text-center mt-8 font-sans font-medium drop-shadow-sm relative z-20">
           First time here?{' '}
-          <Link href="/register" className="text-[#3b2f23] font-bold hover:underline transition-colors decoration-[#3b2f23]/40 underline-offset-4 decoration-1">
+          <Link href="/register" className="text-[#faf9f6] font-bold hover:underline transition-colors decoration-[#faf9f6]/40 underline-offset-4 decoration-1">
             Register
           </Link>
         </p>

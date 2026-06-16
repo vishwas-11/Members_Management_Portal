@@ -34,9 +34,9 @@ export default function Navbar({ role, userName }: NavbarProps) {
   }
 
   return (
-    <nav className="bg-[#fcfbf9] border-b border-[#dfd8cb] shadow-sm relative z-50">
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-[72px] flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none px-4 pt-6">
+      <div className="bg-[#fcfbf9]/95 backdrop-blur-xl border border-[#dfd8cb] shadow-xl rounded-full pointer-events-auto relative overflow-hidden flex items-center justify-between px-6 sm:px-8 h-[64px] w-max max-w-full gap-6 sm:gap-16">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
         <Link href="/" className="group transition-transform hover:scale-[1.02] active:scale-[0.98]">
           <div className="logo-badge-skeu">
             <div className="h-8 w-5 flex items-center justify-center text-[#3b2f23] shrink-0">
@@ -57,7 +57,7 @@ export default function Navbar({ role, userName }: NavbarProps) {
             <span className="hidden sm:inline">My </span>Profile
           </Link>
           {userName && (
-            <span className="text-xs font-mono font-bold text-[#3b2f23]/60 bg-[#e8e2d5]/50 border border-[#dfd8cb] px-2.5 py-1 rounded hidden sm:block truncate max-w-[150px]">
+            <span className="text-xs font-mono font-bold text-[#3b2f23]/80 bg-[#e8e2d5]/60 border border-[#dfd8cb] px-2.5 py-1 rounded-full hidden sm:block truncate max-w-[150px]">
               {userName}
             </span>
           )}

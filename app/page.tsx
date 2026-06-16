@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { ArrowRight, ShieldCheck, Users, BarChart3, Lock } from 'lucide-react'
+import { ArrowUpRight, ArrowRight, ShieldCheck, Users, BarChart3, Lock, CheckCircle2 } from 'lucide-react'
+import { ScrollReveal } from '@/components/ui/ScrollReveal'
 
 // Custom SVGs for decorative elements to ensure exact match with design
 const LeftOliveBranch = () => (
@@ -77,7 +78,7 @@ const LetterpressCross = ({ className = "w-6 h-10" }: { className?: string }) =>
   <svg viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${className} filter drop-shadow-[0_1px_0.5px_rgba(255,255,255,0.45)]`}>
     <path 
       d="M 10,0.5 L 14,1.8 L 14,34.2 L 10,35.5 Z M 1,11 L 23,12.2 L 23,15.2 L 1,14 Z" 
-      fill="#3b2f23" 
+      fill="currentColor" 
     />
   </svg>
 )
@@ -135,83 +136,50 @@ export default async function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden bg-linen-green select-none">
-      {/* Paper Noise Overlay for added tactility */}
+    <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-linen-green text-[#3b2f23] selection:bg-[#3b2f23] selection:text-[#faf9f6]">
+      {/* Paper Noise Overlay for tactility */}
       <div className="paper-overlay" />
 
-      {/* Decorative absolute background elements */}
-      {/* Left branch */}
-      <div className="botanical-flank absolute left-[-80px] md:left-[-30px] top-[120px] w-[260px] md:w-[380px] pointer-events-none select-none z-10 opacity-90">
+      {/* Subtle Botanical Flanks in background */}
+      <div className="botanical-flank absolute left-[-150px] md:left-[-100px] top-[5%] w-[450px] md:w-[550px] pointer-events-none select-none z-0 opacity-85 drop-shadow-2xl">
         <LeftOliveBranch />
       </div>
-      
-      {/* Right branch */}
-      <div className="botanical-flank absolute right-[-80px] md:right-[-30px] top-[90px] w-[280px] md:w-[400px] pointer-events-none select-none z-10 opacity-90">
+      <div className="botanical-flank absolute right-[-150px] md:right-[-100px] top-[15%] w-[480px] md:w-[580px] pointer-events-none select-none z-0 opacity-85 drop-shadow-2xl">
         <RightOliveBranch />
       </div>
-
-
-
-      {/* Scattered sparkles */}
-      <div className="absolute left-[18%] top-[160px] pointer-events-none select-none z-10 opacity-70">
-        <Sparkle />
+      <div className="botanical-flank absolute right-[-150px] md:right-[-100px] top-[55%] w-[450px] md:w-[550px] pointer-events-none select-none z-0 opacity-85 drop-shadow-2xl transform -scale-y-100">
+        <RightOliveBranch />
       </div>
-      <div className="absolute left-[7%] top-[440px] pointer-events-none select-none z-10 opacity-75">
-        <Sparkle />
-      </div>
-      <div className="absolute right-[22%] top-[200px] pointer-events-none select-none z-10 opacity-70">
-        <Sparkle />
-      </div>
-      <div className="absolute right-[8%] top-[480px] pointer-events-none select-none z-10 opacity-60">
-        <Sparkle />
+      <div className="botanical-flank absolute left-[-150px] md:left-[-100px] top-[65%] w-[480px] md:w-[580px] pointer-events-none select-none z-0 opacity-85 drop-shadow-2xl transform -scale-y-100">
+        <LeftOliveBranch />
       </div>
 
-      {/* Landing Navbar */}
-      <header className="sticky top-0 z-50 transition-all duration-200 py-4 px-6 md:px-12">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          {/* Logo Badge (Ivory/Gold Plaque logo container) */}
-          <Link href="/" className="group transition-transform hover:scale-[1.02] active:scale-[0.98]">
-            <div className="logo-badge-skeu">
-              <div className="h-9 w-6 flex items-center justify-center text-[#3b2f23] shrink-0">
-                <MethodistLogo className="h-8 w-auto" />
-              </div>
-              <span className="text-sm font-serif font-bold tracking-wide text-[#3b2f23]">
-                Methodist Registry
-              </span>
-            </div>
+      {/* Floating Island Nav */}
+      <header className="fixed top-6 left-0 right-0 z-50 px-4 md:px-0 pointer-events-none">
+        <div className="max-w-4xl mx-auto flex items-center justify-between p-2 md:p-3 rounded-full bg-white/70 backdrop-blur-xl border border-[#3b2f23]/10 shadow-[0_8px_32px_rgba(59,47,35,0.08)] pointer-events-auto transition-fluid">
+          <Link href="/" className="logo-badge-skeu group">
+            <MethodistLogo className="h-6 w-auto" />
+            <span className="text-xs font-serif font-bold tracking-wide">Methodist Registry</span>
           </Link>
-
-          {/* Navigation Links in Center */}
-          <nav className="hidden md:flex items-center gap-8 text-[#3b2f23]/85 font-sans text-xs uppercase tracking-[0.15em] font-semibold">
-            <Link href="#features" className="hover:text-[#3b2f23] transition-colors relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[1px] after:bg-[#3b2f23] hover:after:w-full after:transition-all">
-              Features
-            </Link>
-            <Link href="#about" className="hover:text-[#3b2f23] transition-colors relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[1px] after:bg-[#3b2f23] hover:after:w-full after:transition-all">
-              About
-            </Link>
-            <Link href="#contact" className="hover:text-[#3b2f23] transition-colors relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[1px] after:bg-[#3b2f23] hover:after:w-full after:transition-all">
-              Contact
-            </Link>
+          
+          <nav className="hidden md:flex items-center gap-8 px-6 text-[#3b2f23] font-sans text-xs uppercase tracking-[0.15em] font-semibold">
+            <Link href="#features" className="hover:opacity-60 transition-opacity">Features</Link>
+            <Link href="#about" className="hover:opacity-60 transition-opacity">About</Link>
+            <Link href="#contact" className="hover:opacity-60 transition-opacity">Contact</Link>
           </nav>
-
-          {/* User Auth Buttons */}
-          <div className="flex items-center gap-3 sm:gap-6">
+          
+          <div className="flex items-center gap-3">
             {isLoggedIn ? (
-              <>
-                <span className="text-xs font-mono text-[#3b2f23]/60 bg-white/20 border border-[#3b2f23]/10 px-2.5 py-1 rounded hidden sm:block">
-                  {userName || 'Logged In'}
-                </span>
-                <Link href={portalUrl} className="btn-skeu-register px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm">
-                  Dashboard
-                </Link>
-              </>
+              <Link href={portalUrl} className="btn-premium-solid py-2 px-4 md:px-5">
+                <span className="text-xs">{userName || 'Dashboard'}</span>
+              </Link>
             ) : (
               <>
-                <Link href="/login" className="text-xs sm:text-sm font-semibold text-[#3b2f23]/85 hover:text-[#3b2f23] underline decoration-[#3b2f23]/30 underline-offset-4 hover:decoration-[#3b2f23] transition-colors">
+                <Link href="/login" className="hidden sm:block text-xs font-semibold text-[#3b2f23]/80 hover:text-[#3b2f23] px-3">
                   Login
                 </Link>
-                <Link href="/register" className="btn-skeu-register px-3.5 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-sm">
-                  Register
+                <Link href="/register" className="btn-premium-solid py-2 px-4 md:px-5">
+                  <span className="text-xs">Register</span>
                 </Link>
               </>
             )}
@@ -219,225 +187,231 @@ export default async function LandingPage() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="py-20 md:py-28 max-w-5xl mx-auto px-6 text-center relative z-20">
-        <div className="mb-6 flex justify-center">
-          <LetterpressCross className="w-6 h-9" />
-        </div>
-        <div className="mb-6 flex items-center justify-center gap-4 max-w-[280px] mx-auto">
-          <span className="skeu-line" />
-          <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-[#3b2f23]/85">
-            Welcome Congregation
-          </span>
-          <span className="skeu-line" />
-        </div>
-
-        <h1 className="text-skeu-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal leading-[1.12] tracking-tight mb-8 max-w-4xl mx-auto">
-          Gracefully managing our congregation.
-        </h1>
-        
-        <p className="font-sans text-base md:text-lg text-[#3b2f23]/80 leading-relaxed max-w-2xl mx-auto mb-12 px-2">
-          A digital member registry designed with classical restraint, built for modern church administration. Timeless. Refined. Trusted.
-        </p>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-5 max-w-md mx-auto">
-          <Link href={portalUrl} className="btn-skeu-wood w-full sm:w-auto px-7 py-3 flex items-center justify-center gap-2 text-sm">
-            <span>{buttonText}</span>
-            <ArrowRight className="w-4 h-4 text-[#ebd096]" />
-          </Link>
-          {!isLoggedIn && (
-            <Link href="/register" className="btn-skeu-clay w-full sm:w-auto px-7 py-3 text-sm flex items-center justify-center">
-              Create Account
-            </Link>
-          )}
-        </div>
-
-        {/* Subtle 4-pointed star graphic in the bottom right corner of green hero section */}
-        <div className="absolute right-6 bottom-6 opacity-35 pointer-events-none select-none z-10 hidden md:block">
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20,0 L24,16 L40,20 L24,24 L20,40 L16,24 L0,20 L16,16 Z" fill="#ffffff" />
-          </svg>
-        </div>
-      </section>
-
-      {/* Transition to Warm Cream Linen Background */}
-      <main className="bg-linen-cream flex-grow relative z-20 border-t border-[#dfd8cb]">
-        
-        {/* Features Overview Section */}
-        <section id="features" className="py-24 max-w-5xl mx-auto px-6">
-          <h2 className="text-skeu-heading text-3xl md:text-4xl text-center mb-16 font-normal">
-            Features Overview
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div className="card-skeu-wood p-8 flex flex-col gap-5">
-              <div className="coin-badge-skeu">
-                <ShieldCheck className="w-5 h-5 text-[#4a3820] stroke-[2]" />
+      <main className="flex-grow flex flex-col w-full relative z-10 pt-32">
+        {/* Editorial Split Hero Section */}
+        <section className="min-h-[100dvh] flex items-center w-full">
+          <div className="max-w-7xl mx-auto px-6 w-full flex flex-col md:flex-row items-center justify-between gap-16 md:gap-8">
+            
+            {/* Left Side: Massive Typography */}
+            <ScrollReveal className="w-full md:w-[55%] flex flex-col items-start text-left z-20">
+              <div className="mb-8 flex items-center gap-4">
+                <LetterpressCross className="w-4 h-6 opacity-60 text-[#faf9f6]" />
+                <span className="font-mono text-[10px] tracking-[0.2em] uppercase font-bold text-[#faf9f6]/70">Welcome Congregation</span>
               </div>
-              <h3 className="font-serif text-xl font-semibold text-[#3b2f23]">Secure Registry</h3>
-              <p className="font-sans text-sm text-[#3b2f23]/75 leading-relaxed">
-                Secure your congregation&apos;s registry to keep personal records protected and fully encrypted.
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-serif font-medium leading-[1.05] tracking-tight mb-8 bg-gradient-to-br from-[#fcfbf9] via-[#e8d5b5] to-[#c5b799] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(13,33,25,0.8)]">
+                Gracefully<br />managing our<br />congregation.
+              </h1>
+              <p className="font-sans text-lg md:text-xl text-[#fcfbf9]/80 leading-relaxed max-w-lg mb-12 drop-shadow-sm">
+                A digital member registry designed with classical restraint, built for modern church administration. Timeless. Refined. Trusted.
               </p>
-            </div>
-
-            <div className="card-skeu-wood p-8 flex flex-col gap-5">
-              <div className="coin-badge-skeu">
-                <Users className="w-5 h-5 text-[#4a3820] stroke-[2]" />
+              <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                <Link href={portalUrl} className="btn-premium-solid group w-full sm:w-auto">
+                  <span>{buttonText}</span>
+                  <div className="btn-premium-icon-wrapper">
+                    <ArrowUpRight className="w-4 h-4 text-[#faf9f6]" strokeWidth={2} />
+                  </div>
+                </Link>
+                {!isLoggedIn && (
+                  <Link href="/register" className="btn-premium-outline w-full sm:w-auto mt-4 sm:mt-0">
+                    Create Account
+                  </Link>
+                )}
               </div>
-              <h3 className="font-serif text-xl font-semibold text-[#3b2f23]">Congregation Management</h3>
-              <p className="font-sans text-sm text-[#3b2f23]/75 leading-relaxed">
-                Manage church membership with modern tools designed for elegant, simple church administration.
-              </p>
-            </div>
+            </ScrollReveal>
 
-            <div className="card-skeu-wood p-8 flex flex-col gap-5">
-              <div className="coin-badge-skeu">
-                <BarChart3 className="w-5 h-5 text-[#4a3820] stroke-[2]" />
+            {/* Right Side: Z-Axis Cascade Interactive Cards */}
+            <ScrollReveal className="w-full md:w-[45%] relative h-[500px] md:h-[600px] flex items-center justify-center pointer-events-none" delay={200}>
+              <div className="relative w-full max-w-md h-full">
+                 {/* Card 1 */}
+                 <div className="absolute top-[10%] right-[10%] w-[85%] doppelrand-outer transform rotate-3 z-10 shadow-xl transition-fluid group hover:rotate-0 hover:z-30 pointer-events-auto">
+                   <div className="doppelrand-inner p-6 flex flex-col gap-4 bg-white/90 backdrop-blur-md">
+                     <div className="flex items-center justify-between">
+                       <span className="eyebrow-tag bg-emerald-50 text-emerald-800 border-emerald-200">Verified</span>
+                       <ShieldCheck className="w-5 h-5 text-emerald-600" strokeWidth={1.5} />
+                     </div>
+                     <div>
+                       <p className="text-[10px] uppercase font-mono tracking-widest text-[#3b2f23]/40">Family Profile</p>
+                       <p className="font-serif text-lg text-[#3b2f23] font-semibold mt-1">The Alva Family</p>
+                       <p className="text-sm text-[#3b2f23]/60 mt-1">4 Active Members</p>
+                     </div>
+                   </div>
+                 </div>
+
+                 {/* Card 2 */}
+                 <div className="absolute top-[40%] left-[5%] w-[80%] doppelrand-outer transform -rotate-2 z-20 shadow-2xl transition-fluid group hover:rotate-0 hover:z-30 pointer-events-auto">
+                   <div className="doppelrand-inner p-6 flex flex-col gap-4 bg-white/95 backdrop-blur-md">
+                     <div className="flex items-center justify-between">
+                       <span className="eyebrow-tag">Contribution</span>
+                       <CheckCircle2 className="w-5 h-5 text-[#3b2f23]/40" strokeWidth={1.5} />
+                     </div>
+                     <div>
+                       <p className="text-[10px] uppercase font-mono tracking-widest text-[#3b2f23]/40">Reconciled</p>
+                       <p className="font-serif text-lg text-[#3b2f23] font-semibold mt-1">Annual Dues Cleared</p>
+                       <div className="mt-3 h-1 w-full bg-emerald-100 rounded-full overflow-hidden">
+                         <div className="h-full bg-emerald-500 w-full"></div>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
               </div>
-              <h3 className="font-serif text-xl font-semibold text-[#3b2f23]">Intuitive Reporting</h3>
-              <p className="font-sans text-sm text-[#3b2f23]/75 leading-relaxed">
-                Generate beautiful, clear reports and intuitive member directories with a single click.
-              </p>
-            </div>
+            </ScrollReveal>
+            
           </div>
         </section>
 
-        {/* Stats Section */}
-        <section className="py-16 border-y border-[#dfd8cb] max-w-5xl mx-auto px-6 w-full">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-[#dfd8cb]">
-            <div className="text-center md:pb-0 pb-6">
-              <span className="font-serif text-5xl md:text-6xl font-normal text-[#3b2f23] block mb-2">1,250+</span>
-              <span className="font-mono text-xs uppercase tracking-widest text-[#3b2f23]/50">Active Members</span>
-            </div>
-            <div className="text-center md:py-0 py-6">
-              <span className="font-serif text-5xl md:text-6xl font-normal text-[#3b2f23] block mb-2">1894</span>
-              <span className="font-mono text-xs uppercase tracking-widest text-[#3b2f23]/50">Year Founded</span>
-            </div>
-            <div className="text-center md:pt-0 pt-6">
-              <span className="font-serif text-5xl md:text-6xl font-normal text-[#3b2f23] block mb-2">100%</span>
-              <span className="font-mono text-xs uppercase tracking-widest text-[#3b2f23]/50">Secure Records</span>
-            </div>
-          </div>
-        </section>
-
-        {/* Asymmetric Benefits Section */}
-        <section className="py-24 max-w-5xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-            <div className="md:col-span-7 space-y-6">
-              <h2 className="text-skeu-heading text-3xl md:text-4xl font-normal tracking-tight leading-tight">
-                Honoring heritage through digital precision.
+        {/* Features Section */}
+        <section id="features" className="py-32 md:py-40 max-w-6xl mx-auto px-6 relative z-10">
+          <ScrollReveal>
+            <div className="flex flex-col items-center text-center mb-24">
+              <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold font-mono border border-[#faf9f6]/20 bg-white/10 text-[#faf9f6]/90 shadow-sm backdrop-blur-sm mb-6">Capabilities</span>
+              <h2 className="text-4xl md:text-5xl font-serif font-medium tracking-tight bg-gradient-to-br from-[#fcfbf9] via-[#e8d5b5] to-[#c5b799] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(13,33,25,0.8)]">
+                Digital Precision.
               </h2>
-              <p className="text-[#3b2f23]/80 leading-relaxed text-base">
-                For centuries, the church registry has been a vital historical thread binding congregations. We preserve that administrative reverence in a digital platform that makes management elegant and simple.
-              </p>
-              <div className="border-l-2 border-[#ebd2a3] pl-4 py-1">
-                <p className="text-sm font-serif italic text-[#3b2f23]/70 leading-relaxed">
-                  &quot;Our aim is classical simplicity, keeping the church administration secure and centered around family connections.&quot;
-                </p>
-              </div>
             </div>
+          </ScrollReveal>
 
-            <div className="md:col-span-5">
-              <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-8 relative overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
-                <div className="flex justify-between items-center mb-6">
-                  <span className="text-[10px] font-mono font-medium text-[#3b2f23]/60 tracking-wider">MEMBER STATEMENT</span>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-100">
-                    Paid
-                  </span>
-                </div>
-                <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <ScrollReveal delay={100}>
+              <div className="doppelrand-outer h-full">
+                <div className="doppelrand-inner p-8 flex flex-col gap-6 h-full transition-fluid hover:bg-white">
+                  <div className="coin-badge-skeu">
+                    <Lock className="w-5 h-5 text-[#4a3820]" strokeWidth={1.5} />
+                  </div>
                   <div>
-                    <p className="text-[9px] uppercase font-mono tracking-widest text-[#3b2f23]/40">Member Name</p>
-                    <p className="font-serif text-base text-[#3b2f23] font-semibold">Thomas P. Alva</p>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-[9px] uppercase font-mono tracking-widest text-[#3b2f23]/40">Family Size</p>
-                      <p className="text-sm text-[#3b2f23] font-semibold">4 members</p>
-                    </div>
-                    <div>
-                      <p className="text-[9px] uppercase font-mono tracking-widest text-[#3b2f23]/40">Contribution ID</p>
-                      <p className="text-sm text-[#3b2f23] font-semibold font-mono">#992-E</p>
-                    </div>
-                  </div>
-                  <div className="pt-4 border-t border-[#dfd8cb]">
-                    <p className="text-[11px] text-[#3b2f23]/50 italic">Dues reconcile automatically upon verification.</p>
+                    <h3 className="font-serif text-xl font-semibold text-[#3b2f23] mb-3">Secure Registry</h3>
+                    <p className="font-sans text-sm text-[#3b2f23]/70 leading-relaxed">
+                      Encrypted personal records ensure your congregation's sensitive data remains fully protected under modern security standards.
+                    </p>
                   </div>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={200}>
+              <div className="doppelrand-outer h-full">
+                <div className="doppelrand-inner p-8 flex flex-col gap-6 h-full transition-fluid hover:bg-white">
+                  <div className="coin-badge-skeu">
+                    <Users className="w-5 h-5 text-[#4a3820]" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-xl font-semibold text-[#3b2f23] mb-3">Congregation Management</h3>
+                    <p className="font-sans text-sm text-[#3b2f23]/70 leading-relaxed">
+                      Tools designed specifically for elegant, simple church administration and family connection tracking.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={300}>
+              <div className="doppelrand-outer h-full">
+                <div className="doppelrand-inner p-8 flex flex-col gap-6 h-full transition-fluid hover:bg-white">
+                  <div className="coin-badge-skeu">
+                    <BarChart3 className="w-5 h-5 text-[#4a3820]" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-xl font-semibold text-[#3b2f23] mb-3">Intuitive Reporting</h3>
+                    <p className="font-sans text-sm text-[#3b2f23]/70 leading-relaxed">
+                      Generate beautiful, clear reports and elegant member directories instantly for church committee reviews.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
           </div>
         </section>
+      </main>
 
-        {/* Testimonial / Quote Section */}
-        <section className="py-20 bg-[#e5e0d5] border-t border-[#dfd8cb] relative z-10 text-center">
-          <div className="max-w-3xl mx-auto px-6">
-            <span className="font-serif text-7xl font-semibold text-[#3b2f23]/20 leading-none select-none block h-8">&ldquo;</span>
-            <blockquote className="font-serif text-2xl md:text-3xl font-light text-[#3b2f23] italic leading-relaxed mb-6">
-              A church register is more than a list of names; it is a living testament to community, history, and shared faith.
-            </blockquote>
-            <cite className="font-mono text-xs uppercase tracking-widest text-[#3b2f23]/50 not-italic">— Administrative Guild</cite>
-          </div>
+      {/* Wrapping the rest in bg-linen-cream to switch background color below hero/features */}
+      <div className="bg-linen-cream relative z-20 border-t border-[#dfd8cb] w-full">
+        {/* Stats Section */}
+        <section className="py-24 max-w-5xl mx-auto px-6 w-full border-t border-[#3b2f23]/10">
+          <ScrollReveal>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-[#3b2f23]/10">
+              <div className="text-center md:pb-0 pb-12">
+                <span className="font-serif text-6xl md:text-7xl font-normal text-[#3b2f23] block mb-4">1,250+</span>
+                <span className="eyebrow-tag">Active Members</span>
+              </div>
+              <div className="text-center md:py-0 py-12">
+                <span className="font-serif text-6xl md:text-7xl font-normal text-[#3b2f23] block mb-4">1894</span>
+                <span className="eyebrow-tag">Year Founded</span>
+              </div>
+              <div className="text-center md:pt-0 pt-12">
+                <span className="font-serif text-6xl md:text-7xl font-normal text-[#3b2f23] block mb-4">100%</span>
+                <span className="eyebrow-tag">Secure Records</span>
+              </div>
+            </div>
+          </ScrollReveal>
+        </section>
+
+        {/* Testimonial Section */}
+        <section className="py-32 bg-[#faf9f6] border-y border-[#3b2f23]/10 relative text-center">
+          <ScrollReveal>
+            <div className="max-w-3xl mx-auto px-6">
+              <div className="mb-12 opacity-50 flex justify-center">
+                <LetterpressCross className="w-6 h-10" />
+              </div>
+              <blockquote className="font-serif text-3xl md:text-4xl lg:text-5xl font-light text-[#3b2f23] italic leading-tight mb-12">
+                "A church register is more than a list of names; it is a living testament to community, history, and shared faith."
+              </blockquote>
+              <cite className="eyebrow-tag not-italic">Administrative Guild</cite>
+            </div>
+          </ScrollReveal>
         </section>
 
         {/* Footer */}
-        <footer id="about" className="bg-[#eee9e0] border-t border-[#dfd8cb] py-16 relative z-10 text-[#3b2f23]">
-          <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+        <footer id="about" className="py-24 relative text-[#3b2f23]">
+          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12">
             {/* Branding Column */}
-            <div className="space-y-4 flex flex-col items-center md:items-start">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-10 border-2 border-[#be9d62] rounded flex items-center justify-center bg-[#faf9f6] text-[#3b2f23] shrink-0">
-                  <MethodistLogo className="h-7 w-auto" />
-                </div>
-                <span className="font-serif font-semibold text-base tracking-wide">
-                  Methodist Registry
-                </span>
-              </div>
-              <p className="text-xs text-[#3b2f23]/60 max-w-xs leading-relaxed font-sans">
+            <div className="space-y-6 flex flex-col items-center md:items-start text-center md:text-left">
+              <Link href="/" className="logo-badge-skeu group">
+                <MethodistLogo className="h-6 w-auto" />
+                <span className="text-xs font-serif font-bold tracking-wide">Methodist Registry</span>
+              </Link>
+              <p className="text-sm text-[#3b2f23]/60 max-w-xs leading-relaxed font-sans">
                 A digital member registry designed with classical restraint for Methodist Christ Church administration.
               </p>
-              <p className="text-[11px] text-[#3b2f23]/50 font-sans pt-2">
-                &copy; {new Date().getFullYear()} Methodist Registry. All rights reserved.
+              <p className="text-xs text-[#3b2f23]/40 font-sans pt-4">
+                &copy; {new Date().getFullYear()} Methodist Registry.<br/>All rights reserved.
               </p>
             </div>
 
-            {/* Location & Pastor Column */}
-            <div className="space-y-3 font-sans">
-              <h4 className="font-serif text-sm font-bold uppercase tracking-wider text-[#3b2f23]/80">Church Location</h4>
+            {/* Location Column */}
+            <div className="space-y-6 text-center md:text-left">
+              <h4 className="eyebrow-tag border-none bg-transparent px-0">Church Location</h4>
               <a 
                 href="https://maps.app.goo.gl/z49qEU4JMPh6nztf6"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-xs text-[#3b2f23]/70 space-y-1 leading-relaxed group"
+                className="block text-sm text-[#3b2f23]/70 space-y-2 leading-relaxed group"
               >
-                <p className="font-semibold text-[#3b2f23] group-hover:text-[#4a3820] group-hover:underline underline-offset-4 transition-colors">METHODIST CHRIST CHURCH, RAMPUR</p>
-                <p className="group-hover:text-[#4a3820] group-hover:underline underline-offset-4 transition-colors">15, Civil Lines, Rampur (U.P)-244901</p>
+                <p className="font-semibold text-[#3b2f23] group-hover:text-[#3b2f23] transition-colors">METHODIST CHRIST CHURCH, RAMPUR</p>
+                <p className="group-hover:text-[#3b2f23] transition-colors">15, Civil Lines, Rampur (U.P)-244901</p>
               </a>
-              <div className="text-xs text-[#3b2f23]/70 pt-2 border-t border-[#dfd8cb]/50">
-                <p className="font-mono text-[10px] uppercase tracking-wider text-[#3b2f23]/50">Pastor incharge</p>
-                <p className="font-serif text-sm font-semibold text-[#3b2f23] mt-0.5">Rev. Nitin Masih</p>
+              <div className="pt-6">
+                <p className="text-[10px] uppercase font-mono tracking-widest text-[#3b2f23]/40 mb-2">Pastor incharge</p>
+                <p className="font-serif text-lg text-[#3b2f23]">Rev. Nitin Masih</p>
               </div>
             </div>
 
-            {/* Contact Details Column */}
-            <div id="contact" className="space-y-3 font-sans">
-              <h4 className="font-serif text-sm font-bold uppercase tracking-wider text-[#3b2f23]/80">Contact Details</h4>
-              <div className="text-xs text-[#3b2f23]/70 space-y-3">
+            {/* Contact Column */}
+            <div id="contact" className="space-y-6 text-center md:text-left">
+              <h4 className="eyebrow-tag border-none bg-transparent px-0">Contact Details</h4>
+              <div className="text-sm text-[#3b2f23]/70 space-y-6">
                 <div>
-                  <p className="font-mono text-[10px] uppercase tracking-wider text-[#3b2f23]/50 mb-1">Email Address</p>
+                  <p className="text-[10px] uppercase font-mono tracking-widest text-[#3b2f23]/40 mb-2">Email Address</p>
                   <a 
                     href="mailto:vcharan1126@gmail.com" 
-                    className="text-xs font-medium text-[#3b2f23] hover:text-[#4a3820] hover:underline underline-offset-4 transition-colors"
+                    className="font-medium text-[#3b2f23] hover:opacity-70 transition-opacity"
                   >
                     vcharan1126@gmail.com
                   </a>
                 </div>
                 <div>
-                  <p className="font-mono text-[10px] uppercase tracking-wider text-[#3b2f23]/50 mb-1">Phone Number</p>
+                  <p className="text-[10px] uppercase font-mono tracking-widest text-[#3b2f23]/40 mb-2">Phone Number</p>
                   <a 
                     href="tel:9412645482" 
-                    className="text-xs font-medium text-[#3b2f23] hover:text-[#4a3820] hover:underline underline-offset-4 transition-colors"
+                    className="font-medium text-[#3b2f23] hover:opacity-70 transition-opacity"
                   >
                     +91 94126 45482
                   </a>
@@ -446,7 +420,7 @@ export default async function LandingPage() {
             </div>
           </div>
         </footer>
-      </main>
+      </div>
     </div>
   )
 }

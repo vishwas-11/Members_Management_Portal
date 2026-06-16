@@ -162,49 +162,74 @@ body {
   text-transform: uppercase;
 }
 
-/* ===== Custom Skeumorphic & Tactile Styles ===== */
+/* ===== Hybrid Premium & Textured Skeuomorphic Aesthetics ===== */
 
-/* Linen Background for Hero - Soft Sage Green #A3B899 with fine repeat green-linen texture */
-.bg-linen-green {
-  background-color: #a2b69a;
-  background-image:
-    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.15) 0%, rgba(44, 62, 43, 0.25) 100%),
-    url('/textures/green-linen.png');
-  background-blend-mode: multiply;
-  background-repeat: repeat;
-  background-size: 240px;
-  position: relative;
-}
-
-/* Light linen under the features overview - Soft, Warm Off-White Linen */
-.bg-linen-cream {
-  background-color: #f7f6f0;
-  background-image:
-    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.85) 0%, rgba(44, 62, 43, 0.05) 100%),
-    url('/textures/green-linen.png');
-  background-blend-mode: color-burn;
-  background-repeat: repeat;
-  background-size: 240px;
-}
-
-/* Gilded Letterpress Serif Text - Deep Walnut Brown #3b2f23 */
+/* Typography Scale & Weights */
 .text-skeu-heading {
   font-family: var(--font-serif);
   color: #3b2f23;
+  letter-spacing: -0.02em;
   text-shadow:
     0px 1px 1px rgba(255, 255, 255, 0.35),
     0px -1px 1px rgba(13, 20, 13, 0.75);
 }
 
-.skeu-line {
-  height: 1px;
-  background: linear-gradient(90deg, rgba(59, 47, 35, 0) 0%, rgba(59, 47, 35, 0.4) 50%, rgba(59, 47, 35, 0) 100%);
-  width: 60px;
+/* Fluid Dynamics & Custom Beziers */
+.ease-out-fluid {
+  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+.transition-fluid {
+  transition: all 700ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-/* 3D Dark Wood Button — Polished Dark Walnut Wood Block texture with 6px shadow */
-.btn-skeu-wood {
+/* Scroll Entry Animations */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(4rem);
+  filter: blur(8px);
+  transition: opacity 1000ms cubic-bezier(0.32, 0.72, 0, 1), transform 1000ms cubic-bezier(0.32, 0.72, 0, 1), filter 1000ms cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: transform, opacity, filter;
+}
+
+.scroll-reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* The Double-Bezel Architecture (Doppelrand) with Wood Texture */
+.doppelrand-outer {
+  background-color: rgba(59, 47, 35, 0.03);
+  border: 1px solid rgba(59, 47, 35, 0.08);
+  padding: 0.375rem; /* p-1.5 */
+  border-radius: 2rem;
+  /* Light Birch/Maple Wood Grain texture for the outer shell */
+  background-image:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, rgba(0, 0, 0, 0.02) 100%),
+    url('/textures/light-wood.png');
+  background-size: cover;
+  background-position: center;
+  box-shadow:
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.85),
+    0 8px 0 #c9bfab,
+    0 14px 20px rgba(44, 62, 43, 0.15);
+}
+
+.doppelrand-inner {
+  background-color: #faf9f6; /* cream inner core */
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8), 0 4px 20px rgba(59, 47, 35, 0.05);
+  border-radius: calc(2rem - 0.375rem);
+  border: 1px solid rgba(59, 47, 35, 0.04);
   position: relative;
+  overflow: hidden;
+}
+
+/* Nested CTA Button Architecture (Textured Dark Wood) */
+.btn-premium-solid {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
   background-image:
     linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.15) 100%),
     url('/textures/dark-wood.png');
@@ -217,50 +242,69 @@ body {
   border: 1px solid #1a130a;
   border-top-color: #433120;
   border-left-color: #433120;
-  border-radius: 6px;
+  padding: 0.75rem 0.75rem 0.75rem 1.5rem;
+  border-radius: 9999px; /* full pill */
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.2),
     0 6px 0 #120c06,
     0 10px 14px rgba(13, 20, 13, 0.35);
-  transition: all 0.1s ease-out;
-  transform: translateY(0);
+  transition: transform 200ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 200ms cubic-bezier(0.32, 0.72, 0, 1);
+  cursor: pointer;
 }
 
-.btn-skeu-wood:hover {
-  transform: translateY(1px);
+.btn-premium-solid:hover {
+  transform: translateY(1px) scale(0.99);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.15),
     0 5px 0 #120c06,
     0 8px 10px rgba(13, 20, 13, 0.3);
 }
 
-.btn-skeu-wood:active {
-  transform: translateY(6px);
+.btn-premium-solid:active {
+  transform: translateY(6px) scale(0.98);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.08),
     0 0px 0 #120c06,
     0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
-/* 3D Cream Claymorphic Button */
-.btn-skeu-clay {
-  position: relative;
+.btn-premium-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: transform 400ms cubic-bezier(0.32, 0.72, 0, 1), background-color 400ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.btn-premium-solid:hover .btn-premium-icon-wrapper {
+  transform: translateX(2px) scale(1.05);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-premium-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background-color: #faf9f6;
   color: #3b2f23;
   font-family: var(--font-sans);
   font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
   border: 1px solid #d5cebf;
-  border-radius: 6px;
   box-shadow:
     inset 0 1.5px 2px #ffffff,
     inset 0 -1.5px 2px rgba(0, 0, 0, 0.05),
     0 6px 0 #beb4a0,
     0 10px 14px rgba(44, 62, 43, 0.15);
-  transition: all 0.1s ease-out;
-  transform: translateY(0);
+  transition: all 200ms cubic-bezier(0.32, 0.72, 0, 1);
+  cursor: pointer;
 }
 
-.btn-skeu-clay:hover {
+.btn-premium-outline:hover {
   transform: translateY(1px);
   box-shadow:
     inset 0 1.5px 2px #ffffff,
@@ -269,45 +313,48 @@ body {
     0 8px 10px rgba(44, 62, 43, 0.12);
 }
 
-.btn-skeu-clay:active {
-  transform: translateY(6px);
-  box-shadow:
-    inset 0 1px 1px rgba(0,0,0,0.05),
-    0 0px 0 #beb4a0,
-    0 2px 4px rgba(44, 62, 43, 0.08);
-}
-
-/* 3D White/Cream Register Button in navbar */
-.btn-skeu-register {
+/* Backgrounds */
+.bg-linen-green {
+  background-color: #6a7c5c; /* Darker, richer forest/olive green */
+  background-image:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(44, 62, 43, 0.4) 100%),
+    url('/textures/green-linen.png');
+  background-blend-mode: multiply;
+  background-repeat: repeat;
+  background-size: 240px;
   position: relative;
-  background-color: #faf9f6;
-  color: #3b2f23;
-  font-family: var(--font-sans);
+}
+
+.bg-linen-cream {
+  background-color: #ebe7d9; /* Slightly darker, brown-tinted cream */
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.7) 0%, rgba(59, 47, 35, 0.1) 100%),
+    url('/textures/green-linen.png');
+  background-blend-mode: color-burn;
+  background-repeat: repeat;
+  background-size: 240px;
+}
+
+/* Eyebrow Tag */
+.eyebrow-tag {
+  display: inline-block;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
   font-weight: 600;
-  border: 1px solid #dcd5c5;
-  border-radius: 6px;
-  box-shadow:
-    inset 0 1.5px 1px #ffffff,
-    0 4px 0 #c2b9aa,
-    0 6px 10px rgba(44, 62, 43, 0.15);
-  transition: all 0.1s ease-out;
-  transform: translateY(0);
+  font-family: var(--font-mono);
+  background-color: rgba(59, 47, 35, 0.05);
+  color: #3b2f23;
+  border: 1px solid rgba(59, 47, 35, 0.1);
 }
 
-.btn-skeu-register:hover {
-  transform: translateY(1px);
-  box-shadow:
-    inset 0 1.5px 1px #ffffff,
-    0 3px 0 #c2b9aa,
-    0 5px 8px rgba(44, 62, 43, 0.12);
-}
-
-.btn-skeu-register:active {
-  transform: translateY(4px);
-  box-shadow:
-    inset 0 1px 1px rgba(0,0,0,0.05),
-    0 0px 0 #c2b9aa,
-    0 2px 4px rgba(44, 62, 43, 0.08);
+/* Subtle line separator */
+.skeu-line {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(59, 47, 35, 0) 0%, rgba(59, 47, 35, 0.4) 50%, rgba(59, 47, 35, 0) 100%);
+  width: 60px;
 }
 
 /* Ivory/Gold Navbar Plaque logo container */
@@ -316,43 +363,12 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background-color: #fdfcf9;
-  border: 1.5px solid #ebdcb9;
-  border-top-color: #f7eecf;
-  border-left-color: #f7eecf;
-  border-radius: 6px;
-  box-shadow:
-    inset 0 1px 1px #ffffff,
-    0 4px 6px rgba(44, 62, 43, 0.12);
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(59, 47, 35, 0.1);
+  border-radius: 9999px;
   font-family: var(--font-serif);
   font-weight: 600;
   color: #3b2f23;
-}
-
-/* 3D Light Wood Feature Cards — Light Birch/Maple Wood Grain texture */
-.card-skeu-wood {
-  position: relative;
-  background-image:
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.05) 100%),
-    url('/textures/light-wood.png');
-  background-size: cover;
-  background-position: center;
-  border: 1px solid #dfd8cb;
-  border-radius: 12px;
-  box-shadow:
-    inset 0 1.5px 2px rgba(255, 255, 255, 0.85),
-    0 8px 0 #c9bfab,
-    0 14px 20px rgba(44, 62, 43, 0.15);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  transform: translateY(0);
-}
-
-.card-skeu-wood:hover {
-  transform: translateY(2px);
-  box-shadow:
-    inset 0 1.5px 2px rgba(255, 255, 255, 0.85),
-    0 6px 0 #c9bfab,
-    0 10px 14px rgba(44, 62, 43, 0.12);
 }
 
 /* 3D Metallic Bronze/Gold coin-style badge containing the respective feature icon */
@@ -372,11 +388,4 @@ body {
     0 2px 2px rgba(44, 62, 43, 0.15);
   color: #4a3820;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-/* Responsive botanical branches styling */
-@media (max-width: 1024px) {
-  .botanical-flank {
-    display: none !important;
-  }
 }
