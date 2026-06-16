@@ -184,6 +184,7 @@ export default async function DashboardPage() {
               </div>
             </div>
           </div>
+        </div>
         )}
 
         {/* Dues */}

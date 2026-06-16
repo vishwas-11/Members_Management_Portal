@@ -496,7 +496,7 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
           </div>
           <div className="col-span-1 sm:col-span-3 pt-3">
             <button onClick={addDue} disabled={addingDue || !newDue.title || !newDue.amount || !newDue.due_date}
-              className="btn-skeu-wood text-xs px-5 py-2.5 flex items-center justify-center gap-1.5 min-h-[36px] w-full sm:w-fit cursor-pointer disabled:opacity-50">
+              className="btn-premium-solid group text-xs px-5 py-2.5 flex items-center justify-center gap-1.5 min-h-[36px] w-full sm:w-fit cursor-pointer disabled:opacity-50">
               {addingDue && <Loader2 className="w-4 h-4 animate-spin" />}
               Add Due Record
             </button>

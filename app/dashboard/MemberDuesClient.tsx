@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { IndianRupee, Upload, FileText, Loader2, CheckCircle2, Clock } from 'lucide-react'
+import { IndianRupee, Upload, FileText, Loader2, CheckCircle2, Clock, Leaf } from 'lucide-react'
+import { LeftOliveBranch, RightOliveBranch } from '@/components/ui/OliveBranches'
 import type { Due } from '@/types'
 
 export default function MemberDuesClient({ initialDues, userId }: { initialDues: Due[], userId: string }) {
@@ -74,25 +75,40 @@ export default function MemberDuesClient({ initialDues, userId }: { initialDues:
       <div className="doppelrand-inner p-8 relative">
         <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
         {message && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-          <div className="doppelrand-outer shadow-2xl w-full max-w-sm">
-            <div className="doppelrand-inner p-8 relative overflow-hidden flex flex-col items-center text-center animate-in fade-in zoom-in duration-200">
-              <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 ${message.type === 'success' ? 'bg-emerald-100' : 'bg-red-100'}`}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0d2119]/80 backdrop-blur-md px-4">
+          <div className="doppelrand-outer shadow-2xl w-full max-w-md relative">
+            <div className="doppelrand-inner p-10 relative overflow-hidden flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
+              {/* Olive branches inside the modal */}
+              <div className="absolute left-[-40px] top-[10%] w-[150px] opacity-20 pointer-events-none transform -rotate-12">
+                <LeftOliveBranch />
+              </div>
+              <div className="absolute right-[-40px] top-[10%] w-[150px] opacity-20 pointer-events-none transform rotate-12">
+                <RightOliveBranch />
+              </div>
+
+              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
+              
+              <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 relative z-20 border-4 shadow-inner ${message.type === 'success' ? 'bg-gradient-to-br from-emerald-100 to-emerald-200 border-emerald-50' : 'bg-gradient-to-br from-red-100 to-red-200 border-red-50'}`}>
                 {message.type === 'success' ? (
-                  <CheckCircle2 className="w-8 h-8 text-emerald-600" />
+                  <CheckCircle2 className="w-10 h-10 text-emerald-700 drop-shadow-sm" />
                 ) : (
-                  <div className="text-red-600 text-3xl font-bold">!</div>
+                  <div className="text-red-700 text-4xl font-serif font-bold drop-shadow-sm">!</div>
                 )}
               </div>
-              <h3 className="font-serif text-xl font-bold text-[#3b2f23] mb-2">
+              
+              <h3 className="font-serif text-3xl font-medium tracking-tight mb-3 bg-gradient-to-br from-[#3b2f23] to-[#5c4a3d] bg-clip-text text-transparent relative z-20 drop-shadow-sm">
                 {message.type === 'success' ? 'Proof Uploaded' : 'Upload Failed'}
               </h3>
-              <p className="text-sm text-[#3b2f23]/70 mb-6 font-medium">{message.text}</p>
+              
+              <p className="text-[15px] text-[#3b2f23]/80 mb-8 font-medium leading-relaxed relative z-20 max-w-xs mx-auto drop-shadow-sm">
+                {message.text}
+              </p>
+              
               <button
                 onClick={() => setMessage(null)}
-                className="btn-premium-solid group w-full justify-center"
+                className="btn-premium-solid group w-full justify-center text-[15px] relative z-20"
               >
-                Close
+                Continue
               </button>
             </div>
           </div>
@@ -126,22 +142,13 @@ export default function MemberDuesClient({ initialDues, userId }: { initialDues:
                     <p className="text-[11px] text-red-700 font-medium">Please re-upload a valid proof document below.</p>
                   </div>
                 )}
-              </div>
-              
-              <div className="flex flex-col items-end gap-3 min-w-[200px]">
-                <div className="flex items-center gap-4">
-                  <span className="text-sm font-bold text-[#3b2f23]">₹{due.amount.toLocaleString('en-IN')}</span>
-                  <span className={`text-[10px] px-3 py-1 rounded-full font-mono uppercase tracking-wider font-bold border shadow-sm ${
-                    due.status === 'paid' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 
-                    due.status === 'submitted' ? 'bg-amber-50 text-amber-800 border-amber-200' :
-                    'bg-rose-50 text-rose-800 border-rose-200'
-                  }`}>
-                    {due.status}
-                  </span>
-                </div>
                 
                 {(due.status === 'pending' || due.status === 'rejected') && (
-                  <div className="w-full flex flex-col gap-2 mt-2 bg-white/50 p-3 rounded-lg border border-[#dfd8cb] shadow-sm">
+                  <div className="w-full max-w-sm flex flex-col gap-3 mt-4 bg-white/60 p-4 rounded-xl border border-[#dfd8cb] shadow-sm relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#dfd8cb]/50" />
+                    <p className="text-[10px] font-mono uppercase tracking-widest text-[#3b2f23]/60 font-bold flex items-center gap-1.5">
+                      <Upload className="w-3 h-3" /> Proof of Payment
+                    </p>
                     <input 
                       type="text" 
                       placeholder="Add a note (optional)..."
@@ -149,8 +156,8 @@ export default function MemberDuesClient({ initialDues, userId }: { initialDues:
                       value={notes[due.id] || ''}
                       onChange={(e) => handleNoteChange(due.id, e.target.value)}
                     />
-                    <div className="flex items-center justify-between mt-1">
-                      <span className="text-[9px] font-mono uppercase text-[#3b2f23]/40">Max 2MB</span>
+                    <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#dfd8cb]/30">
+                      <span className="text-[9px] font-mono uppercase text-[#3b2f23]/40 font-bold">Max 2MB (JPG/PNG/PDF)</span>
                       <input
                         type="file"
                         accept=".pdf,image/*"
@@ -173,6 +180,21 @@ export default function MemberDuesClient({ initialDues, userId }: { initialDues:
                     </div>
                   </div>
                 )}
+              </div>
+              
+              <div className="flex flex-col items-end gap-3 min-w-[200px]">
+                <div className="flex items-center gap-4">
+                  <span className="text-sm font-bold text-[#3b2f23]">₹{due.amount.toLocaleString('en-IN')}</span>
+                  <span className={`text-[10px] px-3 py-1 rounded-full font-mono uppercase tracking-wider font-bold border shadow-sm ${
+                    due.status === 'paid' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 
+                    due.status === 'submitted' ? 'bg-amber-50 text-amber-800 border-amber-200' :
+                    'bg-rose-50 text-rose-800 border-rose-200'
+                  }`}>
+                    {due.status}
+                  </span>
+                </div>
+                
+                
                 {due.status === 'submitted' && (
                   <div className="flex items-center gap-1.5 text-amber-700 text-[10px] font-bold mt-1 bg-amber-50/50 px-2 py-1 rounded">
                     <Clock className="w-3 h-3" /> Under Review

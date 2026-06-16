@@ -70,14 +70,17 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
       </div>
 
       {/* Search */}
-      <div className="relative">
-        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#3b2f23]/40" />
-        <input
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder="Search by name, phone or Aadhaar..."
-          className="input-field pl-10 !border-[#dfd8cb] !bg-white/75 focus:!ring-[#3b2f23]/25 focus:!border-[#3b2f23]/50 text-[#3b2f23]"
-        />
+      <div className="doppelrand-outer shadow-sm mb-6">
+        <div className="doppelrand-inner relative flex items-center bg-white/40">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10 opacity-50" />
+          <Search className="absolute left-4 w-4 h-4 text-[#3b2f23]/40 z-20" />
+          <input
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search by name, phone or Aadhaar..."
+            className="w-full bg-transparent border-none pl-11 pr-4 py-3 text-sm font-medium text-[#3b2f23] focus:outline-none placeholder:text-[#3b2f23]/40 relative z-20 h-12"
+          />
+        </div>
       </div>
 
       {/* Table */}
