@@ -2,12 +2,13 @@
 import { useEffect, useState, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import Navbar from '@/components/ui/Navbar'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import { useForm, useFieldArray, type SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { PlusCircle, Trash2, Loader2, CheckCircle2, Camera, Upload, FileText } from 'lucide-react'
+import { PlusCircle, Trash2, Loader2, CheckCircle2, Camera, Upload, FileText, ArrowLeft } from 'lucide-react'
 import type { Member } from '@/types'
 
 const schema = z.object({
@@ -217,32 +218,41 @@ export default function ProfilePage() {
   }
 
   if (loading) return (
-    <div className="min-h-screen bg-cream-50">
+    <div className="min-h-screen bg-linen-cream">
       <Navbar role={member?.role} />
       <LoadingSpinner />
     </div>
   )
 
+  const inputClasses = "input-field !border-[#dfd8cb] !bg-white/75 focus:!ring-[#3b2f23]/25 focus:!border-[#3b2f23]/50 text-[#3b2f23]"
+  const labelClasses = "font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/60 mb-1.5 block"
+
   return (
-    <div className="min-h-screen bg-cream-50 relative overflow-hidden pb-12">
-      <div className="ambient-glow top-0 right-1/4" />
+    <div className="min-h-screen bg-linen-cream relative overflow-hidden pb-12 select-none">
+      <div className="paper-overlay" />
       <Navbar role={member?.role} userName={member?.full_name} />
       
-      <div className="max-w-2xl mx-auto px-6 py-12 relative z-10">
-        <div className="border-b border-cream-200 pb-4 mb-8">
-          <h1 className="font-serif text-3xl font-normal text-forest-800 tracking-tight">Edit Profile</h1>
-          <p className="text-xs text-gray-400 mt-1 font-sans">Update your household registration information and family connections.</p>
+      <div className="max-w-3xl mx-auto px-6 py-12 relative z-10">
+        <div className="flex flex-col sm:flex-row justify-between sm:items-end border-b border-[#dfd8cb] pb-5 mb-8 gap-4">
+          <div>
+            <h1 className="text-skeu-heading text-3xl sm:text-4xl font-normal tracking-tight">Edit Profile</h1>
+            <p className="text-sm text-[#3b2f23]/60 mt-1.5 font-sans font-medium">Update your household registration information and family connections.</p>
+          </div>
+          <Link href="/dashboard" className="btn-skeu-clay px-4 py-2 text-xs sm:text-sm flex items-center gap-2 shrink-0">
+            <ArrowLeft className="w-4 h-4" /> Dashboard
+          </Link>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit as any)} className="space-y-6">
-          <div className="card card-gradient-forest space-y-5">
-            <h2 className="font-serif text-xl font-normal text-forest-800 border-b border-cream-100 pb-3">Personal Details</h2>
+        <form onSubmit={handleSubmit(onSubmit as any)} className="space-y-8">
+          <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-8 relative overflow-hidden space-y-6">
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
+            <h2 className="font-serif text-xl font-bold text-[#3b2f23] border-b border-[#dfd8cb] pb-3">Personal Details</h2>
             
             {/* Avatar Upload Section */}
-            <div className="flex flex-col sm:flex-row items-center gap-5 pb-5 border-b border-cream-100/60">
+            <div className="flex flex-col sm:flex-row items-center gap-5 pb-5 border-b border-[#dfd8cb]/60">
               <div 
                 onClick={() => avatarUrl && setCropImageSrc(avatarUrl)}
-                className={`relative group w-20 h-20 rounded-full overflow-hidden bg-gradient-to-br from-forest-600 to-forest-800 flex items-center justify-center text-white border-2 border-cream-200 shadow-md flex-shrink-0 ${avatarUrl ? 'cursor-pointer hover:border-forest-400 transition-all' : ''}`}
+                className={`relative group w-20 h-20 rounded-full overflow-hidden bg-gradient-to-br from-[#ebd2a3] to-[#be9d62] flex items-center justify-center text-[#3b2f23] border-2 border-[#fcfbf9] shadow-md flex-shrink-0 ${avatarUrl ? 'cursor-pointer hover:border-[#3b2f23]/50 transition-all' : ''}`}
                 title={avatarUrl ? "Click to crop and adjust picture" : undefined}
               >
                 {avatarUrl ? (
@@ -254,7 +264,7 @@ export default function ProfilePage() {
                     </div>
                   </>
                 ) : (
-                  <span className="font-serif text-2xl font-light tracking-wide">{member ? getInitials(member.full_name) : ''}</span>
+                  <span className="font-serif text-2xl font-bold tracking-wide">{member ? getInitials(member.full_name) : ''}</span>
                 )}
                 
                 {uploading && (
@@ -265,7 +275,7 @@ export default function ProfilePage() {
               </div>
 
               <div className="flex flex-col items-center sm:items-start gap-1">
-                <label htmlFor="avatar-upload" className="btn-primary text-xs px-3.5 py-1.5 flex items-center gap-1.5 cursor-pointer min-h-[36px] w-fit shadow-sm">
+                <label htmlFor="avatar-upload" className="btn-skeu-clay text-xs px-3.5 py-1.5 flex items-center gap-1.5 cursor-pointer min-h-[36px] w-fit">
                   <Camera className="w-3.5 h-3.5" />
                   {avatarUrl ? 'Change Photo' : 'Upload Photo'}
                 </label>
@@ -277,53 +287,53 @@ export default function ProfilePage() {
                   disabled={uploading}
                   className="hidden"
                 />
-                <p className="text-[10px] text-gray-400 font-sans mt-1">
+                <p className="text-[10px] font-mono uppercase tracking-widest text-[#3b2f23]/50 mt-1 font-semibold">
                   JPG, JPEG or PNG. Max 2MB.
                 </p>
-                {uploadError && <p className="text-xs text-red-500 font-medium mt-1">{uploadError}</p>}
+                {uploadError && <p className="text-xs text-red-600 font-medium mt-1">{uploadError}</p>}
               </div>
             </div>
 
             <div>
-              <label className="label">Full Name</label>
-              <input {...register('full_name')} className="input-field" />
+              <label className={labelClasses}>Full Name</label>
+              <input {...register('full_name')} className={inputClasses} />
               {errors.full_name && <p className="error-msg">Full name is required</p>}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-5">
               <div>
-                <label className="label">Age</label>
-                <input {...register('age')} type="number" className="input-field" />
+                <label className={labelClasses}>Age</label>
+                <input {...register('age')} type="number" className={inputClasses} />
                 {errors.age && <p className="error-msg">Must be 18+</p>}
               </div>
               <div>
-                <label className="label">Phone</label>
-                <input {...register('phone')} className="input-field" maxLength={10} />
+                <label className={labelClasses}>Phone</label>
+                <input {...register('phone')} className={inputClasses} maxLength={10} />
                 {errors.phone && <p className="error-msg">Enter a valid mobile number</p>}
               </div>
             </div>
 
             <div>
-              <label className="label">Aadhaar Number (Read Only)</label>
-              <input value={`XXXX XXXX ${member?.aadhaar_number.slice(-4)}`} disabled className="input-field bg-cream-100 text-gray-400 border-cream-200 cursor-not-allowed" />
-              <p className="text-[10px] text-gray-400 mt-1.5 font-sans">Aadhaar cannot be changed. Contact administration if corrections are required.</p>
+              <label className={labelClasses}>Aadhaar Number (Read Only)</label>
+              <input value={`XXXX XXXX ${member?.aadhaar_number.slice(-4)}`} disabled className={`${inputClasses} !bg-[#e8e2d5]/50 !text-[#3b2f23]/50 !cursor-not-allowed`} />
+              <p className="text-[10px] text-[#3b2f23]/50 mt-1.5 font-sans font-medium">Aadhaar cannot be changed. Contact administration if corrections are required.</p>
             </div>
 
             <div>
-              <label className="label">Address</label>
-              <textarea {...register('address')} className="input-field resize-none !h-auto" rows={3} />
+              <label className={labelClasses}>Address</label>
+              <textarea {...register('address')} className={`${inputClasses} resize-none !h-auto`} rows={3} />
               {errors.address && <p className="error-msg">Enter a valid address</p>}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-5">
               <div>
-                <label className="label">Date of Birth</label>
-                <input {...register('dob')} type="date" className="input-field font-mono" />
+                <label className={labelClasses}>Date of Birth</label>
+                <input {...register('dob')} type="date" className={`${inputClasses} font-mono`} />
                 {errors.dob && <p className="error-msg">{errors.dob.message}</p>}
               </div>
               <div>
-                <label className="label">Marital Status</label>
-                <select {...register('marital_status')} className="input-field select-clean">
+                <label className={labelClasses}>Marital Status</label>
+                <select {...register('marital_status')} className={`${inputClasses} select-clean`}>
                   <option value="">Select</option>
                   <option value="Single">Single</option>
                   <option value="Married">Married</option>
@@ -335,8 +345,8 @@ export default function ProfilePage() {
             </div>
 
             <div>
-              <label className="label">Baptism/Marriage/Birth Certificate</label>
-              <div className="flex flex-col gap-2 mt-1.5 bg-cream-50/50 p-4 border border-cream-200 rounded-md">
+              <label className={labelClasses}>Baptism/Marriage/Birth Certificate</label>
+              <div className="flex flex-col gap-2 mt-1.5 bg-[#f5f3ee] p-5 border border-[#dfd8cb] rounded-lg">
                 <input
                   type="file"
                   accept=".pdf,image/*"
@@ -344,10 +354,10 @@ export default function ProfilePage() {
                   className="hidden"
                   onChange={(e) => handleFileChange(e, 'certificate_url', 'member-documents', 'certificate')}
                 />
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                   <label
                     htmlFor="head-certificate-upload"
-                    className="btn-primary text-xs px-3.5 py-1.5 flex items-center gap-1.5 cursor-pointer min-h-[36px] w-fit shadow-sm"
+                    className="btn-skeu-clay text-xs px-3.5 py-1.5 flex items-center justify-center gap-1.5 cursor-pointer min-h-[36px] w-fit"
                   >
                     {uploadingField === 'certificate_url' ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
                     {watch('certificate_url') ? 'Change Document' : 'Upload Document'}
@@ -357,44 +367,45 @@ export default function ProfilePage() {
                       href={watch('certificate_url')}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-xs text-forest-700 bg-forest-50 border border-forest-100 rounded px-3 py-1.5 hover:bg-forest-100 transition-colors font-medium"
+                      className="flex items-center justify-center gap-1.5 text-xs text-[#3b2f23] hover:text-[#4a3820] underline-offset-4 hover:underline font-bold transition-colors py-1.5"
                     >
                       <FileText className="w-4 h-4" />
                       <span>View Uploaded Certificate</span>
                     </a>
                   )}
                 </div>
-                <p className="text-[10px] text-gray-400 font-sans">
+                <p className="text-[10px] font-mono uppercase tracking-widest text-[#3b2f23]/50 font-semibold mt-1">
                   PDF, JPG, JPEG or PNG. Max 2MB.
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="card card-gradient-forest space-y-5">
-            <h2 className="font-serif text-xl font-normal text-forest-800 border-b border-cream-100 pb-3">Family Connections</h2>
+          <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-8 relative overflow-hidden space-y-6">
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
+            <h2 className="font-serif text-xl font-bold text-[#3b2f23] border-b border-[#dfd8cb] pb-3">Family Connections</h2>
             
-            <div className="space-y-4">
+            <div className="space-y-5">
               {fields.map((field, index) => (
-                <div key={field.id} className="border border-cream-200 rounded-md p-5 space-y-4 bg-cream-50/30 relative">
-                  <div className="flex justify-between items-center border-b border-cream-200/60 pb-2">
-                    <span className="text-xs font-mono font-medium text-gray-500 uppercase tracking-wider">Member #{index + 1}</span>
-                    <button type="button" onClick={() => remove(index)} className="text-red-500 hover:text-red-700 p-1 rounded transition-colors cursor-pointer">
+                <div key={field.id} className="border border-[#dfd8cb] rounded-lg p-6 space-y-5 bg-white/60 shadow-sm relative">
+                  <div className="flex justify-between items-center border-b border-[#dfd8cb]/60 pb-3">
+                    <span className="text-xs font-mono font-bold text-[#3b2f23]/60 uppercase tracking-wider">Family Member #{index + 1}</span>
+                    <button type="button" onClick={() => remove(index)} className="text-red-600 hover:text-red-800 p-1 rounded transition-colors cursor-pointer bg-red-50 hover:bg-red-100">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="col-span-2">
-                      <label className="label">Name</label>
-                      <input {...register(`family_members.${index}.name`)} className="input-field" />
+                  <div className="grid grid-cols-2 gap-5">
+                    <div className="col-span-2 sm:col-span-1">
+                      <label className={labelClasses}>Name</label>
+                      <input {...register(`family_members.${index}.name`)} className={inputClasses} />
                     </div>
                     <div>
-                      <label className="label">Age</label>
-                      <input {...register(`family_members.${index}.age`)} type="number" className="input-field" />
+                      <label className={labelClasses}>Age</label>
+                      <input {...register(`family_members.${index}.age`)} type="number" className={inputClasses} />
                     </div>
-                    <div>
-                      <label className="label">Relationship</label>
-                      <select {...register(`family_members.${index}.relationship`)} className="input-field select-clean">
+                    <div className="col-span-2 sm:col-span-2">
+                      <label className={labelClasses}>Relationship</label>
+                      <select {...register(`family_members.${index}.relationship`)} className={`${inputClasses} select-clean`}>
                         <option value="">Select</option>
                         <option>Spouse</option><option>Son</option><option>Daughter</option>
                         <option>Father</option><option>Mother</option><option>Sibling</option><option>Other</option>
@@ -402,14 +413,14 @@ export default function ProfilePage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-5">
                     <div>
-                      <label className="label">Date of Birth</label>
-                      <input {...register(`family_members.${index}.dob`)} type="date" className="input-field font-mono" />
+                      <label className={labelClasses}>Date of Birth</label>
+                      <input {...register(`family_members.${index}.dob`)} type="date" className={`${inputClasses} font-mono`} />
                     </div>
                     <div>
-                      <label className="label">Marital Status</label>
-                      <select {...register(`family_members.${index}.marital_status`)} className="input-field select-clean">
+                      <label className={labelClasses}>Marital Status</label>
+                      <select {...register(`family_members.${index}.marital_status`)} className={`${inputClasses} select-clean`}>
                         <option value="">Select</option>
                         <option value="Single">Single</option>
                         <option value="Married">Married</option>
@@ -420,23 +431,23 @@ export default function ProfilePage() {
                   </div>
 
                   <div>
-                    <label className="label">Aadhaar Number</label>
-                    <input {...register(`family_members.${index}.aadhaar_number`)} className="input-field" maxLength={12} placeholder="12-digit Aadhaar number" />
+                    <label className={labelClasses}>Aadhaar Number</label>
+                    <input {...register(`family_members.${index}.aadhaar_number`)} className={`${inputClasses} font-mono`} maxLength={12} placeholder="12-digit Aadhaar number" />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-cream-100">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4 border-t border-[#dfd8cb]">
                     <div>
-                      <label className="label">Member Photo</label>
-                      <div className="flex items-center gap-3 mt-1 bg-cream-50/50 p-3 border border-cream-200 rounded-md">
-                        <div className="w-12 h-12 rounded-full overflow-hidden bg-forest-100 border border-cream-200 flex items-center justify-center text-[#3b2f23]/40 shrink-0">
+                      <label className={labelClasses}>Member Photo</label>
+                      <div className="flex items-center gap-4 mt-2 bg-[#f5f3ee] p-4 border border-[#dfd8cb] rounded-lg">
+                        <div className="w-14 h-14 rounded-full overflow-hidden bg-[#e5e0d5] border border-[#dfd8cb] flex items-center justify-center text-[#3b2f23]/40 shrink-0 shadow-inner">
                           {watch(`family_members.${index}.avatar_url`) ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src={watch(`family_members.${index}.avatar_url`)} alt="Member Photo" className="w-full h-full object-cover" />
                           ) : (
-                            <Camera className="w-4 h-4" />
+                            <Camera className="w-5 h-5" />
                           )}
                         </div>
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-1.5">
                           <input
                             type="file"
                             accept="image/*"
@@ -446,9 +457,9 @@ export default function ProfilePage() {
                           />
                           <label
                             htmlFor={`family-photo-${index}`}
-                            className="btn-primary text-[10px] px-2.5 py-1 flex items-center gap-1 cursor-pointer min-h-[28px] w-fit shadow-sm"
+                            className="btn-skeu-clay text-[10px] px-3 py-1.5 flex items-center justify-center gap-1.5 cursor-pointer min-h-[32px] w-fit"
                           >
-                            {uploadingField === `family_members.${index}.avatar_url` ? <Loader2 className="w-3 h-3 animate-spin" /> : <Upload className="w-3 h-3" />}
+                            {uploadingField === `family_members.${index}.avatar_url` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
                             {watch(`family_members.${index}.avatar_url`) ? 'Change' : 'Upload'}
                           </label>
                         </div>
@@ -456,8 +467,8 @@ export default function ProfilePage() {
                     </div>
 
                     <div>
-                      <label className="label">Certificate Document</label>
-                      <div className="flex flex-col gap-1.5 mt-1 bg-cream-50/50 p-3 border border-cream-200 rounded-md min-h-[64px] justify-center">
+                      <label className={labelClasses}>Certificate Document</label>
+                      <div className="flex flex-col gap-2 mt-2 bg-[#f5f3ee] p-4 border border-[#dfd8cb] rounded-lg min-h-[88px] justify-center">
                         <input
                           type="file"
                           accept=".pdf,image/*"
@@ -465,12 +476,12 @@ export default function ProfilePage() {
                           className="hidden"
                           onChange={(e) => handleFileChange(e, `family_members.${index}.certificate_url`, 'member-documents', `family_${index}_certificate`)}
                         />
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-3">
                           <label
                             htmlFor={`family-certificate-${index}`}
-                            className="btn-primary text-[10px] px-2.5 py-1 flex items-center gap-1 cursor-pointer min-h-[28px] w-fit shadow-sm"
+                            className="btn-skeu-clay text-[10px] px-3 py-1.5 flex items-center justify-center gap-1.5 cursor-pointer min-h-[32px] w-fit"
                           >
-                            {uploadingField === `family_members.${index}.certificate_url` ? <Loader2 className="w-3 h-3 animate-spin" /> : <Upload className="w-3 h-3" />}
+                            {uploadingField === `family_members.${index}.certificate_url` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
                             {watch(`family_members.${index}.certificate_url`) ? 'Change' : 'Upload'}
                           </label>
                           {watch(`family_members.${index}.certificate_url`) && (
@@ -478,9 +489,9 @@ export default function ProfilePage() {
                               href={watch(`family_members.${index}.certificate_url`)}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1 text-[9px] text-forest-700 font-semibold bg-forest-50 border border-forest-100 rounded px-2 py-0.5 hover:bg-forest-100 transition-colors"
+                              className="flex items-center gap-1 text-[10px] text-[#3b2f23] font-bold bg-[#dfd8cb]/30 border border-[#dfd8cb] rounded px-2.5 py-1.5 hover:bg-[#dfd8cb]/50 transition-colors"
                             >
-                              <FileText className="w-3 h-3" />
+                              <FileText className="w-3.5 h-3.5" />
                               <span>View</span>
                             </a>
                           )}
@@ -493,20 +504,20 @@ export default function ProfilePage() {
             </div>
 
             <button type="button" onClick={() => append({ name: '', age: 0, relationship: '', dob: '', marital_status: '' as any, aadhaar_number: '', avatar_url: '', certificate_url: '' })}
-              className="w-full flex items-center justify-center gap-2 py-3 border border-dashed border-forest-600 text-forest-600 rounded-md text-sm font-medium hover:bg-cream-100 transition-all duration-200 cursor-pointer">
+              className="w-full flex items-center justify-center gap-2 py-3 border border-dashed border-[#dfd8cb] bg-[#f5f3ee]/50 text-[#3b2f23]/70 hover:text-[#3b2f23] rounded-lg text-sm font-bold hover:bg-[#f5f3ee] transition-all duration-200 cursor-pointer">
               <PlusCircle className="w-4 h-4" /> Add Family Member
             </button>
           </div>
 
-          {error && <p className="error-msg text-center font-medium">{error}</p>}
+          {error && <p className="error-msg text-center font-bold text-red-600 bg-red-50 py-2 rounded-md border border-red-100">{error}</p>}
           {saved && (
-            <div className="flex items-center justify-center gap-2 text-forest-600 text-sm font-medium">
+            <div className="flex items-center justify-center gap-2 text-emerald-800 bg-emerald-50 py-2 rounded-md border border-emerald-100 text-sm font-bold shadow-sm">
               <CheckCircle2 className="w-4 h-4 animate-bounce" /> Profile updated successfully
             </div>
           )}
           
-          <button type="submit" disabled={saving} className="btn-primary w-full flex items-center justify-center gap-2 min-h-[44px]">
-            {saving && <Loader2 className="w-4 h-4 animate-spin" />}
+          <button type="submit" disabled={saving} className="btn-skeu-wood w-full flex items-center justify-center gap-2 py-3.5 text-base shadow-lg cursor-pointer disabled:opacity-50">
+            {saving && <Loader2 className="w-5 h-5 animate-spin" />}
             {saving ? 'Saving changes...' : 'Save Changes'}
           </button>
         </form>
@@ -680,14 +691,14 @@ function ImageCropModal({ src, onCrop, onClose }: ImageCropModalProps) {
 
   return (
     <div className="fixed inset-0 z-55 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-      <div className="bg-white rounded-lg border border-cream-200 shadow-xl w-full max-w-sm p-6 relative overflow-hidden flex flex-col items-center animate-in fade-in zoom-in duration-200">
-        <h3 className="font-serif text-lg font-normal text-forest-800 border-b border-cream-100 pb-2.5 w-full text-center mb-5">
+      <div className="bg-[#fcfbf9] rounded-xl border border-[#dfd8cb] shadow-2xl w-full max-w-sm p-6 relative overflow-hidden flex flex-col items-center animate-in fade-in zoom-in duration-200">
+        <h3 className="font-serif text-lg font-bold text-[#3b2f23] border-b border-[#dfd8cb] pb-2.5 w-full text-center mb-5">
           Adjust Profile Picture
         </h3>
         
         {/* Cropper Viewport */}
         <div 
-          className="relative w-[250px] h-[250px] rounded-full overflow-hidden bg-cream-100 border border-cream-200 shadow-inner cursor-move select-none flex items-center justify-center touch-none"
+          className="relative w-[250px] h-[250px] rounded-full overflow-hidden bg-[#e8e2d5] border border-[#dfd8cb] shadow-inner cursor-move select-none flex items-center justify-center touch-none"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
@@ -698,7 +709,7 @@ function ImageCropModal({ src, onCrop, onClose }: ImageCropModalProps) {
         >
           {loading && (
             <div className="absolute inset-0 flex items-center justify-center z-10">
-              <Loader2 className="w-6 h-6 animate-spin text-forest-600" />
+              <Loader2 className="w-6 h-6 animate-spin text-[#3b2f23]/50" />
             </div>
           )}
           
@@ -721,7 +732,7 @@ function ImageCropModal({ src, onCrop, onClose }: ImageCropModalProps) {
 
         {/* Zoom Controls */}
         <div className="w-full mt-6 space-y-2.5">
-          <div className="flex justify-between items-center text-[10px] font-mono text-gray-400 uppercase tracking-wider">
+          <div className="flex justify-between items-center text-[10px] font-mono font-bold text-[#3b2f23]/60 uppercase tracking-wider">
             <span>Zoom</span>
             <span>{Math.round(zoom * 100)}%</span>
           </div>
@@ -732,7 +743,7 @@ function ImageCropModal({ src, onCrop, onClose }: ImageCropModalProps) {
             step="0.01"
             value={zoom}
             onChange={handleZoomChange}
-            className="w-full h-1.5 bg-cream-200 rounded-lg appearance-none cursor-pointer accent-forest-600 focus:outline-none"
+            className="w-full h-1.5 bg-[#dfd8cb] rounded-lg appearance-none cursor-pointer accent-[#4a3820] focus:outline-none"
           />
         </div>
 
@@ -740,13 +751,13 @@ function ImageCropModal({ src, onCrop, onClose }: ImageCropModalProps) {
         <div className="flex gap-3 w-full mt-7">
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-2 border border-cream-200 hover:border-gray-400 text-gray-500 rounded-md text-xs font-medium bg-white transition-all cursor-pointer min-h-[36px]"
+            className="flex-1 btn-skeu-clay text-xs px-4 py-2 min-h-[36px]"
           >
             Cancel
           </button>
           <button
             onClick={handleCrop}
-            className="flex-1 btn-primary text-xs px-4 py-2 flex items-center justify-center gap-1.5 min-h-[36px]"
+            className="flex-1 btn-skeu-wood text-xs px-4 py-2 flex items-center justify-center gap-1.5 min-h-[36px]"
           >
             Crop & Save
           </button>

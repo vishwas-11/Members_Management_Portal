@@ -709,8 +709,44 @@ export default function RegisterDetailsPage() {
               {step === 2 && (
                 <>
                   <div className="border-b border-[#dfd8cb] pb-4 mb-5">
-                    <h2 className="font-serif text-xl font-bold text-[#3b2f23]">Declaration</h2>
-                    <p className="text-xs text-[#3b2f23]/60 mt-1 font-sans">Please read and sign the registration declaration.</p>
+                    <h2 className="font-serif text-xl font-bold text-[#3b2f23]">Declaration & Review</h2>
+                    <p className="text-xs text-[#3b2f23]/60 mt-1 font-sans">Please review your details and sign the registration declaration.</p>
+                  </div>
+
+                  <div className="space-y-6 mb-6">
+                    <div className="bg-[#f7f6f0]/50 border border-[#dfd8cb] rounded-lg p-5 shadow-sm">
+                      <h3 className="font-serif text-lg font-bold text-[#3b2f23] mb-3 border-b border-[#dfd8cb]/50 pb-2">Family Head Summary</h3>
+                      <div className="grid grid-cols-2 gap-y-3 gap-x-4 text-xs font-sans">
+                        <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Name</span> <span className="font-semibold text-[#3b2f23]">{watch('full_name') || '-'}</span></div>
+                        <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Age</span> <span className="font-semibold text-[#3b2f23]">{watch('age') || '-'}</span></div>
+                        <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">DOB</span> <span className="font-semibold text-[#3b2f23]">{watch('dob') ? new Date(watch('dob')).toLocaleDateString('en-GB') : '-'}</span></div>
+                        <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Marital Status</span> <span className="font-semibold text-[#3b2f23]">{watch('marital_status') || '-'}</span></div>
+                        <div className="col-span-2"><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Aadhaar</span> <span className="font-semibold text-[#3b2f23] font-mono">{watch('aadhaar_number') || '-'}</span></div>
+                        <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Photo</span> <span className="font-semibold text-[#3b2f23]">{watch('avatar_url') ? '✓ Uploaded' : 'Pending'}</span></div>
+                        <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Certificate</span> <span className="font-semibold text-[#3b2f23]">{watch('certificate_url') ? '✓ Uploaded' : 'Pending'}</span></div>
+                      </div>
+                    </div>
+
+                    {watch('family_members')?.length > 0 && (
+                      <div className="bg-[#f7f6f0]/50 border border-[#dfd8cb] rounded-lg p-5 shadow-sm">
+                        <h3 className="font-serif text-lg font-bold text-[#3b2f23] mb-3 border-b border-[#dfd8cb]/50 pb-2">Family Members Summary</h3>
+                        <div className="space-y-4">
+                          {watch('family_members').map((member, idx) => (
+                            <div key={idx} className="grid grid-cols-2 gap-y-3 gap-x-4 text-xs font-sans bg-white/60 p-4 rounded-md border border-[#dfd8cb]/50 shadow-sm relative overflow-hidden">
+                              <div className="absolute top-0 left-0 w-1 h-full bg-forest-600/30" />
+                              <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Name</span> <span className="font-semibold text-[#3b2f23]">{member.name || '-'}</span></div>
+                              <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Relation</span> <span className="font-semibold text-[#3b2f23]">{member.relationship || '-'}</span></div>
+                              <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Age</span> <span className="font-semibold text-[#3b2f23]">{member.age || '-'}</span></div>
+                              <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">DOB</span> <span className="font-semibold text-[#3b2f23]">{member.dob ? new Date(member.dob).toLocaleDateString('en-GB') : '-'}</span></div>
+                              <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Marital Status</span> <span className="font-semibold text-[#3b2f23]">{member.marital_status || '-'}</span></div>
+                              <div className="col-span-2"><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Aadhaar</span> <span className="font-semibold text-[#3b2f23] font-mono">{member.aadhaar_number || '-'}</span></div>
+                              <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Photo</span> <span className="font-semibold text-[#3b2f23]">{member.avatar_url ? '✓ Uploaded' : 'Pending'}</span></div>
+                              <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Certificate</span> <span className="font-semibold text-[#3b2f23]">{member.certificate_url ? '✓ Uploaded' : 'Pending'}</span></div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Tactile Parchment Declaration box */}

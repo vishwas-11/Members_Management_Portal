@@ -28,18 +28,18 @@ export default async function DashboardPage() {
   const totalPending = pendingDues.reduce((sum, d) => sum + d.amount, 0)
 
   return (
-    <div className="min-h-screen bg-cream-50 relative overflow-hidden pb-12">
-      <div className="ambient-glow top-0 right-10" />
+    <div className="min-h-screen bg-linen-cream relative overflow-hidden pb-12 select-none">
+      <div className="paper-overlay" />
       <Navbar role="member" userName={member.full_name} />
 
       <div className="max-w-4xl mx-auto px-6 py-12 space-y-10 relative z-10">
-        <div className="border-b border-cream-200 pb-6 flex flex-col sm:flex-row sm:items-center gap-5">
-          <div className="w-16 h-16 rounded-full overflow-hidden bg-gradient-to-br from-forest-600 to-forest-800 flex items-center justify-center text-white border-2 border-cream-200 shadow-md flex-shrink-0">
+        <div className="border-b border-[#dfd8cb] pb-6 flex flex-col sm:flex-row sm:items-center gap-5">
+          <div className="w-16 h-16 rounded-full overflow-hidden bg-gradient-to-br from-[#ebd2a3] to-[#be9d62] flex items-center justify-center text-[#3b2f23] border-2 border-[#fcfbf9] shadow-md flex-shrink-0">
             {member.avatar_url ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={member.avatar_url} alt="Profile Picture" className="w-full h-full object-cover" />
             ) : (
-              <span className="font-serif text-xl font-light tracking-wide">
+              <span className="font-serif text-xl font-bold tracking-wide">
                 {member.full_name
                   .split(' ')
                   .map(n => n[0])
@@ -50,54 +50,57 @@ export default async function DashboardPage() {
             )}
           </div>
           <div>
-            <h1 className="font-serif text-3xl sm:text-4xl font-normal text-forest-800 tracking-tight">
+            <h1 className="text-skeu-heading text-3xl sm:text-4xl font-normal tracking-tight">
               Welcome, {member.full_name.split(' ')[0]}
             </h1>
-            <p className="text-sm text-gray-400 mt-1 font-sans">Your membership details, family connection, and contribution dues statement.</p>
+            <p className="text-sm text-[#3b2f23]/60 mt-1 font-sans font-medium">Your membership details, family connection, and contribution dues statement.</p>
           </div>
         </div>
 
         {/* Summary cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="card card-gradient-forest text-center flex flex-col justify-between p-6">
-            <span className="font-serif text-5xl font-light text-forest-600">{(member.family_members ?? []).length + 1}</span>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 mt-2">Family Members</span>
+          <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-6 relative overflow-hidden text-center flex flex-col justify-between">
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
+            <span className="font-serif text-5xl font-light text-[#3b2f23]">{(member.family_members ?? []).length + 1}</span>
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/50 mt-2">Family Members</span>
           </div>
-          <div className="card card-gradient-red text-center flex flex-col justify-between p-6">
-            <span className="font-serif text-5xl font-light text-red-600">₹{totalPending.toLocaleString('en-IN')}</span>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 mt-2">Dues Pending</span>
+          <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-6 relative overflow-hidden text-center flex flex-col justify-between">
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ef4444] via-[#dc2626] to-[#991b1b]" />
+            <span className="font-serif text-5xl font-light text-red-700">₹{totalPending.toLocaleString('en-IN')}</span>
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/50 mt-2">Dues Pending</span>
           </div>
-          <div className="card border-t-2 border-t-gray-400 text-center flex flex-col justify-between p-6">
-            <span className="font-serif text-5xl font-light text-gray-700">{paidDues.length}</span>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 mt-2">Payments Made</span>
+          <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-6 relative overflow-hidden text-center flex flex-col justify-between">
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#4ade80] via-[#16a34a] to-[#14532d]" />
+            <span className="font-serif text-5xl font-light text-[#3b2f23]">{paidDues.length}</span>
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#3b2f23]/50 mt-2">Payments Made</span>
           </div>
         </div>
 
         {/* Member details */}
         <div>
           <div className="mb-6 flex items-center gap-4">
-            <span className="h-px flex-1 bg-cream-200" />
-            <span className="font-mono text-xs font-medium uppercase tracking-[0.15em] text-forest-600 flex items-center gap-2">
+            <span className="skeu-line flex-1" />
+            <span className="font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-[#3b2f23]/80 flex items-center gap-2">
               <User className="w-3.5 h-3.5" /> Personal Details
             </span>
-            <span className="h-px flex-1 bg-cream-200" />
+            <span className="skeu-line flex-1" />
           </div>
-          <div className="card p-8">
+          <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-8 relative overflow-hidden">
             <div className="grid sm:grid-cols-2 gap-6 text-sm">
-              <DetailRow icon={<User className="w-4 h-4 text-forest-600" />} label="Full Name" value={member.full_name} />
-              <DetailRow icon={<CalendarDays className="w-4 h-4 text-forest-600" />} label="Age" value={`${member.age} years`} />
-              <DetailRow icon={<Phone className="w-4 h-4 text-forest-600" />} label="Phone" value={member.phone} />
-              <DetailRow icon={<Hash className="w-4 h-4 text-forest-600" />} label="Aadhaar" value={`XXXX XXXX ${member.aadhaar_number.slice(-4)}`} />
-              <DetailRow icon={<CalendarDays className="w-4 h-4 text-forest-600" />} label="Date of Birth" value={member.dob ? new Date(member.dob).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A'} />
-              <DetailRow icon={<User className="w-4 h-4 text-forest-600" />} label="Marital Status" value={member.marital_status || 'N/A'} />
+              <DetailRow icon={<User className="w-4 h-4 text-[#3b2f23]/60" />} label="Full Name" value={member.full_name} />
+              <DetailRow icon={<CalendarDays className="w-4 h-4 text-[#3b2f23]/60" />} label="Age" value={`${member.age} years`} />
+              <DetailRow icon={<Phone className="w-4 h-4 text-[#3b2f23]/60" />} label="Phone" value={member.phone} />
+              <DetailRow icon={<Hash className="w-4 h-4 text-[#3b2f23]/60" />} label="Aadhaar" value={`XXXX XXXX ${member.aadhaar_number.slice(-4)}`} />
+              <DetailRow icon={<CalendarDays className="w-4 h-4 text-[#3b2f23]/60" />} label="Date of Birth" value={member.dob ? new Date(member.dob).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A'} />
+              <DetailRow icon={<User className="w-4 h-4 text-[#3b2f23]/60" />} label="Marital Status" value={member.marital_status || 'N/A'} />
               
               {member.certificate_url && (
-                <div className="sm:col-span-2 pt-2 border-t border-cream-100/60 mt-2">
+                <div className="sm:col-span-2 pt-2 border-t border-[#dfd8cb]/50 mt-2">
                   <div className="flex items-start gap-3">
-                    <span className="mt-1 flex-shrink-0"><FileText className="w-4 h-4 text-forest-600" /></span>
+                    <span className="mt-1 flex-shrink-0"><FileText className="w-4 h-4 text-[#3b2f23]/60" /></span>
                     <div>
-                      <p className="label !mb-0.5">Certificate Document</p>
-                      <a href={member.certificate_url} target="_blank" rel="noopener noreferrer" className="text-forest-600 hover:text-forest-800 underline text-sm font-semibold flex items-center gap-1">
+                      <p className="font-mono text-[10px] uppercase tracking-widest text-[#3b2f23]/50 mb-0.5 font-bold">Certificate Document</p>
+                      <a href={member.certificate_url} target="_blank" rel="noopener noreferrer" className="text-[#3b2f23] hover:text-[#4a3820] hover:underline underline-offset-4 text-sm font-semibold flex items-center gap-1 transition-colors">
                         View Certificate
                       </a>
                     </div>
@@ -105,8 +108,8 @@ export default async function DashboardPage() {
                 </div>
               )}
 
-              <div className="sm:col-span-2 border-t border-cream-100 pt-4 mt-2">
-                <DetailRow icon={<MapPin className="w-4 h-4 text-forest-600" />} label="Address" value={member.address} />
+              <div className="sm:col-span-2 border-t border-[#dfd8cb]/50 pt-4 mt-2">
+                <DetailRow icon={<MapPin className="w-4 h-4 text-[#3b2f23]/60" />} label="Address" value={member.address} />
               </div>
             </div>
           </div>
@@ -116,39 +119,39 @@ export default async function DashboardPage() {
         {member.family_members && member.family_members.length > 0 && (
           <div>
             <div className="mb-6 flex items-center gap-4">
-              <span className="h-px flex-1 bg-cream-200" />
-              <span className="font-mono text-xs font-medium uppercase tracking-[0.15em] text-forest-600 flex items-center gap-2">
+              <span className="skeu-line flex-1" />
+              <span className="font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-[#3b2f23]/80 flex items-center gap-2">
                 <Users className="w-3.5 h-3.5" /> Family Connections
               </span>
-              <span className="h-px flex-1 bg-cream-200" />
+              <span className="skeu-line flex-1" />
             </div>
-            <div className="card p-8 space-y-4">
+            <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-8 relative overflow-hidden space-y-4">
               <div className="grid sm:grid-cols-2 gap-6">
                 {member.family_members.map((fm, i) => (
-                  <div key={i} className="flex items-start gap-4 p-5 bg-cream-100/40 border border-cream-200 rounded-lg shadow-sm">
-                    <div className="w-12 h-12 rounded-full overflow-hidden bg-forest-100 border border-cream-200 flex items-center justify-center text-forest-600 shrink-0">
+                  <div key={i} className="flex items-start gap-4 p-5 bg-white/60 border border-[#dfd8cb] rounded-lg shadow-sm">
+                    <div className="w-12 h-12 rounded-full overflow-hidden bg-[#e5e0d5] border border-[#dfd8cb] flex items-center justify-center text-[#3b2f23] shrink-0 shadow-inner">
                       {fm.avatar_url ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={fm.avatar_url} alt={fm.name} className="w-full h-full object-cover" />
                       ) : (
-                        <span className="font-serif text-sm font-medium">
+                        <span className="font-serif text-sm font-bold">
                           {fm.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()}
                         </span>
                       )}
                     </div>
                     <div className="flex-1 space-y-2 text-xs">
                       <div>
-                        <p className="text-sm font-semibold text-forest-800">{fm.name}</p>
-                        <p className="text-[9px] font-mono uppercase tracking-wider text-gray-400 mt-0.5">{fm.relationship}</p>
+                        <p className="text-sm font-bold text-[#3b2f23]">{fm.name}</p>
+                        <p className="text-[9px] font-mono uppercase tracking-wider text-[#3b2f23]/60 mt-0.5 font-bold">{fm.relationship}</p>
                       </div>
-                      <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-gray-600 font-sans">
-                        <p><strong>Age:</strong> {fm.age} yrs</p>
-                        <p><strong>Status:</strong> {fm.marital_status || 'N/A'}</p>
-                        <p className="col-span-2"><strong>DOB:</strong> {fm.dob ? new Date(fm.dob).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A'}</p>
-                        {fm.aadhaar_number && <p className="col-span-2"><strong>Aadhaar:</strong> XXXX XXXX {fm.aadhaar_number.slice(-4)}</p>}
+                      <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-[#3b2f23]/80 font-sans font-medium">
+                        <p><strong className="text-[#3b2f23]/60 font-mono text-[9px] uppercase tracking-wider">Age:</strong> {fm.age} yrs</p>
+                        <p><strong className="text-[#3b2f23]/60 font-mono text-[9px] uppercase tracking-wider">Status:</strong> {fm.marital_status || 'N/A'}</p>
+                        <p className="col-span-2"><strong className="text-[#3b2f23]/60 font-mono text-[9px] uppercase tracking-wider">DOB:</strong> {fm.dob ? new Date(fm.dob).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A'}</p>
+                        {fm.aadhaar_number && <p className="col-span-2"><strong className="text-[#3b2f23]/60 font-mono text-[9px] uppercase tracking-wider">Aadhaar:</strong> XXXX XXXX {fm.aadhaar_number.slice(-4)}</p>}
                       </div>
                       {fm.certificate_url && (
-                        <a href={fm.certificate_url} target="_blank" rel="noopener noreferrer" className="text-forest-600 hover:text-forest-800 underline font-semibold flex items-center gap-1 mt-1 text-[11px]">
+                        <a href={fm.certificate_url} target="_blank" rel="noopener noreferrer" className="text-[#3b2f23] hover:text-[#4a3820] hover:underline underline-offset-4 font-bold flex items-center gap-1 mt-1 text-[11px] transition-colors">
                           <FileText className="w-3.5 h-3.5" /> View Certificate
                         </a>
                       )}
@@ -163,25 +166,25 @@ export default async function DashboardPage() {
         {/* Dues */}
         <div>
           <div className="mb-6 flex items-center gap-4">
-            <span className="h-px flex-1 bg-cream-200" />
-            <span className="font-mono text-xs font-medium uppercase tracking-[0.15em] text-forest-600 flex items-center gap-2">
+            <span className="skeu-line flex-1" />
+            <span className="font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-[#3b2f23]/80 flex items-center gap-2">
               <IndianRupee className="w-3.5 h-3.5" /> Dues & Payments Statement
             </span>
-            <span className="h-px flex-1 bg-cream-200" />
+            <span className="skeu-line flex-1" />
           </div>
-          <div className="card p-8">
+          <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-md p-8 relative overflow-hidden">
             {!dues || dues.length === 0 ? (
-              <p className="text-sm text-gray-400 text-center py-8">No contribution history found.</p>
+              <p className="text-sm text-[#3b2f23]/50 text-center py-8 font-medium">No contribution history found.</p>
             ) : (
-              <div className="divide-y divide-cream-100 space-y-3">
+              <div className="divide-y divide-[#dfd8cb] space-y-3">
                 {dues.map((due, i) => (
                   <div key={due.id} className={`flex items-center justify-between ${i > 0 ? 'pt-4' : ''}`}>
                     <div>
-                      <p className="text-sm font-medium text-forest-800">{due.title}</p>
-                      <p className="text-[11px] font-mono text-gray-400 mt-0.5">Due date: {new Date(due.due_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                      <p className="text-sm font-bold text-[#3b2f23]">{due.title}</p>
+                      <p className="text-[10px] font-mono font-medium tracking-wider text-[#3b2f23]/50 mt-0.5 uppercase">Due: {new Date(due.due_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className="text-sm font-semibold text-forest-800">₹{due.amount.toLocaleString('en-IN')}</span>
+                      <span className="text-sm font-bold text-[#3b2f23]">₹{due.amount.toLocaleString('en-IN')}</span>
                       <span className={due.is_paid ? 'badge-paid' : 'badge-unpaid'}>
                         {due.is_paid ? 'Paid' : 'Pending'}
                       </span>
@@ -202,9 +205,10 @@ function DetailRow({ icon, label, value }: { icon: React.ReactNode; label: strin
     <div className="flex items-start gap-3">
       <span className="mt-1 flex-shrink-0">{icon}</span>
       <div>
-        <p className="label !mb-0.5">{label}</p>
-        <p className="text-forest-800 font-medium text-sm leading-relaxed">{value}</p>
+        <p className="font-mono text-[10px] uppercase tracking-widest text-[#3b2f23]/50 mb-0.5 font-bold">{label}</p>
+        <p className="text-[#3b2f23] font-semibold text-sm leading-relaxed">{value}</p>
       </div>
     </div>
   )
 }
+

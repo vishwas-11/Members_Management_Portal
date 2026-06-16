@@ -34,34 +34,36 @@ export default function Navbar({ role, userName }: NavbarProps) {
   }
 
   return (
-    <nav className="bg-white border-b border-cream-200 shadow-sm relative z-50">
-      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-forest-400 via-forest-600 to-forest-400" />
-      <div className="max-w-6xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 group hover:scale-[1.01] active:scale-[0.99] transition-transform shrink-0">
-          <div className="w-8 h-10 border border-forest-600 rounded-md flex items-center justify-center text-forest-600 group-hover:bg-cream-100 transition-colors shrink-0">
-            <MethodistLogo className="h-8 w-auto" />
+    <nav className="bg-[#fcfbf9] border-b border-[#dfd8cb] shadow-sm relative z-50">
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-[72px] flex items-center justify-between">
+        <Link href="/" className="group transition-transform hover:scale-[1.02] active:scale-[0.98]">
+          <div className="logo-badge-skeu">
+            <div className="h-8 w-5 flex items-center justify-center text-[#3b2f23] shrink-0">
+              <MethodistLogo className="h-7 w-auto" />
+            </div>
+            <span className="hidden sm:inline text-sm font-serif font-bold tracking-wide text-[#3b2f23]">
+              Methodist Registry
+            </span>
           </div>
-          <span className="font-serif font-semibold text-forest-800 text-base sm:text-lg tracking-wide group-hover:text-forest-600 transition-colors truncate">
-            Methodist Registry
-          </span>
         </Link>
-        <div className="flex items-center gap-3 sm:gap-6">
+        <div className="flex items-center gap-4 sm:gap-8">
           {role === 'admin' && (
-            <Link href="/admin" className="text-xs sm:text-sm font-medium text-gray-600 hover:text-forest-600 transition-colors tracking-wide shrink-0">
+            <Link href="/admin" className="text-xs font-sans uppercase tracking-[0.15em] font-bold text-[#3b2f23]/85 hover:text-[#3b2f23] transition-colors relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[1px] after:bg-[#3b2f23] hover:after:w-full after:transition-all shrink-0">
               Members
             </Link>
           )}
-          <Link href="/profile" className="text-xs sm:text-sm font-medium text-gray-600 hover:text-forest-600 transition-colors tracking-wide shrink-0">
+          <Link href="/profile" className="text-xs font-sans uppercase tracking-[0.15em] font-bold text-[#3b2f23]/85 hover:text-[#3b2f23] transition-colors relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[1px] after:bg-[#3b2f23] hover:after:w-full after:transition-all shrink-0">
             <span className="hidden sm:inline">My </span>Profile
           </Link>
           {userName && (
-            <span className="text-xs font-mono text-gray-400 bg-cream-100 px-2 py-0.5 rounded hidden sm:block truncate max-w-[100px] md:max-w-[150px]">
+            <span className="text-xs font-mono font-bold text-[#3b2f23]/60 bg-[#e8e2d5]/50 border border-[#dfd8cb] px-2.5 py-1 rounded hidden sm:block truncate max-w-[150px]">
               {userName}
             </span>
           )}
           <button
             onClick={handleLogout}
-            className="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-gray-600 hover:text-red-600 transition-colors cursor-pointer shrink-0"
+            className="flex items-center gap-1.5 text-xs font-sans uppercase tracking-[0.15em] font-bold text-[#3b2f23]/85 hover:text-red-700 transition-colors cursor-pointer shrink-0"
           >
             <LogOut className="w-4 h-4" />
             <span className="hidden sm:block">Logout</span>
@@ -71,3 +73,4 @@ export default function Navbar({ role, userName }: NavbarProps) {
     </nav>
   )
 }
+
