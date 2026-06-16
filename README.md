@@ -63,6 +63,6 @@ church-app/
 ├── components/ui/           # Shared UI components
 ├── lib/supabase/            # Supabase client (browser + server)
 ├── types/                   # TypeScript types
-├── middleware.ts            # Route protection + role redirect
+├── proxy.ts                 # Route protection + role redirect
 └── supabase_schema.sql      # Run this in Supabase SQL Editor
 ```
