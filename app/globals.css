@@ -32,6 +32,10 @@
   --font-mono: "IBM Plex Mono", monospace;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: linear-gradient(135deg, var(--color-cream-50) 0%, #E8F4EC 100%);
   background-attachment: fixed;

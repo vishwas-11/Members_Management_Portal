@@ -7,7 +7,7 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import { useForm, useFieldArray, type SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { PlusCircle, Trash2, Loader2, CheckCircle2, Camera } from 'lucide-react'
+import { PlusCircle, Trash2, Loader2, CheckCircle2, Camera, Upload, FileText } from 'lucide-react'
 import type { Member } from '@/types'
 
 const schema = z.object({
@@ -15,10 +15,19 @@ const schema = z.object({
   address: z.string().min(10),
   age: z.coerce.number().min(18).max(120),
   phone: z.string().regex(/^[6-9]\d{9}$/),
+  dob: z.string().min(1, 'Date of Birth is required'),
+  marital_status: z.enum(['Single', 'Married', 'Widowed', 'Divorced']),
+  avatar_url: z.string().optional(),
+  certificate_url: z.string().optional(),
   family_members: z.array(z.object({
     name: z.string().min(2),
     age: z.coerce.number().min(1).max(120),
     relationship: z.string().min(2),
+    dob: z.string().min(1, 'Date of Birth is required'),
+    marital_status: z.enum(['Single', 'Married', 'Widowed', 'Divorced']),
+    aadhaar_number: z.string().regex(/^\d{12}$/, 'Aadhaar must be exactly 12 digits'),
+    avatar_url: z.string().optional(),
+    certificate_url: z.string().optional(),
   })),
 })
 
@@ -37,7 +46,7 @@ export default function ProfilePage() {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [cropImageSrc, setCropImageSrc] = useState<string | null>(null)
 
-  const { register, control, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
+  const { register, control, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema) as any,
   })
   const { fields, append, remove } = useFieldArray({ control, name: 'family_members' })
@@ -55,6 +64,10 @@ export default function ProfilePage() {
         address: data.address,
         age: data.age,
         phone: data.phone,
+        dob: data.dob || '',
+        marital_status: data.marital_status || '',
+        avatar_url: data.avatar_url || '',
+        certificate_url: data.certificate_url || '',
         family_members: data.family_members ?? [],
       })
       setLoading(false)
@@ -140,11 +153,54 @@ export default function ProfilePage() {
       }
 
       setAvatarUrl(`${publicUrl}?t=${Date.now()}`)
+      setValue('avatar_url', publicUrl)
       setCropImageSrc(null)
     } catch (err: any) {
       setUploadError(err.message || 'Failed to upload cropped image')
     } finally {
       setUploading(false)
+    }
+  }
+
+  const [uploadingField, setUploadingField] = useState<string | null>(null)
+
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    fieldName: any,
+    bucket: string,
+    fileType: string
+  ) => {
+    try {
+      const file = e.target.files?.[0]
+      if (!file) return
+
+      if (file.size > 2 * 1024 * 1024) {
+        alert('File size must be less than 2MB.')
+        return
+      }
+
+      setUploadingField(fieldName)
+      
+      const fileExt = file.name.split('.').pop()
+      const randomId = Math.random().toString(36).substring(2, 9)
+      const filePath = `${member!.user_id}/${fileType}_${randomId}.${fileExt}`
+
+      const { error: uploadErr } = await supabase.storage
+        .from(bucket)
+        .upload(filePath, file, { upsert: true })
+
+      if (uploadErr) throw uploadErr
+
+      const { data: { publicUrl } } = supabase.storage
+        .from(bucket)
+        .getPublicUrl(filePath)
+
+      setValue(fieldName, publicUrl)
+    } catch (err: any) {
+      console.error(err)
+      alert(err.message || 'Failed to upload file')
+    } finally {
+      setUploadingField(null)
     }
   }
 
@@ -258,6 +314,61 @@ export default function ProfilePage() {
               <textarea {...register('address')} className="input-field resize-none !h-auto" rows={3} />
               {errors.address && <p className="error-msg">Enter a valid address</p>}
             </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="label">Date of Birth</label>
+                <input {...register('dob')} type="date" className="input-field font-mono" />
+                {errors.dob && <p className="error-msg">{errors.dob.message}</p>}
+              </div>
+              <div>
+                <label className="label">Marital Status</label>
+                <select {...register('marital_status')} className="input-field select-clean">
+                  <option value="">Select</option>
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Widowed">Widowed</option>
+                  <option value="Divorced">Divorced</option>
+                </select>
+                {errors.marital_status && <p className="error-msg">{errors.marital_status.message}</p>}
+              </div>
+            </div>
+
+            <div>
+              <label className="label">Baptism/Marriage/Birth Certificate</label>
+              <div className="flex flex-col gap-2 mt-1.5 bg-cream-50/50 p-4 border border-cream-200 rounded-md">
+                <input
+                  type="file"
+                  accept=".pdf,image/*"
+                  id="head-certificate-upload"
+                  className="hidden"
+                  onChange={(e) => handleFileChange(e, 'certificate_url', 'member-documents', 'certificate')}
+                />
+                <div className="flex items-center gap-3">
+                  <label
+                    htmlFor="head-certificate-upload"
+                    className="btn-primary text-xs px-3.5 py-1.5 flex items-center gap-1.5 cursor-pointer min-h-[36px] w-fit shadow-sm"
+                  >
+                    {uploadingField === 'certificate_url' ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+                    {watch('certificate_url') ? 'Change Document' : 'Upload Document'}
+                  </label>
+                  {watch('certificate_url') && (
+                    <a
+                      href={watch('certificate_url')}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 text-xs text-forest-700 bg-forest-50 border border-forest-100 rounded px-3 py-1.5 hover:bg-forest-100 transition-colors font-medium"
+                    >
+                      <FileText className="w-4 h-4" />
+                      <span>View Uploaded Certificate</span>
+                    </a>
+                  )}
+                </div>
+                <p className="text-[10px] text-gray-400 font-sans">
+                  PDF, JPG, JPEG or PNG. Max 2MB.
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="card card-gradient-forest space-y-5">
@@ -290,11 +401,98 @@ export default function ProfilePage() {
                       </select>
                     </div>
                   </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="label">Date of Birth</label>
+                      <input {...register(`family_members.${index}.dob`)} type="date" className="input-field font-mono" />
+                    </div>
+                    <div>
+                      <label className="label">Marital Status</label>
+                      <select {...register(`family_members.${index}.marital_status`)} className="input-field select-clean">
+                        <option value="">Select</option>
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
+                        <option value="Widowed">Widowed</option>
+                        <option value="Divorced">Divorced</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="label">Aadhaar Number</label>
+                    <input {...register(`family_members.${index}.aadhaar_number`)} className="input-field" maxLength={12} placeholder="12-digit Aadhaar number" />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-cream-100">
+                    <div>
+                      <label className="label">Member Photo</label>
+                      <div className="flex items-center gap-3 mt-1 bg-cream-50/50 p-3 border border-cream-200 rounded-md">
+                        <div className="w-12 h-12 rounded-full overflow-hidden bg-forest-100 border border-cream-200 flex items-center justify-center text-[#3b2f23]/40 shrink-0">
+                          {watch(`family_members.${index}.avatar_url`) ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={watch(`family_members.${index}.avatar_url`)} alt="Member Photo" className="w-full h-full object-cover" />
+                          ) : (
+                            <Camera className="w-4 h-4" />
+                          )}
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            id={`family-photo-${index}`}
+                            className="hidden"
+                            onChange={(e) => handleFileChange(e, `family_members.${index}.avatar_url`, 'profile-pictures', `family_${index}_avatar`)}
+                          />
+                          <label
+                            htmlFor={`family-photo-${index}`}
+                            className="btn-primary text-[10px] px-2.5 py-1 flex items-center gap-1 cursor-pointer min-h-[28px] w-fit shadow-sm"
+                          >
+                            {uploadingField === `family_members.${index}.avatar_url` ? <Loader2 className="w-3 h-3 animate-spin" /> : <Upload className="w-3 h-3" />}
+                            {watch(`family_members.${index}.avatar_url`) ? 'Change' : 'Upload'}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="label">Certificate Document</label>
+                      <div className="flex flex-col gap-1.5 mt-1 bg-cream-50/50 p-3 border border-cream-200 rounded-md min-h-[64px] justify-center">
+                        <input
+                          type="file"
+                          accept=".pdf,image/*"
+                          id={`family-certificate-${index}`}
+                          className="hidden"
+                          onChange={(e) => handleFileChange(e, `family_members.${index}.certificate_url`, 'member-documents', `family_${index}_certificate`)}
+                        />
+                        <div className="flex items-center gap-2">
+                          <label
+                            htmlFor={`family-certificate-${index}`}
+                            className="btn-primary text-[10px] px-2.5 py-1 flex items-center gap-1 cursor-pointer min-h-[28px] w-fit shadow-sm"
+                          >
+                            {uploadingField === `family_members.${index}.certificate_url` ? <Loader2 className="w-3 h-3 animate-spin" /> : <Upload className="w-3 h-3" />}
+                            {watch(`family_members.${index}.certificate_url`) ? 'Change' : 'Upload'}
+                          </label>
+                          {watch(`family_members.${index}.certificate_url`) && (
+                            <a
+                              href={watch(`family_members.${index}.certificate_url`)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1 text-[9px] text-forest-700 font-semibold bg-forest-50 border border-forest-100 rounded px-2 py-0.5 hover:bg-forest-100 transition-colors"
+                            >
+                              <FileText className="w-3 h-3" />
+                              <span>View</span>
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
 
-            <button type="button" onClick={() => append({ name: '', age: 0, relationship: '' })}
+            <button type="button" onClick={() => append({ name: '', age: 0, relationship: '', dob: '', marital_status: '' as any, aadhaar_number: '', avatar_url: '', certificate_url: '' })}
               className="w-full flex items-center justify-center gap-2 py-3 border border-dashed border-forest-600 text-forest-600 rounded-md text-sm font-medium hover:bg-cream-100 transition-all duration-200 cursor-pointer">
               <PlusCircle className="w-4 h-4" /> Add Family Member
             </button>

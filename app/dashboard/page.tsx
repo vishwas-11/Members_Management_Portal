@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Navbar from '@/components/ui/Navbar'
-import { User, MapPin, Phone, Hash, Users, IndianRupee, CalendarDays } from 'lucide-react'
+import { User, MapPin, Phone, Hash, Users, IndianRupee, CalendarDays, FileText } from 'lucide-react'
 import type { Member, Due } from '@/types'
 
 export default async function DashboardPage() {
@@ -88,6 +88,23 @@ export default async function DashboardPage() {
               <DetailRow icon={<CalendarDays className="w-4 h-4 text-forest-600" />} label="Age" value={`${member.age} years`} />
               <DetailRow icon={<Phone className="w-4 h-4 text-forest-600" />} label="Phone" value={member.phone} />
               <DetailRow icon={<Hash className="w-4 h-4 text-forest-600" />} label="Aadhaar" value={`XXXX XXXX ${member.aadhaar_number.slice(-4)}`} />
+              <DetailRow icon={<CalendarDays className="w-4 h-4 text-forest-600" />} label="Date of Birth" value={member.dob ? new Date(member.dob).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A'} />
+              <DetailRow icon={<User className="w-4 h-4 text-forest-600" />} label="Marital Status" value={member.marital_status || 'N/A'} />
+              
+              {member.certificate_url && (
+                <div className="sm:col-span-2 pt-2 border-t border-cream-100/60 mt-2">
+                  <div className="flex items-start gap-3">
+                    <span className="mt-1 flex-shrink-0"><FileText className="w-4 h-4 text-forest-600" /></span>
+                    <div>
+                      <p className="label !mb-0.5">Certificate Document</p>
+                      <a href={member.certificate_url} target="_blank" rel="noopener noreferrer" className="text-forest-600 hover:text-forest-800 underline text-sm font-semibold flex items-center gap-1">
+                        View Certificate
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="sm:col-span-2 border-t border-cream-100 pt-4 mt-2">
                 <DetailRow icon={<MapPin className="w-4 h-4 text-forest-600" />} label="Address" value={member.address} />
               </div>
@@ -106,14 +123,36 @@ export default async function DashboardPage() {
               <span className="h-px flex-1 bg-cream-200" />
             </div>
             <div className="card p-8 space-y-4">
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-6">
                 {member.family_members.map((fm, i) => (
-                  <div key={i} className="flex items-center justify-between py-3.5 px-4 bg-cream-100/40 border border-cream-200 rounded-md">
-                    <div>
-                      <p className="text-sm font-medium text-forest-800">{fm.name}</p>
-                      <p className="text-[10px] font-mono uppercase tracking-wider text-gray-400 mt-0.5">{fm.relationship}</p>
+                  <div key={i} className="flex items-start gap-4 p-5 bg-cream-100/40 border border-cream-200 rounded-lg shadow-sm">
+                    <div className="w-12 h-12 rounded-full overflow-hidden bg-forest-100 border border-cream-200 flex items-center justify-center text-forest-600 shrink-0">
+                      {fm.avatar_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={fm.avatar_url} alt={fm.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="font-serif text-sm font-medium">
+                          {fm.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()}
+                        </span>
+                      )}
                     </div>
-                    <span className="text-xs font-mono text-gray-500 bg-white border border-cream-200 px-2 py-0.5 rounded">{fm.age} yrs</span>
+                    <div className="flex-1 space-y-2 text-xs">
+                      <div>
+                        <p className="text-sm font-semibold text-forest-800">{fm.name}</p>
+                        <p className="text-[9px] font-mono uppercase tracking-wider text-gray-400 mt-0.5">{fm.relationship}</p>
+                      </div>
+                      <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-gray-600 font-sans">
+                        <p><strong>Age:</strong> {fm.age} yrs</p>
+                        <p><strong>Status:</strong> {fm.marital_status || 'N/A'}</p>
+                        <p className="col-span-2"><strong>DOB:</strong> {fm.dob ? new Date(fm.dob).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A'}</p>
+                        {fm.aadhaar_number && <p className="col-span-2"><strong>Aadhaar:</strong> XXXX XXXX {fm.aadhaar_number.slice(-4)}</p>}
+                      </div>
+                      {fm.certificate_url && (
+                        <a href={fm.certificate_url} target="_blank" rel="noopener noreferrer" className="text-forest-600 hover:text-forest-800 underline font-semibold flex items-center gap-1 mt-1 text-[11px]">
+                          <FileText className="w-3.5 h-3.5" /> View Certificate
+                        </a>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

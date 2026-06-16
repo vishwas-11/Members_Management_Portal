@@ -5,6 +5,92 @@ import { createClient } from '@/lib/supabase/client'
 import { Mail, Lock, Loader2, Eye, EyeOff } from 'lucide-react'
 import Link from 'next/link'
 
+// Custom SVGs for decorative elements to ensure exact match with design
+const LeftOliveBranch = () => (
+  <svg viewBox="0 0 450 350" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+    <defs>
+      <linearGradient id="goldGradLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#dfcfb3" />
+        <stop offset="50%" stopColor="#bda37a" />
+        <stop offset="100%" stopColor="#806846" />
+      </linearGradient>
+      <linearGradient id="oliveGradLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#8a9c54" />
+        <stop offset="50%" stopColor="#556b2f" />
+        <stop offset="100%" stopColor="#2c3a14" />
+      </linearGradient>
+    </defs>
+    <path d="M20,320 C100,280 220,180 280,60" stroke="url(#goldGradLeft)" strokeWidth="3" strokeLinecap="round" />
+    <path d="M120,220 C150,180 180,150 210,130" stroke="url(#goldGradLeft)" strokeWidth="1.8" />
+    <path d="M70,260 C90,210 130,180 160,165" stroke="url(#goldGradLeft)" strokeWidth="1.8" />
+
+    <path d="M280,60 C300,45 330,55 350,75 C330,85 295,80 280,60 Z" fill="url(#goldGradLeft)" stroke="#5c4a31" strokeWidth="0.5" />
+    <path d="M230,110 C250,90 290,85 310,100 C290,115 255,120 230,110 Z" fill="url(#goldGradLeft)" stroke="#5c4a31" strokeWidth="0.5" />
+    <path d="M190,140 C210,120 250,125 270,145 C250,155 210,150 190,140 Z" fill="url(#goldGradLeft)" stroke="#5c4a31" strokeWidth="0.5" />
+    <path d="M140,180 C160,160 200,165 220,185 C200,195 160,190 140,180 Z" fill="url(#goldGradLeft)" stroke="#5c4a31" strokeWidth="0.5" />
+    <path d="M90,225 C115,205 150,210 170,230 C150,240 115,235 90,225 Z" fill="url(#goldGradLeft)" stroke="#5c4a31" strokeWidth="0.5" />
+
+    <g filter="drop-shadow(2px 5px 6px rgba(0,0,0,0.35))">
+      <ellipse cx="215" cy="125" rx="12" ry="18" transform="rotate(-30 215 125)" fill="url(#oliveGradLeft)" stroke="#273310" strokeWidth="1" />
+      <circle cx="211" cy="120" r="3.5" fill="#ffffff" opacity="0.25" />
+      <ellipse cx="130" cy="190" rx="11" ry="17" transform="rotate(40 130 190)" fill="url(#oliveGradLeft)" stroke="#273310" strokeWidth="1" />
+      <circle cx="127" cy="185" r="3.5" fill="#ffffff" opacity="0.25" />
+      <ellipse cx="255" cy="85" rx="11" ry="17" transform="rotate(10 255 85)" fill="url(#oliveGradLeft)" stroke="#273310" strokeWidth="1" />
+      <circle cx="252" cy="80" r="3" fill="#ffffff" opacity="0.25" />
+    </g>
+  </svg>
+)
+
+const RightOliveBranch = () => (
+  <svg viewBox="0 0 450 350" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+    <defs>
+      <linearGradient id="goldGradRight" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stopColor="#dfcfb3" />
+        <stop offset="50%" stopColor="#bda37a" />
+        <stop offset="100%" stopColor="#806846" />
+      </linearGradient>
+      <linearGradient id="oliveGradRight" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stopColor="#8a9c54" />
+        <stop offset="50%" stopColor="#556b2f" />
+        <stop offset="100%" stopColor="#2c3a14" />
+      </linearGradient>
+    </defs>
+    <path d="M430,320 C350,280 230,180 170,60" stroke="url(#goldGradRight)" strokeWidth="3" strokeLinecap="round" />
+    <path d="M330,220 C300,180 270,150 240,130" stroke="url(#goldGradRight)" strokeWidth="1.8" />
+    <path d="M380,260 C360,210 320,180 290,165" stroke="url(#goldGradRight)" strokeWidth="1.8" />
+
+    <path d="M170,60 C150,45 120,55 100,75 C120,85 155,80 170,60 Z" fill="url(#goldGradRight)" stroke="#5c4a31" strokeWidth="0.5" />
+    <path d="M220,110 C200,90 160,85 140,100 C160,115 195,120 220,110 Z" fill="url(#goldGradRight)" stroke="#5c4a31" strokeWidth="0.5" />
+    <path d="M260,140 C240,120 200,125 180,145 C200,155 240,150 260,140 Z" fill="url(#goldGradRight)" stroke="#5c4a31" strokeWidth="0.5" />
+    <path d="M310,180 C290,160 250,165 230,185 C250,195 290,190 310,180 Z" fill="url(#goldGradRight)" stroke="#5c4a31" strokeWidth="0.5" />
+    <path d="M360,225 C335,205 300,210 280,230 C300,240 335,235 360,225 Z" fill="url(#goldGradRight)" stroke="#5c4a31" strokeWidth="0.5" />
+
+    <g filter="drop-shadow(-2px 5px 6px rgba(0,0,0,0.35))">
+      <ellipse cx="235" cy="125" rx="12" ry="18" transform="rotate(30 235 125)" fill="url(#oliveGradRight)" stroke="#273310" strokeWidth="1" />
+      <circle cx="239" cy="120" r="3.5" fill="#ffffff" opacity="0.25" />
+      <ellipse cx="320" cy="190" rx="11" ry="17" transform="rotate(-40 320 190)" fill="url(#oliveGradRight)" stroke="#273310" strokeWidth="1" />
+      <circle cx="323" cy="185" r="3.5" fill="#ffffff" opacity="0.25" />
+      <ellipse cx="195" cy="85" rx="11" ry="17" transform="rotate(-10 195 85)" fill="url(#oliveGradRight)" stroke="#273310" strokeWidth="1" />
+      <circle cx="198" cy="80" r="3" fill="#ffffff" opacity="0.25" />
+    </g>
+  </svg>
+)
+
+const LetterpressCross = ({ className = "w-6 h-10" }: { className?: string }) => (
+  <svg viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${className} filter drop-shadow-[0_1px_0.5px_rgba(255,255,255,0.45)]`}>
+    <path 
+      d="M 10,0.5 L 14,1.8 L 14,34.2 L 10,35.5 Z M 1,11 L 23,12.2 L 23,15.2 L 1,14 Z" 
+      fill="#3b2f23" 
+    />
+  </svg>
+)
+
+const Sparkle = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 drop-shadow-[0_1.5px_2px_rgba(0,0,0,0.15)]">
+    <path d="M12,0 L14.5,9.5 L24,12 L14.5,14.5 L12,24 L9.5,14.5 L0,12 L9.5,9.5 Z" fill="#ebd096" opacity="0.8" />
+  </svg>
+)
+
 const MethodistLogo = ({ className = "w-5 h-5" }: { className?: string }) => (
   <svg viewBox="0 0 216 388" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     {/* Flame (Red) */}
@@ -31,7 +117,6 @@ export default function LoginPage() {
   const [googleLoading, setGoogleLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // Primary Action: Login with Email and Password
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -49,7 +134,6 @@ export default function LoginPage() {
     }
 
     if (data?.user) {
-      // Check if member exists to redirect properly
       const { data: member } = await supabase
         .from('members')
         .select('role')
@@ -69,7 +153,6 @@ export default function LoginPage() {
     }
   }
 
-  // Action: Google OAuth sign-in
   const handleGoogleSignIn = async () => {
     setGoogleLoading(true)
     setError('')
@@ -88,91 +171,134 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream-50 flex flex-col items-center justify-center px-4 py-12 relative">
-      <div className="ambient-glow top-1/4 left-1/3" />
-      <div className="w-full max-w-md relative z-10">
+    <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-linen-green select-none px-4 py-12">
+      {/* Paper Noise Overlay for added tactility */}
+      <div className="paper-overlay" />
+
+      {/* Decorative absolute background elements */}
+      <div className="botanical-flank absolute left-[-80px] md:left-[-30px] top-[10%] w-[260px] md:w-[380px] pointer-events-none select-none z-10 opacity-90">
+        <LeftOliveBranch />
+      </div>
+      <div className="botanical-flank absolute right-[-80px] md:right-[-30px] top-[8%] w-[280px] md:w-[400px] pointer-events-none select-none z-10 opacity-90">
+        <RightOliveBranch />
+      </div>
+
+      {/* Scattered sparkles */}
+      <div className="absolute left-[15%] top-[10%] pointer-events-none select-none z-10 opacity-70">
+        <Sparkle />
+      </div>
+      <div className="absolute left-[8%] bottom-[15%] pointer-events-none select-none z-10 opacity-75">
+        <Sparkle />
+      </div>
+      <div className="absolute right-[20%] top-[12%] pointer-events-none select-none z-10 opacity-70">
+        <Sparkle />
+      </div>
+      <div className="absolute right-[6%] bottom-[12%] pointer-events-none select-none z-10 opacity-60">
+        <Sparkle />
+      </div>
+
+      <div className="w-full max-w-md relative z-20">
+        {/* Header Plaque Area */}
         <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 border border-forest-600 rounded-md flex items-center justify-center mb-4 bg-white shadow-sm text-forest-600">
-            <MethodistLogo className="w-7 h-7" />
+          <div className="mb-4 flex justify-center">
+            <LetterpressCross className="w-6 h-9" />
           </div>
-          <h1 className="font-serif text-3xl font-normal text-forest-800 text-center tracking-tight">
+          
+          <div className="mb-4 flex items-center justify-center gap-3">
+            <span className="skeu-line w-10" />
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.18em] text-[#3b2f23]/85">
+              Congregation Access
+            </span>
+            <span className="skeu-line w-10" />
+          </div>
+
+          <h1 className="text-skeu-heading text-4xl font-normal tracking-tight text-center mb-1">
             Methodist Registry
           </h1>
-          <p className="text-sm text-gray-400 mt-2 text-center font-sans">
-            Sign in to manage congregation and details
+          
+          <p className="font-sans text-[10.5px] uppercase tracking-widest text-[#3b2f23]/60 text-center mt-2 font-semibold">
+            Sign in to manage details
           </p>
         </div>
 
-        <div className="card card-gradient-forest">
+        {/* Premium Plaque Form Card */}
+        <div className="bg-[#fcfbf9] border border-[#e8e2d5] rounded-xl shadow-xl p-8 relative overflow-hidden">
+          {/* Top Gold Ribbon Accent */}
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a]" />
+
           <div className="space-y-6">
             <form onSubmit={handleLogin} className="space-y-5">
               <div>
-                <label className="label">Email Address</label>
+                <label className="label text-[#3b2f23]/70 font-mono text-[10px] uppercase tracking-wider">
+                  Email Address
+                </label>
                 <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#3b2f23]/50" />
                   <input
                     type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder="yourname@example.com"
                     required
-                    className="input-field !pl-10"
+                    className="input-field !pl-10 !border-[#dfd8cb] !bg-white/75 focus:!ring-[#3b2f23]/25 focus:!border-[#3b2f23]/50 text-[#3b2f23]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="label">Password</label>
+                <label className="label text-[#3b2f23]/70 font-mono text-[10px] uppercase tracking-wider">
+                  Password
+                </label>
                 <div className="relative">
-                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#3b2f23]/50" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     placeholder="••••••••"
                     required
-                    className="input-field !pl-10 !pr-10"
+                    className="input-field !pl-10 !pr-10 !border-[#dfd8cb] !bg-white/75 focus:!ring-[#3b2f23]/25 focus:!border-[#3b2f23]/50 text-[#3b2f23]"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#3b2f23]/50 hover:text-[#3b2f23] focus:outline-none cursor-pointer"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
-              {error && <p className="error-msg text-center font-medium">{error}</p>}
+              {error && <p className="error-msg text-center font-medium font-sans text-xs">{error}</p>}
 
               <button
                 type="submit"
                 disabled={loading || googleLoading}
-                className="btn-primary w-full flex items-center justify-center gap-2 mt-2"
+                className="btn-skeu-wood w-full py-3 flex items-center justify-center gap-2 mt-4 text-sm font-semibold select-none cursor-pointer disabled:opacity-50"
               >
-                {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-                {loading ? 'Signing in...' : 'Sign In'}
+                {loading && <Loader2 className="w-4 h-4 animate-spin text-[#ebd096]" />}
+                <span>{loading ? 'Signing in...' : 'Sign In'}</span>
               </button>
             </form>
 
             <div className="relative flex items-center justify-center my-6">
-              <div className="border-t border-cream-200 w-full"></div>
-              <span className="absolute bg-white px-3 text-[10px] text-gray-400 font-mono uppercase tracking-widest">
+              <span className="skeu-line w-full" />
+              <span className="absolute bg-[#fcfbf9] px-3 text-[10px] text-[#3b2f23]/50 font-mono uppercase tracking-widest">
                 or continue with
               </span>
             </div>
 
-            {/* Google OAuth sign-in button */}
+            {/* Google OAuth button styled as tactile claymorphic cream button */}
             <button
               type="button"
               onClick={handleGoogleSignIn}
               disabled={loading || googleLoading}
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-forest-800 rounded-md text-sm font-medium text-forest-800 bg-white hover:bg-cream-100 hover:text-forest-600 hover:border-forest-600 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+              className="btn-skeu-clay w-full py-3 flex items-center justify-center gap-2 text-sm font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {googleLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
               ) : (
-                <svg className="w-4 h-4" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                   <path
                     fill="#4285F4"
                     d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -191,14 +317,14 @@ export default function LoginPage() {
                   />
                 </svg>
               )}
-              {googleLoading ? 'Redirecting...' : 'Continue with Google'}
+              <span>{googleLoading ? 'Redirecting...' : 'Google'}</span>
             </button>
           </div>
         </div>
 
-        <p className="text-sm text-gray-500 text-center mt-8 font-sans">
+        <p className="text-xs text-[#3b2f23]/60 text-center mt-8 font-sans font-medium">
           First time here?{' '}
-          <Link href="/register" className="text-forest-600 font-medium hover:text-gold-hover hover:underline transition-colors">
+          <Link href="/register" className="text-[#3b2f23] font-bold hover:underline transition-colors decoration-[#3b2f23]/40 underline-offset-4 decoration-1">
             Register
           </Link>
         </p>

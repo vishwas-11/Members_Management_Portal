@@ -73,32 +73,12 @@ const RightOliveBranch = () => (
   </svg>
 )
 
-const GildedCross = ({ size = "w-10 h-16" }: { size?: string }) => (
-  <svg viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${size} drop-shadow-[0_4px_6px_rgba(0,0,0,0.45)]`}>
-    <defs>
-      <linearGradient id="goldGradCross" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#ebd2a3" />
-        <stop offset="50%" stopColor="#be9d62" />
-        <stop offset="100%" stopColor="#76592a" />
-      </linearGradient>
-    </defs>
-    <path d="M34,6 h12 v108 h-12 Z" fill="url(#goldGradCross)" stroke="#4d3c22" strokeWidth="1.5" strokeLinejoin="round" />
-    <path d="M12,38 h56 v12 h-56 Z" fill="url(#goldGradCross)" stroke="#4d3c22" strokeWidth="1.5" strokeLinejoin="round" />
-
-    <circle cx="40" cy="12" r="2.2" fill="#ffffff" stroke="#76592a" strokeWidth="0.5" />
-    <circle cx="40" cy="24" r="2.2" fill="#ffffff" stroke="#76592a" strokeWidth="0.5" />
-    <circle cx="40" cy="36" r="2.2" fill="#ffffff" stroke="#76592a" strokeWidth="0.5" />
-    <circle cx="40" cy="44" r="2.2" fill="#ffffff" stroke="#76592a" strokeWidth="0.5" />
-    <circle cx="40" cy="56" r="2.2" fill="#ffffff" stroke="#76592a" strokeWidth="0.5" />
-    <circle cx="40" cy="68" r="2.2" fill="#ffffff" stroke="#76592a" strokeWidth="0.5" />
-    <circle cx="40" cy="80" r="2.2" fill="#ffffff" stroke="#76592a" strokeWidth="0.5" />
-    <circle cx="40" cy="92" r="2.2" fill="#ffffff" stroke="#76592a" strokeWidth="0.5" />
-    <circle cx="40" cy="104" r="2.2" fill="#ffffff" stroke="#76592a" strokeWidth="0.5" />
-
-    <circle cx="18" cy="44" r="2.2" fill="#ffffff" stroke="#76592a" strokeWidth="0.5" />
-    <circle cx="29" cy="44" r="2.2" fill="#ffffff" stroke="#76592a" strokeWidth="0.5" />
-    <circle cx="51" cy="44" r="2.2" fill="#ffffff" stroke="#76592a" strokeWidth="0.5" />
-    <circle cx="62" cy="44" r="2.2" fill="#ffffff" stroke="#76592a" strokeWidth="0.5" />
+const LetterpressCross = ({ className = "w-6 h-10" }: { className?: string }) => (
+  <svg viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${className} filter drop-shadow-[0_1px_0.5px_rgba(255,255,255,0.45)]`}>
+    <path 
+      d="M 10,0.5 L 14,1.8 L 14,34.2 L 10,35.5 Z M 1,11 L 23,12.2 L 23,15.2 L 1,14 Z" 
+      fill="#3b2f23" 
+    />
   </svg>
 )
 
@@ -170,15 +150,7 @@ export default async function LandingPage() {
         <RightOliveBranch />
       </div>
 
-      {/* Left pearl cross */}
-      <div className="botanical-flank absolute left-[8%] top-[190px] pointer-events-none select-none z-10 hidden sm:block">
-        <GildedCross size="w-8 h-12" />
-      </div>
 
-      {/* Right pearl cross */}
-      <div className="botanical-flank absolute right-[10%] top-[390px] pointer-events-none select-none z-10 hidden sm:block">
-        <GildedCross size="w-8 h-12" />
-      </div>
 
       {/* Scattered sparkles */}
       <div className="absolute left-[18%] top-[160px] pointer-events-none select-none z-10 opacity-70">
@@ -200,8 +172,8 @@ export default async function LandingPage() {
           {/* Logo Badge (Ivory/Gold Plaque logo container) */}
           <Link href="/" className="group transition-transform hover:scale-[1.02] active:scale-[0.98]">
             <div className="logo-badge-skeu">
-              <div className="w-5 h-5 flex items-center justify-center text-[#3b2f23]">
-                <MethodistLogo className="w-4.5 h-4.5" />
+              <div className="h-9 w-6 flex items-center justify-center text-[#3b2f23] shrink-0">
+                <MethodistLogo className="h-8 w-auto" />
               </div>
               <span className="text-sm font-serif font-bold tracking-wide text-[#3b2f23]">
                 Methodist Registry
@@ -213,9 +185,6 @@ export default async function LandingPage() {
           <nav className="hidden md:flex items-center gap-8 text-[#3b2f23]/85 font-sans text-xs uppercase tracking-[0.15em] font-semibold">
             <Link href="#features" className="hover:text-[#3b2f23] transition-colors relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[1px] after:bg-[#3b2f23] hover:after:w-full after:transition-all">
               Features
-            </Link>
-            <Link href="#pricing" className="hover:text-[#3b2f23] transition-colors relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[1px] after:bg-[#3b2f23] hover:after:w-full after:transition-all">
-              Pricing
             </Link>
             <Link href="#about" className="hover:text-[#3b2f23] transition-colors relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[1px] after:bg-[#3b2f23] hover:after:w-full after:transition-all">
               About
@@ -252,6 +221,9 @@ export default async function LandingPage() {
 
       {/* Hero Section */}
       <section className="py-20 md:py-28 max-w-5xl mx-auto px-6 text-center relative z-20">
+        <div className="mb-6 flex justify-center">
+          <LetterpressCross className="w-6 h-9" />
+        </div>
         <div className="mb-6 flex items-center justify-center gap-4 max-w-[280px] mx-auto">
           <span className="skeu-line" />
           <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-[#3b2f23]/85">
@@ -410,20 +382,63 @@ export default async function LandingPage() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-[#eee9e0] border-t border-[#dfd8cb] py-12 relative z-10">
-          <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 border-2 border-[#be9d62] rounded flex items-center justify-center bg-[#faf9f6] text-[#3b2f23]">
-                <MethodistLogo className="w-3.5 h-3.5" />
+        <footer id="about" className="bg-[#eee9e0] border-t border-[#dfd8cb] py-16 relative z-10 text-[#3b2f23]">
+          <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+            {/* Branding Column */}
+            <div className="space-y-4 flex flex-col items-center md:items-start">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-10 border-2 border-[#be9d62] rounded flex items-center justify-center bg-[#faf9f6] text-[#3b2f23] shrink-0">
+                  <MethodistLogo className="h-7 w-auto" />
+                </div>
+                <span className="font-serif font-semibold text-base tracking-wide">
+                  Methodist Registry
+                </span>
               </div>
-              <span className="font-serif font-semibold text-sm text-[#3b2f23] tracking-wide">
-                Methodist Member Registry
-              </span>
+              <p className="text-xs text-[#3b2f23]/60 max-w-xs leading-relaxed font-sans">
+                A digital member registry designed with classical restraint for Methodist Christ Church administration.
+              </p>
+              <p className="text-[11px] text-[#3b2f23]/50 font-sans pt-2">
+                &copy; {new Date().getFullYear()} Methodist Registry. All rights reserved.
+              </p>
             </div>
 
-            <p className="text-xs text-[#3b2f23]/50 font-sans">
-              &copy; {new Date().getFullYear()} Methodist Registry. All rights reserved. Designed with classical elegance.
-            </p>
+            {/* Location & Pastor Column */}
+            <div className="space-y-3 font-sans">
+              <h4 className="font-serif text-sm font-bold uppercase tracking-wider text-[#3b2f23]/80">Church Location</h4>
+              <div className="text-xs text-[#3b2f23]/70 space-y-1 leading-relaxed">
+                <p className="font-semibold text-[#3b2f23]">METHODIST CHRIST CHURCH, RAMPUR</p>
+                <p>15, Civil Lines, Rampur (U.P)-244901</p>
+              </div>
+              <div className="text-xs text-[#3b2f23]/70 pt-2 border-t border-[#dfd8cb]/50">
+                <p className="font-mono text-[10px] uppercase tracking-wider text-[#3b2f23]/50">Pastor incharge</p>
+                <p className="font-serif text-sm font-semibold text-[#3b2f23] mt-0.5">Rev. Nitin Masih</p>
+              </div>
+            </div>
+
+            {/* Contact Details Column */}
+            <div id="contact" className="space-y-3 font-sans">
+              <h4 className="font-serif text-sm font-bold uppercase tracking-wider text-[#3b2f23]/80">Contact Details</h4>
+              <div className="text-xs text-[#3b2f23]/70 space-y-3">
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-wider text-[#3b2f23]/50 mb-1">Email Address</p>
+                  <a 
+                    href="mailto:vishwascharan11@gmail.com" 
+                    className="text-xs font-medium text-[#3b2f23] hover:text-[#4a3820] hover:underline underline-offset-4 transition-colors"
+                  >
+                    vishwascharan11@gmail.com
+                  </a>
+                </div>
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-wider text-[#3b2f23]/50 mb-1">Phone Number</p>
+                  <a 
+                    href="tel:7906024886" 
+                    className="text-xs font-medium text-[#3b2f23] hover:text-[#4a3820] hover:underline underline-offset-4 transition-colors"
+                  >
+                    +91 79060 24886
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </footer>
       </main>

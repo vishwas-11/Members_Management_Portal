@@ -1,10 +1,16 @@
 export type Role = 'member' | 'admin'
+export type MaritalStatus = 'Single' | 'Married' | 'Widowed' | 'Divorced'
 
 export interface FamilyMember {
   id?: string
   name: string
   age: number
   relationship: string
+  dob?: string
+  avatar_url?: string
+  marital_status?: MaritalStatus
+  aadhaar_number?: string
+  certificate_url?: string
 }
 
 export interface Member {
@@ -20,6 +26,9 @@ export interface Member {
   declaration_signed: boolean
   declaration_signed_at?: string
   avatar_url?: string
+  dob?: string
+  marital_status?: MaritalStatus
+  certificate_url?: string
   created_at: string
   updated_at: string
 }

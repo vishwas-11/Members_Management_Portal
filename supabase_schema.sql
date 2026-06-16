@@ -13,6 +13,9 @@ create table if not exists public.members (
   family_members jsonb default '[]'::jsonb,
   declaration_signed boolean default false,
   declaration_signed_at timestamptz,
+  dob date,
+  marital_status text check (marital_status in ('Single', 'Married', 'Widowed', 'Divorced')),
+  certificate_url text,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
@@ -110,3 +113,63 @@ $$ language plpgsql;
 create trigger members_updated_at
   before update on public.members
   for each row execute function public.handle_updated_at();
+
+-- Configure storage buckets for profile pictures and member documents
+insert into storage.buckets (id, name, public)
+values 
+  ('profile-pictures', 'profile-pictures', true),
+  ('member-documents', 'member-documents', true)
+on conflict (id) do nothing;
+
+-- Create storage RLS policies (drop first to prevent conflict)
+do $$
+begin
+  drop policy if exists "Allow public read access to profile pictures" on storage.objects;
+  drop policy if exists "Allow public read access to member documents" on storage.objects;
+  drop policy if exists "Allow authenticated users to insert profile pictures" on storage.objects;
+  drop policy if exists "Allow authenticated users to update profile pictures" on storage.objects;
+  drop policy if exists "Allow authenticated users to delete profile pictures" on storage.objects;
+  drop policy if exists "Allow authenticated users to insert member documents" on storage.objects;
+  drop policy if exists "Allow authenticated users to update member documents" on storage.objects;
+  drop policy if exists "Allow authenticated users to delete member documents" on storage.objects;
+end $$;
+
+create policy "Allow public read access to profile pictures"
+  on storage.objects for select
+  using (bucket_id = 'profile-pictures');
+
+create policy "Allow public read access to member documents"
+  on storage.objects for select
+  using (bucket_id = 'member-documents');
+
+create policy "Allow authenticated users to insert profile pictures"
+  on storage.objects for insert
+  to authenticated
+  with check (bucket_id = 'profile-pictures');
+
+create policy "Allow authenticated users to update profile pictures"
+  on storage.objects for update
+  to authenticated
+  using (bucket_id = 'profile-pictures')
+  with check (bucket_id = 'profile-pictures');
+
+create policy "Allow authenticated users to delete profile pictures"
+  on storage.objects for delete
+  to authenticated
+  using (bucket_id = 'profile-pictures');
+
+create policy "Allow authenticated users to insert member documents"
+  on storage.objects for insert
+  to authenticated
+  with check (bucket_id = 'member-documents');
+
+create policy "Allow authenticated users to update member documents"
+  on storage.objects for update
+  to authenticated
+  using (bucket_id = 'member-documents')
+  with check (bucket_id = 'member-documents');
+
+create policy "Allow authenticated users to delete member documents"
+  on storage.objects for delete
+  to authenticated
+  using (bucket_id = 'member-documents');

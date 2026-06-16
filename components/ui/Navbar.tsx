@@ -38,8 +38,8 @@ export default function Navbar({ role, userName }: NavbarProps) {
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-forest-400 via-forest-600 to-forest-400" />
       <div className="max-w-6xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group hover:scale-[1.01] active:scale-[0.99] transition-transform shrink-0">
-          <div className="w-8 h-8 border border-forest-600 rounded-md flex items-center justify-center text-forest-600 group-hover:bg-cream-100 transition-colors shrink-0">
-            <MethodistLogo className="w-4.5 h-4.5" />
+          <div className="w-8 h-10 border border-forest-600 rounded-md flex items-center justify-center text-forest-600 group-hover:bg-cream-100 transition-colors shrink-0">
+            <MethodistLogo className="h-8 w-auto" />
           </div>
           <span className="font-serif font-semibold text-forest-800 text-base sm:text-lg tracking-wide group-hover:text-forest-600 transition-colors truncate">
             Methodist Registry

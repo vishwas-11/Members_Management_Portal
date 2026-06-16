@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useForm, useFieldArray, type SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { ArrowLeft, PlusCircle, Trash2, Loader2, CheckCircle2, IndianRupee } from 'lucide-react'
+import { ArrowLeft, PlusCircle, Trash2, Loader2, CheckCircle2, IndianRupee, Upload, FileText, Camera } from 'lucide-react'
 import Link from 'next/link'
 import type { Member, Due } from '@/types'
 
@@ -15,10 +15,19 @@ const memberSchema = z.object({
   age: z.coerce.number().min(1).max(120),
   phone: z.string().regex(/^[6-9]\d{9}$/),
   role: z.enum(['member', 'admin']),
+  dob: z.string().min(1, 'Date of Birth is required'),
+  marital_status: z.enum(['Single', 'Married', 'Widowed', 'Divorced']),
+  avatar_url: z.string().optional(),
+  certificate_url: z.string().optional(),
   family_members: z.array(z.object({
     name: z.string().min(2),
     age: z.coerce.number().min(1).max(120),
     relationship: z.string().min(2),
+    dob: z.string().min(1, 'Date of Birth is required'),
+    marital_status: z.enum(['Single', 'Married', 'Widowed', 'Divorced']),
+    aadhaar_number: z.string().regex(/^\d{12}$/, 'Aadhaar must be exactly 12 digits'),
+    avatar_url: z.string().optional(),
+    certificate_url: z.string().optional(),
   })),
 })
 
@@ -41,7 +50,9 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
     .join('')
     .toUpperCase();
 
-  const { register, control, handleSubmit, formState: { errors } } = useForm<MemberForm>({
+  const [uploadingField, setUploadingField] = useState<string | null>(null)
+
+  const { register, control, handleSubmit, setValue, watch, formState: { errors } } = useForm<MemberForm>({
     resolver: zodResolver(memberSchema) as any,
     defaultValues: {
       full_name: member.full_name,
@@ -49,10 +60,54 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
       age: member.age,
       phone: member.phone,
       role: member.role,
+      dob: member.dob || '',
+      marital_status: (member.marital_status || '') as any,
+      avatar_url: member.avatar_url || '',
+      certificate_url: member.certificate_url || '',
       family_members: member.family_members ?? [],
     },
   })
   const { fields, append, remove } = useFieldArray({ control, name: 'family_members' })
+
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    fieldName: any,
+    bucket: string,
+    fileType: string
+  ) => {
+    try {
+      const file = e.target.files?.[0]
+      if (!file) return
+
+      if (file.size > 2 * 1024 * 1024) {
+        alert('File size must be less than 2MB.')
+        return
+      }
+
+      setUploadingField(fieldName)
+      
+      const fileExt = file.name.split('.').pop()
+      const randomId = Math.random().toString(36).substring(2, 9)
+      const filePath = `${member.user_id}/${fileType}_${randomId}.${fileExt}`
+
+      const { error: uploadErr } = await supabase.storage
+        .from(bucket)
+        .upload(filePath, file, { upsert: true })
+
+      if (uploadErr) throw uploadErr
+
+      const { data: { publicUrl } } = supabase.storage
+        .from(bucket)
+        .getPublicUrl(filePath)
+
+      setValue(fieldName, publicUrl)
+    } catch (err: any) {
+      console.error(err)
+      alert(err.message || 'Failed to upload file')
+    } finally {
+      setUploadingField(null)
+    }
+  }
 
   const onSubmit: SubmitHandler<MemberForm> = async (data) => {
     setSaving(true); setSaveError(''); setSaved(false)
@@ -147,6 +202,90 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
             <textarea {...register('address')} className="input-field resize-none !h-auto" rows={3} />
           </div>
 
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="label">Date of Birth</label>
+              <input {...register('dob')} type="date" className="input-field font-mono" />
+              {errors.dob && <p className="error-msg">{errors.dob.message}</p>}
+            </div>
+            <div>
+              <label className="label">Marital Status</label>
+              <select {...register('marital_status')} className="input-field select-clean">
+                <option value="">Select</option>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Divorced">Divorced</option>
+              </select>
+              {errors.marital_status && <p className="error-msg">{errors.marital_status.message}</p>}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-cream-100">
+            <div>
+              <label className="label">Photo URL / Upload</label>
+              <div className="flex items-center gap-3 mt-1 bg-cream-50/50 p-3 border border-cream-200 rounded-md">
+                <div className="w-12 h-12 rounded-full overflow-hidden bg-forest-100 border border-cream-200 flex items-center justify-center text-[#3b2f23]/40 shrink-0">
+                  {watch('avatar_url') ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={watch('avatar_url')} alt="Photo" className="w-full h-full object-cover" />
+                  ) : (
+                    <Camera className="w-4 h-4" />
+                  )}
+                </div>
+                <div className="flex flex-col gap-1">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="admin-head-photo"
+                    className="hidden"
+                    onChange={(e) => handleFileChange(e, 'avatar_url', 'profile-pictures', 'avatar')}
+                  />
+                  <label
+                    htmlFor="admin-head-photo"
+                    className="btn-primary text-[10px] px-2.5 py-1 flex items-center gap-1 cursor-pointer min-h-[28px] w-fit shadow-sm"
+                  >
+                    {uploadingField === 'avatar_url' ? <Loader2 className="w-3 h-3 animate-spin" /> : <Upload className="w-3 h-3" />}
+                    {watch('avatar_url') ? 'Change' : 'Upload'}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="label">Certificate Document</label>
+              <div className="flex flex-col gap-1.5 mt-1 bg-cream-50/50 p-3 border border-cream-200 rounded-md min-h-[64px] justify-center">
+                <input
+                  type="file"
+                  accept=".pdf,image/*"
+                  id="admin-head-certificate"
+                  className="hidden"
+                  onChange={(e) => handleFileChange(e, 'certificate_url', 'member-documents', 'certificate')}
+                />
+                <div className="flex items-center gap-2">
+                  <label
+                    htmlFor="admin-head-certificate"
+                    className="btn-primary text-[10px] px-2.5 py-1 flex items-center gap-1 cursor-pointer min-h-[28px] w-fit shadow-sm"
+                  >
+                    {uploadingField === 'certificate_url' ? <Loader2 className="w-3 h-3 animate-spin" /> : <Upload className="w-3 h-3" />}
+                    {watch('certificate_url') ? 'Change' : 'Upload'}
+                  </label>
+                  {watch('certificate_url') && (
+                    <a
+                      href={watch('certificate_url')}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-[9px] text-forest-700 font-semibold bg-forest-50 border border-forest-100 rounded px-2 py-0.5 hover:bg-forest-100 transition-colors"
+                    >
+                      <FileText className="w-3 h-3" />
+                      <span>View</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div>
             <label className="label">Account Role</label>
             <select {...register('role')} className="input-field select-clean">
@@ -186,11 +325,98 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
                     </select>
                   </div>
                 </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="label">Date of Birth</label>
+                    <input {...register(`family_members.${index}.dob`)} type="date" className="input-field font-mono" />
+                  </div>
+                  <div>
+                    <label className="label">Marital Status</label>
+                    <select {...register(`family_members.${index}.marital_status`)} className="input-field select-clean">
+                      <option value="">Select</option>
+                      <option value="Single">Single</option>
+                      <option value="Married">Married</option>
+                      <option value="Widowed">Widowed</option>
+                      <option value="Divorced">Divorced</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="label">Aadhaar Number</label>
+                  <input {...register(`family_members.${index}.aadhaar_number`)} className="input-field" maxLength={12} placeholder="12-digit Aadhaar number" />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-cream-100">
+                  <div>
+                    <label className="label">Member Photo</label>
+                    <div className="flex items-center gap-3 mt-1 bg-cream-50/50 p-3 border border-cream-200 rounded-md">
+                      <div className="w-12 h-12 rounded-full overflow-hidden bg-forest-100 border border-cream-200 flex items-center justify-center text-[#3b2f23]/40 shrink-0">
+                        {watch(`family_members.${index}.avatar_url`) ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={watch(`family_members.${index}.avatar_url`)} alt="Member Photo" className="w-full h-full object-cover" />
+                        ) : (
+                          <Camera className="w-4 h-4" />
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          id={`admin-family-photo-${index}`}
+                          className="hidden"
+                          onChange={(e) => handleFileChange(e, `family_members.${index}.avatar_url`, 'profile-pictures', `family_${index}_avatar`)}
+                        />
+                        <label
+                          htmlFor={`admin-family-photo-${index}`}
+                          className="btn-primary text-[10px] px-2.5 py-1 flex items-center gap-1 cursor-pointer min-h-[28px] w-fit shadow-sm"
+                        >
+                          {uploadingField === `family_members.${index}.avatar_url` ? <Loader2 className="w-3 h-3 animate-spin" /> : <Upload className="w-3 h-3" />}
+                          {watch(`family_members.${index}.avatar_url`) ? 'Change' : 'Upload'}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="label">Certificate Document</label>
+                    <div className="flex flex-col gap-1.5 mt-1 bg-cream-50/50 p-3 border border-cream-200 rounded-md min-h-[64px] justify-center">
+                      <input
+                        type="file"
+                        accept=".pdf,image/*"
+                        id={`admin-family-certificate-${index}`}
+                        className="hidden"
+                        onChange={(e) => handleFileChange(e, `family_members.${index}.certificate_url`, 'member-documents', `family_${index}_certificate`)}
+                      />
+                      <div className="flex items-center gap-2">
+                        <label
+                          htmlFor={`admin-family-certificate-${index}`}
+                          className="btn-primary text-[10px] px-2.5 py-1 flex items-center gap-1 cursor-pointer min-h-[28px] w-fit shadow-sm"
+                        >
+                          {uploadingField === `family_members.${index}.certificate_url` ? <Loader2 className="w-3 h-3 animate-spin" /> : <Upload className="w-3 h-3" />}
+                          {watch(`family_members.${index}.certificate_url`) ? 'Change' : 'Upload'}
+                        </label>
+                        {watch(`family_members.${index}.certificate_url`) && (
+                          <a
+                            href={watch(`family_members.${index}.certificate_url`)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1 text-[9px] text-forest-700 font-semibold bg-forest-50 border border-forest-100 rounded px-2 py-0.5 hover:bg-forest-100 transition-colors"
+                          >
+                            <FileText className="w-3 h-3" />
+                            <span>View</span>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
 
-          <button type="button" onClick={() => append({ name: '', age: 0, relationship: '' })}
+          <button type="button" onClick={() => append({ name: '', age: 0, relationship: '', dob: '', marital_status: '' as any, aadhaar_number: '', avatar_url: '', certificate_url: '' })}
             className="w-full flex items-center justify-center gap-2 py-3 border border-dashed border-forest-600 text-forest-600 rounded-md text-sm font-medium hover:bg-cream-100 transition-all duration-200 cursor-pointer">
             <PlusCircle className="w-4 h-4" /> Add Family Member
           </button>
