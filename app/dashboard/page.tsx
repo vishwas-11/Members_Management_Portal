@@ -65,6 +65,12 @@ export default async function DashboardPage() {
             <h1 className="text-4xl sm:text-5xl font-serif font-medium tracking-tight bg-gradient-to-br from-[#fcfbf9] via-[#e8d5b5] to-[#c5b799] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(13,33,25,0.8)]">
               Welcome, {member.full_name.split(' ')[0]}
             </h1>
+            <div className="mt-3 inline-flex items-center gap-2 bg-[#fcfbf9]/10 border border-[#fcfbf9]/20 rounded-full px-3 py-1">
+              <span className="w-2 h-2 rounded-full bg-forest-400" />
+              <span className="font-mono text-xs font-bold tracking-widest text-[#fcfbf9] uppercase">
+                Member ID: {member.member_code || 'Pending'}
+              </span>
+            </div>
             <p className="text-sm text-[#faf9f6]/70 mt-2 font-sans font-medium drop-shadow-sm">Your membership details, family connection, and contribution dues statement.</p>
           </div>
         </div>
@@ -107,6 +113,7 @@ export default async function DashboardPage() {
             <div className="doppelrand-inner p-8">
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
               <div className="grid sm:grid-cols-2 gap-6 text-sm">
+              <DetailRow icon={<Hash className="w-4 h-4 text-[#3b2f23]/60" />} label="Member ID" value={member.member_code || 'Pending'} />
               <DetailRow icon={<User className="w-4 h-4 text-[#3b2f23]/60" />} label="Full Name" value={member.full_name} />
               <DetailRow icon={<CalendarDays className="w-4 h-4 text-[#3b2f23]/60" />} label="Age" value={`${member.age} years`} />
               <DetailRow icon={<Phone className="w-4 h-4 text-[#3b2f23]/60" />} label="Phone" value={member.phone} />
@@ -164,7 +171,10 @@ export default async function DashboardPage() {
                     </div>
                     <div className="flex-1 space-y-2 text-xs">
                       <div>
-                        <p className="text-sm font-bold text-[#3b2f23]">{fm.name}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm font-bold text-[#3b2f23]">{fm.name}</p>
+                          <span className="text-[8px] font-mono font-bold bg-[#fcfbf9] border border-[#dfd8cb] px-1.5 py-0.5 rounded uppercase tracking-wider text-[#3b2f23]/70">{member.member_code || 'Pending'}</span>
+                        </div>
                         <p className="text-[9px] font-mono uppercase tracking-wider text-[#3b2f23]/60 mt-0.5 font-bold">{fm.relationship}</p>
                       </div>
                       <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-[#3b2f23]/80 font-sans font-medium">

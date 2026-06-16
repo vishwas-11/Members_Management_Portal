@@ -192,7 +192,10 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
             )}
           </div>
           <div>
-            <h1 className="text-4xl sm:text-5xl font-serif font-medium tracking-tight bg-gradient-to-br from-[#fcfbf9] via-[#e8d5b5] to-[#c5b799] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(13,33,25,0.8)]">{member.full_name}</h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-4xl sm:text-5xl font-serif font-medium tracking-tight bg-gradient-to-br from-[#fcfbf9] via-[#e8d5b5] to-[#c5b799] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(13,33,25,0.8)]">{member.full_name}</h1>
+              <span className="text-[10px] font-mono font-bold bg-[#fcfbf9] border border-[#dfd8cb] px-2 py-1 rounded uppercase tracking-wider text-[#3b2f23]/70 mt-2">{member.member_code || 'Pending'}</span>
+            </div>
             <p className="text-xs text-[#faf9f6]/70 mt-1 font-mono uppercase tracking-wider font-bold drop-shadow-sm">Member since {new Date(member.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
           </div>
         </div>

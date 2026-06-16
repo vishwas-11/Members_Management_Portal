@@ -16,7 +16,8 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
   const filtered = members.filter(m =>
     m.full_name.toLowerCase().includes(search.toLowerCase()) ||
     m.phone.includes(search) ||
-    m.aadhaar_number.includes(search)
+    m.aadhaar_number.includes(search) ||
+    (m.member_code && m.member_code.toLowerCase().includes(search.toLowerCase()))
   )
 
   const totalMembers = members.reduce((sum, m) => sum + 1 + (m.family_members?.length ?? 0), 0)
@@ -128,7 +129,10 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
                           )}
                         </div>
                         <div>
-                          <p className="font-bold text-[#3b2f23]">{member.full_name}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="font-bold text-[#3b2f23]">{member.full_name}</p>
+                            <span className="text-[9px] font-mono font-bold bg-[#e8e2d5]/60 border border-[#dfd8cb] px-1.5 py-0.5 rounded uppercase tracking-wider text-[#3b2f23]/70">{member.member_code || 'Pending'}</span>
+                          </div>
                           <p className="text-[10px] font-mono text-[#3b2f23]/50 mt-0.5 font-bold">
                             {member.aadhaar_number.replace(/(\d{4})(\d{4})(\d{4})/, '$1 $2 $3')}
                           </p>

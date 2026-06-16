@@ -16,6 +16,7 @@ export interface FamilyMember {
 export interface Member {
   id: string
   user_id: string
+  member_code: string
   full_name: string
   aadhaar_number: string
   address: string
