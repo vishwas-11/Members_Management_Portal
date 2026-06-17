@@ -180,6 +180,7 @@ export default async function DashboardPage() {
                       <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-[#3b2f23]/80 font-sans font-medium">
                         <p><strong className="text-[#3b2f23]/60 font-mono text-[9px] uppercase tracking-wider">Age:</strong> {fm.age} yrs</p>
                         <p><strong className="text-[#3b2f23]/60 font-mono text-[9px] uppercase tracking-wider">Status:</strong> {fm.marital_status || 'N/A'}</p>
+                        {fm.phone && <p className="col-span-2"><strong className="text-[#3b2f23]/60 font-mono text-[9px] uppercase tracking-wider">Phone:</strong> {fm.phone}</p>}
                         <p className="col-span-2"><strong className="text-[#3b2f23]/60 font-mono text-[9px] uppercase tracking-wider">DOB:</strong> {fm.dob ? new Date(fm.dob).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A'}</p>
                         {fm.aadhaar_number && <p className="col-span-2"><strong className="text-[#3b2f23]/60 font-mono text-[9px] uppercase tracking-wider">Aadhaar:</strong> XXXX XXXX {fm.aadhaar_number.slice(-4)}</p>}
                       </div>

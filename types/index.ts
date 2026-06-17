@@ -6,6 +6,7 @@ export interface FamilyMember {
   name: string
   age: number
   relationship: string
+  phone?: string
   dob?: string
   avatar_url?: string
   marital_status?: MaritalStatus

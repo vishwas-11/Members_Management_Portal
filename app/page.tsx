@@ -115,15 +115,27 @@ export default async function LandingPage() {
   let userName = ''
 
   // Fetch daily verse
-  let verseText = "I am the vine; you are the branches. If you remain in me and I in you, you will bear much fruit; apart from me you can do nothing."
-  let verseRef = "John 15:5"
+  let verseText = "See to it, brothers and sisters, that none of you has an evil, unbelieving heart that forsakes the living God. But exhort one another each day, as long as it is called “Today,” that none of you may become hardened by sin’s deception."
+  let verseRef = "Hebrews 3:12-13"
   try {
-    const res = await fetch('https://labs.bible.org/api/?passage=votd&type=json', { next: { revalidate: 3600 } })
+    // Calculate seconds until next midnight in IST (UTC+5:30)
+    const now = new Date()
+    const istTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }))
+    const nextMidnight = new Date(istTime)
+    nextMidnight.setHours(24, 0, 0, 0)
+    const secondsUntilMidnight = Math.max(60, Math.floor((nextMidnight.getTime() - istTime.getTime()) / 1000))
+
+    const res = await fetch('https://labs.bible.org/api/?passage=votd&type=json', { next: { revalidate: secondsUntilMidnight } })
     if (res.ok) {
       const data = await res.json()
-      if (data && data[0]) {
-        verseText = data[0].text.replace(/<[^>]+>/g, '') // strip html if any
-        verseRef = `${data[0].bookname} ${data[0].chapter}:${data[0].verse}`
+      if (data && data.length > 0) {
+        // Handle cases where the verse of the day spans multiple verses
+        verseText = data.map((v: any) => v.text.replace(/<[^>]+>/g, '').trim()).join(' ')
+        const first = data[0]
+        const last = data[data.length - 1]
+        verseRef = data.length > 1 
+          ? `${first.bookname} ${first.chapter}:${first.verse}-${last.verse}`
+          : `${first.bookname} ${first.chapter}:${first.verse}`
       }
     }
   } catch (e) {

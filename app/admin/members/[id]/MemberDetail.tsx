@@ -24,6 +24,7 @@ const memberSchema = z.object({
     name: z.string().min(2),
     age: z.coerce.number().min(1).max(120),
     relationship: z.string().min(2),
+    phone: z.string().regex(/^[6-9]\d{9}$/).optional().or(z.literal('')),
     dob: z.string().min(1, 'Date of Birth is required'),
     marital_status: z.enum(['Single', 'Married', 'Widowed', 'Divorced']),
     aadhaar_number: z.string().regex(/^\d{12}$/, 'Aadhaar must be exactly 12 digits'),
@@ -348,11 +349,15 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
                     <label className={labelClasses}>Name</label>
                     <input {...register(`family_members.${index}.name`)} className={inputClasses} />
                   </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <label className={labelClasses}>Phone (Optional)</label>
+                    <input {...register(`family_members.${index}.phone`)} className={inputClasses} maxLength={10} />
+                  </div>
                   <div>
                     <label className={labelClasses}>Age</label>
                     <input {...register(`family_members.${index}.age`)} type="number" className={inputClasses} />
                   </div>
-                  <div className="col-span-2 sm:col-span-2">
+                  <div className="col-span-2 sm:col-span-1">
                     <label className={labelClasses}>Relationship</label>
                     <select {...register(`family_members.${index}.relationship`)} className={`${inputClasses} select-clean`}>
                       <option value="">Select</option>
@@ -452,7 +457,7 @@ export default function AdminMemberDetail({ member, dues: initialDues }: { membe
             ))}
           </div>
 
-          <button type="button" onClick={() => append({ name: '', age: 0, relationship: '', dob: '', marital_status: '' as any, aadhaar_number: '', avatar_url: '', certificate_url: '' })}
+          <button type="button" onClick={() => append({ name: '', age: 0, relationship: '', phone: '', dob: '', marital_status: '' as any, aadhaar_number: '', avatar_url: '', certificate_url: '' })}
             className="w-full flex items-center justify-center gap-2 py-3 border border-dashed border-[#dfd8cb] bg-[#f5f3ee]/50 text-[#3b2f23]/70 hover:text-[#3b2f23] rounded-lg text-sm font-bold hover:bg-[#f5f3ee] transition-all duration-200 cursor-pointer">
             <PlusCircle className="w-4 h-4" /> Add Family Member
           </button>

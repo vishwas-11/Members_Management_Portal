@@ -389,3 +389,19 @@ body {
   color: #4a3820;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
 }
+
+@keyframes rowFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-row-fade {
+  animation: rowFadeIn 0.5s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  opacity: 0; /* Ensures they start hidden before animation */
+}

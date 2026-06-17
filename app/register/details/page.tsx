@@ -44,6 +44,7 @@ const familyMemberSchema = z.object({
   name: z.string().min(2, 'Name is required'),
   age: z.coerce.number().min(1).max(120),
   relationship: z.string().min(2, 'Relationship is required'),
+  phone: z.string().regex(/^[6-9]\d{9}$/, 'Enter a valid 10-digit Indian mobile number').optional().or(z.literal('')),
   dob: z.string().min(1, 'Date of Birth is required'),
   marital_status: z.enum(['Single', 'Married', 'Widowed', 'Divorced']),
   aadhaar_number: z.string().regex(/^\d{12}$/, 'Aadhaar must be exactly 12 digits'),
@@ -463,7 +464,7 @@ export default function RegisterDetailsPage() {
                         </div>
                         
                         <div className="grid grid-cols-2 gap-4">
-                          <div className="col-span-2">
+                          <div className="col-span-2 md:col-span-1">
                             <label className="label text-[#3b2f23]/70 font-mono text-[10px] uppercase tracking-wider">
                               Name
                             </label>
@@ -474,6 +475,21 @@ export default function RegisterDetailsPage() {
                             />
                             {errors.family_members?.[index]?.name && (
                               <p className="error-msg text-xs mt-1 text-red-600">{errors.family_members[index].name?.message}</p>
+                            )}
+                          </div>
+                          
+                          <div className="col-span-2 md:col-span-1">
+                            <label className="label text-[#3b2f23]/70 font-mono text-[10px] uppercase tracking-wider">
+                              Phone (Optional)
+                            </label>
+                            <input 
+                              {...register(`family_members.${index}.phone`)} 
+                              className="input-field !border-[#dfd8cb] !bg-white/75 focus:!ring-[#3b2f23]/25 focus:!border-[#3b2f23]/50 text-[#3b2f23]" 
+                              placeholder="10-digit number" 
+                              maxLength={10}
+                            />
+                            {errors.family_members?.[index]?.phone && (
+                              <p className="error-msg text-xs mt-1 text-red-600">{errors.family_members[index].phone?.message}</p>
                             )}
                           </div>
                           
@@ -635,7 +651,7 @@ export default function RegisterDetailsPage() {
 
                   <button
                     type="button"
-                    onClick={() => append({ name: '', age: 0, relationship: '', dob: '', marital_status: '' as any, aadhaar_number: '', avatar_url: '', certificate_url: '' })}
+                    onClick={() => append({ name: '', age: 0, relationship: '', phone: '', dob: '', marital_status: '' as any, aadhaar_number: '', avatar_url: '', certificate_url: '' })}
                     className="w-full flex items-center justify-center gap-2 py-3 border border-dashed border-[#be9d62] text-[#3b2f23] rounded-lg text-sm font-semibold hover:bg-[#f7f6f0] transition-all duration-200 cursor-pointer shadow-sm mt-2"
                   >
                     <PlusCircle className="w-4 h-4 text-[#be9d62]" />
@@ -675,6 +691,7 @@ export default function RegisterDetailsPage() {
                               <div className="absolute top-0 left-0 w-1 h-full bg-forest-600/30" />
                               <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Name</span> <span className="font-semibold text-[#3b2f23]">{member.name || '-'}</span></div>
                               <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Relation</span> <span className="font-semibold text-[#3b2f23]">{member.relationship || '-'}</span></div>
+                              <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Phone</span> <span className="font-semibold text-[#3b2f23]">{member.phone || '-'}</span></div>
                               <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Age</span> <span className="font-semibold text-[#3b2f23]">{member.age || '-'}</span></div>
                               <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">DOB</span> <span className="font-semibold text-[#3b2f23]">{member.dob ? new Date(member.dob).toLocaleDateString('en-GB') : '-'}</span></div>
                               <div><span className="text-[#3b2f23]/50 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">Marital Status</span> <span className="font-semibold text-[#3b2f23]">{member.marital_status || '-'}</span></div>
