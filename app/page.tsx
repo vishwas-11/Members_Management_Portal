@@ -466,6 +466,10 @@ export default async function LandingPage() {
                 <h4 className="font-mono text-[11px] uppercase tracking-widest text-[#ebd2a3] font-bold">Contact Details</h4>
                 <div className="text-[#faf9f6]/80 space-y-6">
                   <div>
+                    <p className="text-[10px] uppercase font-mono tracking-widest text-[#faf9f6]/50 mb-2 font-bold">President of Membership Committee</p>
+                    <p className="font-serif text-2xl font-medium text-[#ebd2a3] drop-shadow-sm">Mr. Vishal Charan</p>
+                  </div>
+                  <div>
                     <p className="text-[10px] uppercase font-mono tracking-widest text-[#faf9f6]/50 mb-2 font-bold">Email Address</p>
                     <a
                       href="mailto:vcharan1126@gmail.com"
