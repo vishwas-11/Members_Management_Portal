@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useForm, useFieldArray, type SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { PlusCircle, Trash2, ChevronRight, ChevronLeft, Loader2, CheckCircle2, Upload, FileText, Camera } from 'lucide-react'
+import { PlusCircle, Trash2, ChevronRight, ChevronLeft, Loader2, CheckCircle2, Upload, FileText, Camera, AlertCircle, X, UserCheck } from 'lucide-react'
 
 import { ScrollReveal } from '@/components/ui/ScrollReveal'
 import { LeftOliveBranch, RightOliveBranch } from '@/components/ui/OliveBranches'
@@ -77,6 +77,10 @@ export default function RegisterDetailsPage() {
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [uploadingField, setUploadingField] = useState<string | null>(null)
+  const [duplicates, setDuplicates] = useState<any[]>([])
+  const [showDuplicateModal, setShowDuplicateModal] = useState(false)
+  const [pendingFormData, setPendingFormData] = useState<FormData | null>(null)
+  const [checkingDuplicates, setCheckingDuplicates] = useState(false)
 
   const { register, control, handleSubmit, trigger, watch, setValue, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(formSchema) as any,
@@ -138,7 +142,7 @@ export default function RegisterDetailsPage() {
     if (valid) setStep(s => s + 1)
   }
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
+  const submitRegistration = async (data: FormData) => {
     setSubmitting(true)
     setSubmitError('')
     const { data: { user } } = await supabase.auth.getUser()
@@ -164,6 +168,37 @@ export default function RegisterDetailsPage() {
     setSubmitting(false)
     if (error) { setSubmitError(error.message); return }
     router.push('/dashboard')
+  }
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    // Check for duplicates before submitting
+    setCheckingDuplicates(true)
+    setSubmitError('')
+    try {
+      const res = await fetch('/api/check-duplicate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name: data.full_name,
+          aadhaar_number: data.aadhaar_number,
+        }),
+      })
+      const result = await res.json()
+      setCheckingDuplicates(false)
+
+      if (result.duplicates && result.duplicates.length > 0) {
+        setDuplicates(result.duplicates)
+        setPendingFormData(data)
+        setShowDuplicateModal(true)
+        return
+      }
+    } catch {
+      setCheckingDuplicates(false)
+      // If duplicate check fails, proceed with registration anyway
+    }
+
+    // No duplicates found, proceed
+    await submitRegistration(data)
   }
 
   return (
@@ -772,18 +807,142 @@ export default function RegisterDetailsPage() {
             ) : (
               <button 
                 type="submit" 
-                disabled={submitting} 
+                disabled={submitting || checkingDuplicates} 
                 className="btn-premium-solid group min-h-[44px] flex items-center justify-center px-6 ml-auto"
               >
                 <div className="flex items-center gap-2">
-                  {submitting && <Loader2 className="w-4 h-4 animate-spin text-[#ebd096]" />}
-                  <span>{submitting ? 'Submitting...' : 'Submit Registration'}</span>
+                  {(submitting || checkingDuplicates) && <Loader2 className="w-4 h-4 animate-spin text-[#ebd096]" />}
+                  <span>{checkingDuplicates ? 'Checking...' : submitting ? 'Submitting...' : 'Submit Registration'}</span>
                 </div>
               </button>
             )}
           </div>
         </form>
       </ScrollReveal>
+
+      {/* Duplicate Detection Modal */}
+      {showDuplicateModal && (
+        <DuplicateDetectionModal
+          duplicates={duplicates}
+          onClaim={(memberCode) => {
+            setShowDuplicateModal(false)
+            router.push(`/register/claim?code=${encodeURIComponent(memberCode)}`)
+          }}
+          onContinue={async () => {
+            setShowDuplicateModal(false)
+            if (pendingFormData) {
+              await submitRegistration(pendingFormData)
+            }
+          }}
+          onClose={() => setShowDuplicateModal(false)}
+        />
+      )}
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Duplicate Detection Modal
+   Shows when the system finds existing profiles matching the
+   registering user's name or Aadhaar.
+   ═══════════════════════════════════════════════════════════════ */
+function DuplicateDetectionModal({
+  duplicates,
+  onClaim,
+  onContinue,
+  onClose,
+}: {
+  duplicates: any[]
+  onClaim: (memberCode: string) => void
+  onContinue: () => void
+  onClose: () => void
+}) {
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+      <div className="doppelrand-outer shadow-2xl w-full max-w-md">
+        <div className="doppelrand-inner p-7 relative overflow-hidden animate-in fade-in zoom-in duration-200">
+          {/* Gold ribbon */}
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#f59e0b] via-[#d97706] to-[#92400e] z-10" />
+
+          {/* Close button */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 z-20 p-1.5 rounded-full hover:bg-[#e8e2d5]/80 transition-colors cursor-pointer text-[#3b2f23]/50 hover:text-[#3b2f23]"
+          >
+            <X className="w-4 h-4" />
+          </button>
+
+          {/* Header */}
+          <div className="flex items-start gap-3.5 mb-5">
+            <div className="w-11 h-11 rounded-full bg-amber-100 flex items-center justify-center border border-amber-200 shrink-0">
+              <AlertCircle className="w-5 h-5 text-amber-600" />
+            </div>
+            <div>
+              <h3 className="font-serif text-lg font-bold text-[#3b2f23]">
+                Existing Profile Found
+              </h3>
+              <p className="text-xs text-[#3b2f23]/60 mt-0.5 font-sans leading-relaxed">
+                We found {duplicates.length} existing profile{duplicates.length > 1 ? 's' : ''} matching your details.
+                If one of these is you, claim it instead of creating a new one.
+              </p>
+            </div>
+          </div>
+
+          {/* Duplicates list */}
+          <div className="space-y-3 max-h-[250px] overflow-y-auto mb-6">
+            {duplicates.map((dup, idx) => (
+              <div
+                key={idx}
+                className="flex items-center gap-4 p-4 bg-white/70 border border-[#dfd8cb] rounded-lg shadow-sm"
+              >
+                <div className="w-10 h-10 rounded-full overflow-hidden bg-[#e5e0d5] border border-[#dfd8cb] flex items-center justify-center text-[#3b2f23] shrink-0 shadow-inner">
+                  {dup.avatar_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={dup.avatar_url} alt={dup.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="font-serif text-xs font-bold">
+                      {dup.name?.split(' ').map((n: string) => n[0]).slice(0, 2).join('').toUpperCase() || 'U'}
+                    </span>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold text-[#3b2f23] truncate">{dup.name}</p>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="text-[9px] font-mono font-bold bg-[#e8e2d5]/60 border border-[#dfd8cb] px-1.5 py-0.5 rounded uppercase tracking-wider text-[#3b2f23]/70">
+                      {dup.member_code}
+                    </span>
+                    <span className="text-[10px] text-[#3b2f23]/50 font-mono">
+                      {dup.aadhaar_masked}
+                    </span>
+                  </div>
+                  {dup.relationship && (
+                    <p className="text-[10px] text-[#3b2f23]/50 mt-0.5 font-sans">
+                      Registered as: <span className="font-semibold">{dup.relationship}</span> (family member)
+                    </p>
+                  )}
+                </div>
+                <button
+                  onClick={() => onClaim(dup.member_code)}
+                  className="shrink-0 flex items-center gap-1 text-[10px] font-bold text-forest-700 bg-forest-50 border border-forest-200 rounded-md px-2.5 py-2 hover:bg-forest-100 transition-colors cursor-pointer uppercase tracking-wider"
+                >
+                  <UserCheck className="w-3.5 h-3.5" />
+                  Claim
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Actions */}
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={onContinue}
+              className="btn-premium-outline w-full py-2.5 text-xs font-bold"
+            >
+              Not me — continue as new member
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

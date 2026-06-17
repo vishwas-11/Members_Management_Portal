@@ -73,7 +73,7 @@ export default function LoginPage() {
       
       setLoading(false)
       if (!member) {
-        router.push('/register/details')
+        router.push('/register/claim')
       } else if (member.role === 'admin') {
         router.push('/admin')
       } else {

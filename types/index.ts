@@ -13,6 +13,8 @@ export interface FamilyMember {
   marital_status?: MaritalStatus
   aadhaar_number?: string
   certificate_url?: string
+  claimed?: boolean
+  claimed_member_id?: string
 }
 
 export interface Member {

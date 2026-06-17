@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Search, Eye, Trash2, Users, UserCheck, Shield } from 'lucide-react'
+import { Search, Eye, Trash2, Users, UserCheck, Shield, Loader2, X, AlertCircle, GitMerge } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import type { Member } from '@/types'
@@ -11,6 +11,7 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
   const [search, setSearch] = useState('')
   const [viewMode, setViewMode] = useState<'heads' | 'all'>('heads')
   const [deleting, setDeleting] = useState<string | null>(null)
+  const [showMergeModal, setShowMergeModal] = useState(false)
   const supabase = createClient()
   const router = useRouter()
 
@@ -87,6 +88,7 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
   }
 
   return (
+    <>
     <div className="space-y-8">
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -158,6 +160,15 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
             </button>
           </div>
         </div>
+
+        <button
+          onClick={() => setShowMergeModal(true)}
+          className="btn-premium-outline px-4 py-2.5 text-[10px] sm:text-xs flex items-center gap-2 font-bold shrink-0 cursor-pointer"
+          id="merge-duplicates-btn"
+        >
+          <GitMerge className="w-4 h-4" />
+          Merge Duplicates
+        </button>
       </div>
 
       {/* Table */}
@@ -271,6 +282,245 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
               )})}
             </tbody>
             </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      {/* Merge Duplicates Modal */}
+      {showMergeModal && (
+        <MergeModal
+          members={members}
+          onClose={() => setShowMergeModal(false)}
+          onMerged={(primaryId, duplicateId) => {
+            setMembers(prev => prev.filter(m => m.id !== duplicateId))
+            setShowMergeModal(false)
+          }}
+        />
+      )}
+    </>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Merge Duplicates Modal
+   Allows admins to select two member profiles and merge them.
+   ═══════════════════════════════════════════════════════════════ */
+function MergeModal({
+  members,
+  onClose,
+  onMerged,
+}: {
+  members: Member[]
+  onClose: () => void
+  onMerged: (primaryId: string, duplicateId: string) => void
+}) {
+  const [searchQuery, setSearchQuery] = useState('')
+  const [primaryId, setPrimaryId] = useState<string | null>(null)
+  const [duplicateId, setDuplicateId] = useState<string | null>(null)
+  const [merging, setMerging] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+
+  const filtered = members.filter(m =>
+    m.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    m.member_code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    m.phone.includes(searchQuery)
+  )
+
+  const primary = members.find(m => m.id === primaryId)
+  const duplicate = members.find(m => m.id === duplicateId)
+
+  const handleMerge = async () => {
+    if (!primaryId || !duplicateId) return
+    setMerging(true)
+    setError('')
+    setSuccess('')
+
+    try {
+      const res = await fetch('/api/admin/merge-members', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ primary_id: primaryId, duplicate_id: duplicateId }),
+      })
+      const data = await res.json()
+
+      if (!res.ok || data.error) {
+        setError(data.error || 'Failed to merge members')
+        setMerging(false)
+        return
+      }
+
+      setSuccess(data.message || 'Members merged successfully!')
+      setMerging(false)
+      setTimeout(() => onMerged(primaryId, duplicateId), 1500)
+    } catch {
+      setError('Network error. Please try again.')
+      setMerging(false)
+    }
+  }
+
+  const getInitials = (name: string) =>
+    name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
+
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+      <div className="doppelrand-outer shadow-2xl w-full max-w-2xl">
+        <div className="doppelrand-inner p-7 relative overflow-hidden animate-in fade-in zoom-in duration-200">
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ebd2a3] via-[#be9d62] to-[#76592a] z-10" />
+
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 z-20 p-1.5 rounded-full hover:bg-[#e8e2d5]/80 transition-colors cursor-pointer text-[#3b2f23]/50 hover:text-[#3b2f23]"
+          >
+            <X className="w-4 h-4" />
+          </button>
+
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center border border-amber-200">
+              <GitMerge className="w-5 h-5 text-amber-700" />
+            </div>
+            <div>
+              <h3 className="font-serif text-lg font-bold text-[#3b2f23]">Merge Duplicate Profiles</h3>
+              <p className="text-[11px] text-[#3b2f23]/60 font-sans">Select a primary profile to keep and a duplicate to merge into it.</p>
+            </div>
+          </div>
+
+          {/* Search */}
+          <div className="relative mb-4">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#3b2f23]/40" />
+            <input
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="Search members by name, code, or phone..."
+              className="input-field !pl-10 !border-[#dfd8cb] !bg-white/75 focus:!ring-[#3b2f23]/25 focus:!border-[#3b2f23]/50 text-[#3b2f23] text-sm"
+            />
+          </div>
+
+          {/* Selection Area */}
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-forest-700 mb-2">Primary (Keep)</p>
+              <div className={`p-3 rounded-lg border-2 min-h-[60px] flex items-center gap-3 transition-colors ${primary ? 'border-forest-400 bg-forest-50/50' : 'border-dashed border-[#dfd8cb] bg-[#f7f6f0]/50'}`}>
+                {primary ? (
+                  <>
+                    <div className="w-8 h-8 rounded-full bg-[#e5e0d5] border border-[#dfd8cb] flex items-center justify-center text-[#3b2f23] text-xs font-bold shrink-0">
+                      {primary.avatar_url ? <img src={primary.avatar_url} alt="" className="w-full h-full rounded-full object-cover" /> : getInitials(primary.full_name)}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold text-[#3b2f23] truncate">{primary.full_name}</p>
+                      <p className="text-[9px] font-mono text-[#3b2f23]/50">{primary.member_code}</p>
+                    </div>
+                    <button onClick={() => setPrimaryId(null)} className="ml-auto text-[#3b2f23]/40 hover:text-red-500 cursor-pointer shrink-0"><X className="w-3.5 h-3.5" /></button>
+                  </>
+                ) : (
+                  <p className="text-xs text-[#3b2f23]/40 font-sans w-full text-center">Click a member below</p>
+                )}
+              </div>
+            </div>
+            <div>
+              <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-red-600 mb-2">Duplicate (Remove)</p>
+              <div className={`p-3 rounded-lg border-2 min-h-[60px] flex items-center gap-3 transition-colors ${duplicate ? 'border-red-400 bg-red-50/50' : 'border-dashed border-[#dfd8cb] bg-[#f7f6f0]/50'}`}>
+                {duplicate ? (
+                  <>
+                    <div className="w-8 h-8 rounded-full bg-[#e5e0d5] border border-[#dfd8cb] flex items-center justify-center text-[#3b2f23] text-xs font-bold shrink-0">
+                      {duplicate.avatar_url ? <img src={duplicate.avatar_url} alt="" className="w-full h-full rounded-full object-cover" /> : getInitials(duplicate.full_name)}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold text-[#3b2f23] truncate">{duplicate.full_name}</p>
+                      <p className="text-[9px] font-mono text-[#3b2f23]/50">{duplicate.member_code}</p>
+                    </div>
+                    <button onClick={() => setDuplicateId(null)} className="ml-auto text-[#3b2f23]/40 hover:text-red-500 cursor-pointer shrink-0"><X className="w-3.5 h-3.5" /></button>
+                  </>
+                ) : (
+                  <p className="text-xs text-[#3b2f23]/40 font-sans w-full text-center">Click a member below</p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Members List */}
+          <div className="max-h-[200px] overflow-y-auto border border-[#dfd8cb] rounded-lg divide-y divide-[#dfd8cb] mb-5">
+            {filtered.length === 0 && (
+              <p className="text-sm text-[#3b2f23]/50 text-center py-6 font-sans">No members match your search.</p>
+            )}
+            {filtered.map(m => {
+              const isPrimary = m.id === primaryId
+              const isDuplicate = m.id === duplicateId
+              const isSelected = isPrimary || isDuplicate
+
+              return (
+                <div
+                  key={m.id}
+                  className={`flex items-center gap-3 px-4 py-3 text-xs transition-colors ${
+                    isPrimary ? 'bg-forest-50' : isDuplicate ? 'bg-red-50' : 'bg-white hover:bg-[#f7f6f0]'
+                  }`}
+                >
+                  <div className="w-8 h-8 rounded-full bg-[#e5e0d5] border border-[#dfd8cb] flex items-center justify-center text-[#3b2f23] font-bold shrink-0 overflow-hidden">
+                    {m.avatar_url ? <img src={m.avatar_url} alt="" className="w-full h-full object-cover" /> : <span className="text-[10px]">{getInitials(m.full_name)}</span>}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-bold text-[#3b2f23] truncate">{m.full_name}</p>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <span className="text-[9px] font-mono text-[#3b2f23]/50">{m.member_code}</span>
+                      <span className="text-[9px] text-[#3b2f23]/40">{m.phone}</span>
+                    </div>
+                  </div>
+                  {!isSelected && (
+                    <div className="flex gap-1.5 shrink-0">
+                      <button
+                        onClick={() => setPrimaryId(m.id)}
+                        disabled={!!primaryId}
+                        className="text-[9px] font-bold font-mono uppercase tracking-wider px-2 py-1 rounded bg-forest-50 border border-forest-200 text-forest-700 hover:bg-forest-100 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      >
+                        Primary
+                      </button>
+                      <button
+                        onClick={() => setDuplicateId(m.id)}
+                        disabled={!!duplicateId}
+                        className="text-[9px] font-bold font-mono uppercase tracking-wider px-2 py-1 rounded bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      >
+                        Duplicate
+                      </button>
+                    </div>
+                  )}
+                  {isSelected && (
+                    <span className={`text-[9px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded ${isPrimary ? 'bg-forest-100 text-forest-700' : 'bg-red-100 text-red-600'}`}>
+                      {isPrimary ? '✓ Primary' : '✓ Duplicate'}
+                    </span>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Error / Success */}
+          {error && (
+            <div className="flex items-start gap-2.5 p-3 bg-red-50 border border-red-200 rounded-lg mb-4">
+              <AlertCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
+              <p className="text-xs text-red-700 font-medium font-sans">{error}</p>
+            </div>
+          )}
+          {success && (
+            <div className="flex items-start gap-2.5 p-3 bg-forest-50 border border-forest-200 rounded-lg mb-4">
+              <UserCheck className="w-4 h-4 text-forest-600 shrink-0 mt-0.5" />
+              <p className="text-xs text-forest-700 font-medium font-sans">{success}</p>
+            </div>
+          )}
+
+          {/* Actions */}
+          <div className="flex gap-3">
+            <button onClick={onClose} className="btn-premium-outline flex-1 py-2.5 text-xs font-bold">
+              Cancel
+            </button>
+            <button
+              onClick={handleMerge}
+              disabled={!primaryId || !duplicateId || merging || !!success}
+              className="btn-premium-solid flex-1 py-2.5 text-xs flex items-center justify-center gap-2 disabled:opacity-50"
+            >
+              {merging && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+              {merging ? 'Merging...' : 'Merge Profiles'}
+            </button>
           </div>
         </div>
       </div>

@@ -15,8 +15,8 @@ export async function GET(request: Request) {
         .eq('user_id', user.id)
         .single()
 
-      if (!member) return NextResponse.redirect(`${origin}/register/details`)
-      if (!member.declaration_signed) return NextResponse.redirect(`${origin}/register/details`)
+      if (!member) return NextResponse.redirect(`${origin}/register/claim`)
+      if (!member.declaration_signed) return NextResponse.redirect(`${origin}/register/claim`)
       if (member.role === 'admin') return NextResponse.redirect(`${origin}/admin`)
       return NextResponse.redirect(`${origin}/dashboard`)
     }
@@ -24,3 +24,4 @@ export async function GET(request: Request) {
 
   return NextResponse.redirect(`${origin}/login?error=auth_failed`)
 }
+
