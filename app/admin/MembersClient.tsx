@@ -52,11 +52,11 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
       isHead: false,
       full_name: fm.name,
       avatar_url: fm.avatar_url,
-      member_code: '',
+      member_code: fm.member_code || '',
       aadhaar_number: fm.aadhaar_number || 'N/A',
       phone: fm.phone || '-',
       family_count: 0,
-      role: fm.relationship?.toUpperCase() || 'FAMILY',
+      role: 'member',
       created_at: m.created_at,
       relationship: fm.relationship,
     }))

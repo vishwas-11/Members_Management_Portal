@@ -3,6 +3,7 @@ export type MaritalStatus = 'Single' | 'Married' | 'Widowed' | 'Divorced'
 
 export interface FamilyMember {
   id?: string
+  member_code?: string
   name: string
   age: number
   relationship: string

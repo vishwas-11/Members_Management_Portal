@@ -173,7 +173,7 @@ export default async function DashboardPage() {
                       <div>
                         <div className="flex items-center gap-2">
                           <p className="text-sm font-bold text-[#3b2f23]">{fm.name}</p>
-                          <span className="text-[8px] font-mono font-bold bg-[#fcfbf9] border border-[#dfd8cb] px-1.5 py-0.5 rounded uppercase tracking-wider text-[#3b2f23]/70">{member.member_code || 'Pending'}</span>
+                          <span className="text-[8px] font-mono font-bold bg-[#fcfbf9] border border-[#dfd8cb] px-1.5 py-0.5 rounded uppercase tracking-wider text-[#3b2f23]/70">{fm.member_code || 'Pending'}</span>
                         </div>
                         <p className="text-[9px] font-mono uppercase tracking-wider text-[#3b2f23]/60 mt-0.5 font-bold">{fm.relationship}</p>
                       </div>
