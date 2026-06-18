@@ -292,8 +292,44 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
         <MergeModal
           members={members}
           onClose={() => setShowMergeModal(false)}
-          onMerged={(primaryId, duplicateId) => {
-            setMembers(prev => prev.filter(m => m.id !== duplicateId))
+          onMerged={(primaryId, duplicateId, isFamily, parentId) => {
+            setMembers(prev => {
+              if (isFamily && parentId) {
+                const parentObj = prev.find(p => p.id === parentId)
+                const fmObj = parentObj?.family_members?.find(fm => fm.member_code === duplicateId || fm.id === duplicateId)
+                const targetMemberCode = fmObj?.member_code || duplicateId
+
+                return prev.map(m => {
+                  if (m.id === parentId) {
+                    const updatedFM = (m.family_members || []).map(fm => {
+                      if (fm.member_code === duplicateId || fm.id === duplicateId) {
+                        return { ...fm, claimed: true, claimed_member_id: primaryId }
+                      }
+                      return fm
+                    })
+                    return { ...m, family_members: updatedFM }
+                  }
+                  if (m.id === primaryId) {
+                    return { ...m, member_code: targetMemberCode }
+                  }
+                  return m
+                })
+              } else {
+                const duplicateMember = prev.find(m => m.id === duplicateId)
+                const dupFamily = duplicateMember?.family_members || []
+                return prev
+                  .filter(m => m.id !== duplicateId)
+                  .map(m => {
+                    if (m.id === primaryId) {
+                      return {
+                        ...m,
+                        family_members: [...(m.family_members || []), ...dupFamily]
+                      }
+                    }
+                    return m
+                  })
+              }
+            })
             setShowMergeModal(false)
           }}
         />
@@ -305,7 +341,21 @@ export default function AdminMembersClient({ members: initial }: { members: Memb
 /* ═══════════════════════════════════════════════════════════════
    Merge Duplicates Modal
    Allows admins to select two member profiles and merge them.
+   Supports merging family heads and JSONB family members.
    ═══════════════════════════════════════════════════════════════ */
+interface MergeRow {
+  id: string
+  parentId: string
+  isHead: boolean
+  full_name: string
+  avatar_url?: string | null
+  member_code: string
+  phone: string
+  relationship?: string
+  parent_name?: string
+  aadhaar_number: string
+}
+
 function MergeModal({
   members,
   onClose,
@@ -313,7 +363,7 @@ function MergeModal({
 }: {
   members: Member[]
   onClose: () => void
-  onMerged: (primaryId: string, duplicateId: string) => void
+  onMerged: (primaryId: string, duplicateId: string, isFamily: boolean, parentId: string | null) => void
 }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [primaryId, setPrimaryId] = useState<string | null>(null)
@@ -322,14 +372,73 @@ function MergeModal({
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  const filtered = members.filter(m =>
-    m.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    m.member_code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    m.phone.includes(searchQuery)
+  // Flatten all members into individual rows (heads + JSONB family members)
+  const allMergeRows: MergeRow[] = members.flatMap(m => {
+    const headRow: MergeRow = {
+      id: m.id,
+      parentId: m.id,
+      isHead: true,
+      full_name: m.full_name,
+      avatar_url: m.avatar_url,
+      member_code: m.member_code || '',
+      phone: m.phone || '',
+      aadhaar_number: m.aadhaar_number || '',
+    }
+
+    const dependentRows: MergeRow[] = (m.family_members || []).map((fm, idx) => ({
+      id: fm.member_code || fm.id || `${m.id}-fm-${idx}`,
+      parentId: m.id,
+      isHead: false,
+      full_name: fm.name,
+      avatar_url: fm.avatar_url,
+      member_code: fm.member_code || '',
+      phone: fm.phone || '-',
+      relationship: fm.relationship,
+      parent_name: m.full_name,
+      aadhaar_number: fm.aadhaar_number || '',
+    }))
+
+    return [headRow, ...dependentRows]
+  })
+
+  const filtered = allMergeRows.filter(r =>
+    r.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    r.member_code.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    r.phone.includes(searchQuery) ||
+    r.aadhaar_number.includes(searchQuery) ||
+    (r.relationship && r.relationship.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (r.parent_name && r.parent_name.toLowerCase().includes(searchQuery.toLowerCase()))
   )
 
-  const primary = members.find(m => m.id === primaryId)
-  const duplicate = members.find(m => m.id === duplicateId)
+  const primary = allMergeRows.find(r => r.id === primaryId)
+  const duplicate = allMergeRows.find(r => r.id === duplicateId)
+
+  // Swapping/selection helpers to ensure that registered profiles (Heads) are Primary
+  const selectPrimary = (row: MergeRow) => {
+    if (duplicateId && row.id === duplicateId) return
+
+    if (!row.isHead && duplicate && duplicate.isHead) {
+      // Swap: make the head Primary and the family member Duplicate
+      setPrimaryId(duplicateId)
+      setDuplicateId(row.id)
+      return
+    }
+
+    setPrimaryId(row.id)
+  }
+
+  const selectDuplicate = (row: MergeRow) => {
+    if (primaryId && row.id === primaryId) return
+
+    if (row.isHead && primary && !primary.isHead) {
+      // Swap: make the head Primary and the family member Duplicate
+      setPrimaryId(row.id)
+      setDuplicateId(primaryId)
+      return
+    }
+
+    setDuplicateId(row.id)
+  }
 
   const handleMerge = async () => {
     if (!primaryId || !duplicateId) return
@@ -337,11 +446,19 @@ function MergeModal({
     setError('')
     setSuccess('')
 
+    const isDuplicateFamily = duplicate ? !duplicate.isHead : false
+    const duplicateParentId = duplicate ? duplicate.parentId : null
+
     try {
       const res = await fetch('/api/admin/merge-members', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ primary_id: primaryId, duplicate_id: duplicateId }),
+        body: JSON.stringify({
+          primary_id: primaryId,
+          duplicate_id: duplicateId,
+          is_duplicate_family: isDuplicateFamily,
+          duplicate_parent_id: duplicateParentId,
+        }),
       })
       const data = await res.json()
 
@@ -353,7 +470,7 @@ function MergeModal({
 
       setSuccess(data.message || 'Members merged successfully!')
       setMerging(false)
-      setTimeout(() => onMerged(primaryId, duplicateId), 1500)
+      setTimeout(() => onMerged(primaryId, duplicateId, isDuplicateFamily, duplicateParentId), 1500)
     } catch {
       setError('Network error. Please try again.')
       setMerging(false)
@@ -362,6 +479,8 @@ function MergeModal({
 
   const getInitials = (name: string) =>
     name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
+
+  const isHeadAndFamilyMerge = primary && duplicate && (primary.isHead !== duplicate.isHead)
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
@@ -392,7 +511,7 @@ function MergeModal({
             <input
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search members by name, code, or phone..."
+              placeholder="Search members by name, code, phone, or parent..."
               className="input-field !pl-10 !border-[#dfd8cb] !bg-white/75 focus:!ring-[#3b2f23]/25 focus:!border-[#3b2f23]/50 text-[#3b2f23] text-sm"
             />
           </div>
@@ -407,7 +526,7 @@ function MergeModal({
                     <div className="w-8 h-8 rounded-full bg-[#e5e0d5] border border-[#dfd8cb] flex items-center justify-center text-[#3b2f23] text-xs font-bold shrink-0">
                       {primary.avatar_url ? <img src={primary.avatar_url} alt="" className="w-full h-full rounded-full object-cover" /> : getInitials(primary.full_name)}
                     </div>
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <p className="text-xs font-bold text-[#3b2f23] truncate">{primary.full_name}</p>
                       <p className="text-[9px] font-mono text-[#3b2f23]/50">{primary.member_code}</p>
                     </div>
@@ -426,7 +545,7 @@ function MergeModal({
                     <div className="w-8 h-8 rounded-full bg-[#e5e0d5] border border-[#dfd8cb] flex items-center justify-center text-[#3b2f23] text-xs font-bold shrink-0">
                       {duplicate.avatar_url ? <img src={duplicate.avatar_url} alt="" className="w-full h-full rounded-full object-cover" /> : getInitials(duplicate.full_name)}
                     </div>
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <p className="text-xs font-bold text-[#3b2f23] truncate">{duplicate.full_name}</p>
                       <p className="text-[9px] font-mono text-[#3b2f23]/50">{duplicate.member_code}</p>
                     </div>
@@ -438,6 +557,17 @@ function MergeModal({
               </div>
             </div>
           </div>
+
+          {/* Merge Note */}
+          {isHeadAndFamilyMerge && (
+            <div className="flex items-start gap-2.5 p-3 bg-amber-50 border border-amber-200 rounded-lg text-[10px] text-amber-800 font-medium mb-4">
+              <AlertCircle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+              <div>
+                <strong>Merge Note:</strong> You are merging a registered account and a family member entry.
+                To preserve login access, the registered account will be kept as the Primary profile, and the family entry will be linked to it. The primary account\'s Member ID will be updated to the family entry\'s ID.
+              </div>
+            </div>
+          )}
 
           {/* Members List */}
           <div className="max-h-[200px] overflow-y-auto border border-[#dfd8cb] rounded-lg divide-y divide-[#dfd8cb] mb-5">
@@ -461,22 +591,27 @@ function MergeModal({
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="font-bold text-[#3b2f23] truncate">{m.full_name}</p>
-                    <div className="flex items-center gap-2 mt-0.5">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-0.5">
                       <span className="text-[9px] font-mono text-[#3b2f23]/50">{m.member_code}</span>
                       <span className="text-[9px] text-[#3b2f23]/40">{m.phone}</span>
+                      {!m.isHead && (
+                        <span className="text-[9px] font-mono font-bold bg-[#e8e2d5]/60 border border-[#dfd8cb] px-1.5 py-0.5 rounded uppercase tracking-wider text-amber-800">
+                          ↳ {m.relationship || 'Member'} of {m.parent_name}
+                        </span>
+                      )}
                     </div>
                   </div>
                   {!isSelected && (
                     <div className="flex gap-1.5 shrink-0">
                       <button
-                        onClick={() => setPrimaryId(m.id)}
+                        onClick={() => selectPrimary(m)}
                         disabled={!!primaryId}
                         className="text-[9px] font-bold font-mono uppercase tracking-wider px-2 py-1 rounded bg-forest-50 border border-forest-200 text-forest-700 hover:bg-forest-100 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                       >
                         Primary
                       </button>
                       <button
-                        onClick={() => setDuplicateId(m.id)}
+                        onClick={() => selectDuplicate(m)}
                         disabled={!!duplicateId}
                         className="text-[9px] font-bold font-mono uppercase tracking-wider px-2 py-1 rounded bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                       >
@@ -527,3 +662,4 @@ function MergeModal({
     </div>
   )
 }
+
